@@ -1,6 +1,7 @@
 package com.yogesh.Arrays;
 
 import java.util.Arrays;
+import java.util.function.ObjIntConsumer;
 
 public class ArrayProblems {
     //1. Largest element in an array
@@ -706,6 +707,20 @@ public class ArrayProblems {
         return result;
     }
 
+    //Binary Search Problems
+
+    public static int binarySearch(int[] arr, int low, int high, int x){
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if (arr[mid] == x) return mid;
+            else if (arr[mid] > x)
+                high = mid - 1;
+            else
+                low = mid + 1;
+        }
+        return -1;
+    }
+
     public static int firstOccurrence(int[] arr, int low, int high, int x){
         //normal binary search
         if (low > high)
@@ -751,7 +766,7 @@ public class ArrayProblems {
 //                return lastOccurrence(arr, mid + 1, high, x);
 //        }
 
-        //Iterative Solution
+        //O(log n) solution
         while (low <= high){
             int mid = (low + high) / 2;
 
@@ -768,5 +783,104 @@ public class ArrayProblems {
         }
         return -1;
     }
+
+    public static int countOccurrence(int[] arr, int x){
+//        O(n) Solution
+//        int count = 0;
+//        for (int i = 0; i < arr.length; i++)
+//            if (arr[i] == x)
+//                count++;
+//
+//        return count;
+
+        //O(log n) Solution -  finding first occurrence is O(log n) + last occurrence is O(log n)- totally O(log n)
+        int first = firstOccurrence(arr, 0, arr.length - 1, x);
+        if (first == -1)
+            return 0;
+        else
+            //first occurrence - last occurrence + 1 - will give total number of occurrence of x
+            return (lastOccurrence(arr, 0, arr.length - 1, x) - first + 1);
+    }
+
+    public static int countOnes(int[] arr){
+        //O(n) Solution
+//        int count = 0;
+//        for (int i = 0; i < arr.length; i++)
+//            if (arr[i] == 1) count++;
+//
+//        return count;
+
+        //O(log n) Solution
+        int low = 0; int high = arr.length - 1;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            //If arr[mid] is zero, we have to find one. since array is sorted we move right side
+            if (arr[mid] == 0)
+                low = mid + 1;
+            else{
+                //if mid is 0, then it is the first element, so we return or if arr[mid-1] is not zero, we move left side to find first occurrence of 1
+                if (mid == 0 || arr[mid - 1] == 0)
+                    return arr.length - mid;
+                else
+                    high = mid - 1;
+            }
+        }
+        return 0;
+    }
+
+    public static int squareRoot(int[] arr, int x){
+        //O(x^1/2) solution
+//        int i = 1;
+//        while (i * i <= x)
+//            i++;
+//
+//        return i - 1;
+
+        //O(log x) solution
+        int low = 1; int high = x; int ans = -1;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            int sq = mid * mid;
+            if (sq == x) return mid;
+            else if (sq > x) high = mid - 1;
+            else{
+                low = mid + 1;
+                ans = mid;
+            }
+        }
+        return ans;
+    }
+
+    //Search in a infinite sized array
+    public static int searchInfiniteSizedArray(int[] arr, int x){
+/*      //O(x) time, where x is position
+        int i = 0;
+        while (true){
+            if (arr[i] == x) return i;
+            if (arr[i] > x) return -1;
+            i++;
+        }
+ */
+        //O(log x) solution
+        if (arr[0] == x) return 0;
+
+        int i = 1;
+        //we double the i in each step, as soon as x > arr[i] we stop.
+        while (arr[i] < x)
+            i = i * 2;
+
+        //at this point if arr[i] == x, we return i
+        if (arr[i] == x) return i;
+
+        //else, we do a binary search for a specific range
+        //In this example {1,10,15,20,40,60,80,100,200,500.....}, our i is at 8,(stopped this in while loop)
+        //so we can start binary search from, index 0 to 8, or we can further optimize this search,
+        //we can start from (i/2)+1 because, if we do (i/2) we can go to previously where i was, because we are doubling (i*2)
+        //so we start from (i/2)+1, because (i/2) will be definitely smaller than x, we need to search next from i/2,
+        //similarly we end at i-1, because i will be definitely greater than x.
+        //for this binary search, low- (i/2)+1, high- (i-1)
+        return binarySearch(arr, (i / 2) + 1, i - 1, x);
+    }
+
 
 }
