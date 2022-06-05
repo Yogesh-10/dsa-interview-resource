@@ -712,7 +712,8 @@ public class ArrayProblems {
     public static int binarySearch(int[] arr, int low, int high, int x){
         while (low <= high){
             int mid = (low + high) / 2;
-            if (arr[mid] == x) return mid;
+            if (arr[mid] == x)
+                return mid;
             else if (arr[mid] > x)
                 high = mid - 1;
             else
@@ -862,6 +863,7 @@ public class ArrayProblems {
         }
  */
         //O(log x) solution
+        if (x > arr[arr.length - 1]) return -1;
         if (arr[0] == x) return 0;
 
         int i = 1;
@@ -882,5 +884,72 @@ public class ArrayProblems {
         return binarySearch(arr, (i / 2) + 1, i - 1, x);
     }
 
+    public static int searchInSortedRotatedArray(int[] arr, int x){
+        //normal binary search
+        int low = 0; int high = arr.length - 1;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if (arr[mid] == x) return mid;
+            //checking if left half is sorted, since it is sorted rotational array, so one side must be sorted definitely
+            if (arr[mid] > arr[low]){
+                //if it is left sorted, we check if x exists between that range
+                if (x >= arr[low] && x < arr[mid])
+                    high = mid - 1;
+                else
+                    low = mid + 1;
+            }
+            //checking if right half is sorted, , since it is sorted rotational array, so one side must be sorted definitely
+            else{
+                if (x > arr[mid] && x <= arr[high])
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+            }
+        }
+        return -1;
+    }
 
+    //A element is a peak element, if it's neighbour(left and right) element are smaller than current element
+    public static int peakElement(int[] arr){
+          //O(n) solution
+/*        if (arr[0] > arr[1])
+            return arr[0];
+
+        if (arr[arr.length - 1] > arr[arr.length - 2])
+            return arr[arr.length - 1];
+
+        for (int i = 1; i < arr.length - 1; i++){
+            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1])
+                return arr[i];
+        }
+        return -1;
+       */
+
+        //O(log n) Solution
+        int low = 0; int high = arr.length - 1;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if ((mid == 0 || arr[mid] >= arr[mid - 1]) && (mid == arr.length - 1 || arr[mid] >= arr[mid + 1]))
+                return arr[mid];
+            if (mid > 0 && arr[mid - 1] >= arr[mid])
+                high = mid -1;
+            else
+                low = mid + 1;
+        }
+        return -1;
+    }
+
+    //Two pointer approach
+    public static boolean twoSum(int[] arr,int x){
+        int left = 0; int right = arr.length - 1;
+        while (left < right){
+            if (arr[left] + arr[right] == x)
+                return true;
+            else if(arr[left] + arr[right] > x)
+                right--;
+            else
+                left++;
+        }
+        return false;
+    }
 }
