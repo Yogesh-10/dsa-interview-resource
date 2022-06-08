@@ -1,7 +1,7 @@
 package com.yogesh.Arrays;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.ObjIntConsumer;
 
 public class ArrayProblems {
     //1. Largest element in an array
@@ -951,5 +951,77 @@ public class ArrayProblems {
                 left++;
         }
         return false;
+    }
+
+    //Find Repeating elements
+    //Slow and Fast Pointer Approach
+    public static int repeatingElements(int[] arr){
+        //O(n) Solution, O(1) Space, Original array is not modified
+        //we increase slow and fast by +1 because, if we don't do it, it will cause unnecessary loops within it.
+        //for eg: {0,2,1,3,5,4,6,2} - here first element is 0, so if we dont increase slow by 1, we will begin with first element, we will go to zero
+        // again we will find a value with index zero, so we will have a self loop here
+        //Let's see another example, {1,0,2,2,2} - we begin with first element, we go to index 1, and we find value zero, so we go to index 1,
+        //again we see value 1, so we go to index 0, so the loop will be continuing between 0->1
+        int slow = arr[0] + 1;
+        int fast = arr[0] + 1;
+        do{
+            slow = arr[slow] + 1;
+            fast = arr[arr[fast] + 1] + 1;
+        }while (slow != fast);
+
+        slow = arr[0] + 1;
+        while (slow != fast){
+            slow = arr[slow] + 1;
+            fast = arr[fast] + 1;
+        }
+        return slow - 1;
+    }
+
+    private static boolean isPossible(ArrayList < Integer > A, int pages, int students) {
+        int cnt = 0;
+        int sumAllocated = 0;
+        for (int i = 0; i < A.size(); i++) {
+            if (sumAllocated + A.get(i) > pages) {
+                cnt++;
+                sumAllocated = A.get(i);
+                if (sumAllocated > pages) return false;
+            } else {
+                sumAllocated += A.get(i);
+            }
+        }
+        if (cnt < students) return true;
+        return false;
+    }
+
+    //Allocate minimum number of pages.
+    public static int minPages(int[] arr, int k){
+        int n = arr.length;
+        int sum = 0; int max = 0;
+        for (int i = 0; i < n; i++){
+            sum += arr[i];
+            max = Math.max(max, arr[i]);
+        }
+        int low = max; int high = sum; int res = -1;
+        while (low <= high){
+            int mid = (low + high) / 2;
+            if (isPossible(arr, mid, k)){
+                res = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return res;
+    }
+
+    private static boolean isPossible(int[] arr, int mid, int k) {
+        int requiredStudent = 1; int sum = 0;
+        for (int i = 0; i < arr.length; i++){
+            if (sum + arr[i] > mid){
+                requiredStudent++;
+                sum = arr[i];
+            }
+            else sum += arr[i];
+        }
+        return (requiredStudent <= k);
     }
 }
