@@ -1024,4 +1024,69 @@ public class ArrayProblems {
         }
         return (requiredStudent <= k);
     }
+
+    public static void intersectionOfTwoSortedArrays(int[] arr1, int[] arr2){
+        //O(n * m) Solution
+        /*for (int i = 0; i < arr1.length; i++){
+            if (i > 0 && arr1[i] == arr1[i - 1]) continue;
+            for (int j = 0; j < arr2.length; j++){
+                if (arr1[i] == arr2[j]){
+                    System.out.print(arr1[i] + " ");
+                    break;
+                }
+            }
+        }
+         */
+
+        //O(m + n) Solution
+        int i = 0; int j = 0;
+        while (i < arr1.length && j < arr2.length){
+            if (i > 0 && arr1[i] == arr1[i - 1]){
+                i++;
+                continue;
+            }
+            if (arr1[i] > arr2[j]) j++;
+            else if (arr1[i] < arr2[j]) i++;
+            else{
+                System.out.print(arr1[i] + "  ");
+                i++;
+                j++;
+            }
+        }
+    }
+
+    public static void unionOfTwoSortedArrays(int[] arr1, int[] arr2){
+        //O(m + n) Solution
+        int i = 0; int j = 0;
+        while (i < arr1.length && j < arr2.length) {
+            if (i > 0 && arr1[i] == arr1[i - 1]){
+                i++;
+                continue;
+            }
+            if (j > 0 && arr2[j] == arr2[j - 1]){
+                j++;
+                continue;
+            }
+            if (arr1[i] < arr2[j])
+                System.out.print(arr1[i++] + " ");
+            else if (arr1[i] > arr2[j])
+                System.out.print(arr2[j++] + " ");
+            else if (arr1[i] == arr2[j]) {
+                System.out.print(arr1[i] + " ");
+                i++; j++;
+            }
+        }
+
+        while (i < arr1.length){
+            if (i > 0 && arr1[i] == arr1[i - 1])
+                i++;
+            else System.out.print(arr1[i++] + " ");
+        }
+
+        while (j < arr2.length){
+            if (j > 0 && arr2[j] == arr2[j - 1])
+                j++;
+            else System.out.print(arr2[j++] + " ");
+        }
+    }
 }
