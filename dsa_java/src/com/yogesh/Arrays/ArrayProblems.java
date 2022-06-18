@@ -1092,7 +1092,18 @@ public class ArrayProblems {
 
     //Count Inversions in an array
     public static int countInversions(int[] arr, int left, int right){
-        int res = 0;
+        //O(n^2) Solution
+        /* int res = 0;
+        for (int i = 0; i < arr.length; i++)
+            for (int j = i + 1; j < arr.length; j++)
+                if (arr[i] > arr[j])
+                    res++;
+
+        return res;
+         */
+
+        //Time - O(n log n), Space - O(n)
+       int res = 0;
         if (left < right){
             int mid =  left + (right - left) / 2; //or left + (right - left) / 2
             res += countInversions(arr,left, mid);
@@ -1132,4 +1143,6 @@ public class ArrayProblems {
         }
         return res;
     }
+
+
 }
