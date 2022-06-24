@@ -1144,4 +1144,85 @@ public class ArrayProblems {
         return res;
     }
 
+    //Find Kth smallest element in an array
+    //input - [10, 5, 30, 12], k = 2, Output - Kth smallest element is 10
+    //input - [30, 20, 5, 10, 8], k = 4, Output - Kth smallest element is 20
+    public static int KthSmallestElement(int[] arr, int k) {
+        //Naive Solution - O(n log n)
+/*      Arrays.sort(arr);
+        return arr[k - 1];
+*/
+        //O(n^2) Solution - even though it's n^2, this solution works much better than naive solution on average
+        //This algorithm is called QuickSelect
+        int left = 0;
+        int right = arr.length - 1;
+        while (left <= right) {
+            int p = lomutoPartition(arr, left, right);
+            if (p == k - 1) return arr[p];
+            else if (p > k - 1) right = p - 1;
+            else left = p + 1;
+        }
+        return -1;
+    }
+    public static int lomutoPartition(int[] arr, int start, int end) {
+        int pivot = arr[end];
+        int boundary = start - 1;
+
+        for (int i = start; i <= end; i++)
+            if (arr[i] <= pivot)
+                swap(arr, i, ++boundary);
+
+        return boundary;
+    }
+    private static void swap(int[] arr, int index1, int index2){
+        int temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+
+    //Chocolate distribution problem
+    //input1-[7,3,2,4,9,12,56], m = 3, output = 2
+    //input2-[3,4,1,9,56,7,9,12], m = 5, output = 6
+    //Explanation - input array contains number of chocolates in a packet, we need to distribute a packet to m children
+    //each child can be given only one packet. we should minimise the difference between minimum chocolate a child gets and max chocolate another child gets
+    //in this example, we distribute chocolate to 3 children 3,2,4, and difference between max and min chocolate is minimum, 4-2 = 2
+    //2 is the minimum value among all combinations
+    //Time - O(n log n), Space - O(1)
+    public static int chocolateDistribution(int[] arr, int m){
+        Arrays.sort(arr);
+        int res = arr[m - 1] - arr[0];
+        for (int i = 1; (i + m - 1) < arr.length - 1; i++)
+            res = Math.min(res, (arr[i + m - 1] - arr[i]));
+        return res;
+    }
+
+    //sort array with two types of elements
+    public static void separatePositiveAndNegative(int[] arr){
+        //O(n) Time and O(1) Space
+        if (arr[0] > 0)
+            swap(arr, 0, 1);
+
+        int j = 1;
+        for (int i = 1; i < arr.length; i++)
+            if (arr[i] < 0)
+                swap(arr, j++, i);
+
+        System.out.println(Arrays.toString(arr));
+    }
+
+    //sort array with three types of elements
+    public static void sortZerosOnesAndTwos(int[] arr){
+        int low = 0; int high = arr.length - 1; int mid = 0;
+
+        while (mid <= high){
+            if (arr[mid] == 0)
+                swap(arr, low++, mid++);
+            else if (arr[mid] == 1)
+                mid++;
+            else
+                swap(arr, mid, high--);
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
 }
