@@ -1225,4 +1225,23 @@ public class ArrayProblems {
         System.out.println(Arrays.toString(arr));
     }
 
+    public static int minimumDifferenceInArray(int[] arr){
+        //O(n^2) Solution
+/*      int res = Integer.MAX_VALUE;
+        for (int i = 0; i < arr.length; i++)
+            for (int j = i + 1; j < arr.length; j++)
+                res = Math.min(res, Math.abs(arr[i] - arr[j]));
+
+        return res;
+ */
+        //O(n log n) Solution
+        int res = Integer.MAX_VALUE;
+        Arrays.sort(arr);
+        for (int i = 1; i < arr.length; i++)
+            res = Math.min(res, arr[i] - arr[i - 1]);
+
+        return res;
+    }
+
+
 }
