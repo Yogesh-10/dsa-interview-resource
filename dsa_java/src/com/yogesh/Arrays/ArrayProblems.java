@@ -2,6 +2,7 @@ package com.yogesh.Arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class ArrayProblems {
     //1. Largest element in an array
@@ -1243,5 +1244,57 @@ public class ArrayProblems {
         return res;
     }
 
+    //Merge Overlapping intervals
+    public static void mergeIntervals(Interval[] arr) {
+        //O(n log n) Solution
+        Arrays.sort(arr, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
+            }
+        });
+        int index = 0;
+        for (int i = 1; i < arr.length; i++){
+            if (arr[index].end >= arr[i].start){
+                arr[index].start = Math.min(arr[index].start, arr[i].start);
+                arr[index].end = Math.max(arr[index].end, arr[i].end);
+            }
+            else{
+                index++;
+                arr[index] = arr[i];
+            }
+        }
+        for (int i = 0; i <= index; i++)
+            System.out.print("[" + arr[i].start + "," + arr[i].end + "]");
+    }
 
+    //Meeting the maximum guests
+    public static int maxGuests(int[] arrival, int[] departure){
+        //O(n log n) Solution
+        Arrays.sort(arrival);
+        Arrays.sort(departure);
+        int res = 1; int arrivalIndex = 1; int departureIndex = 0; int curr = 1;
+
+        while (arrivalIndex < arrival.length && departureIndex < departure.length){
+            if (arrival[arrivalIndex] <= departure[departureIndex]){
+                curr++;
+                arrivalIndex++;
+            } else{
+                curr--;
+                departureIndex++;
+            }
+            res = Math.max(res, curr);
+        }
+        return res;
+    }
+
+
+}
+
+class Interval{
+    int start; int end;
+    public Interval(int start, int end){
+        this.start = start;
+        this.end = end;
+    }
 }
