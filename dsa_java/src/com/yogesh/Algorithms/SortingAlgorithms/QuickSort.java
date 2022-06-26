@@ -1,7 +1,7 @@
 package com.yogesh.Algorithms.SortingAlgorithms;
 
 //Time Complexity - Best and Average case O(n log n), Worst Case - O(n^2)
-//Space Complexity - O(log n)
+//Space Complexity -Best Case - O(log n), Worst Case - O(n),
 public class QuickSort {
     public void sort(int[] arr){
         sort(arr,0, arr.length - 1);
