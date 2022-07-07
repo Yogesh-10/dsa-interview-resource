@@ -70,7 +70,7 @@ public class MatrixProblems {
         return matrix;
 */
         //O(n ^ 2) time, O(1) Space
-        //first transpose the matrix and then swap last row with first row and second last row with second row and so on.
+        //first transpose the matrix and then swap individual columns, i.e, last column with first column and second last column with second column and so on.
         transposeOfMatrix(matrix);
         for (int i = 0; i < matrix.length; i++){
             int low = 0; int high = matrix.length - 1;
@@ -86,5 +86,64 @@ public class MatrixProblems {
         }
 
         return matrix;
+    }
+
+    public static void spiralTraversalOfMatrix(int[][] matrix){
+        //Time Complexity - O(R x C)
+        int top = 0; int left = 0;
+        int bottom = matrix.length - 1; int right = matrix[0].length - 1;
+
+        while (top <= bottom && left <= right){
+            //Print top row
+            for (int i = left; i <= right; i++)
+                System.out.print(matrix[top][i] + " ");
+            top++;
+
+            //Print right Column
+            for (int i = top; i <= bottom; i++)
+                System.out.print(matrix[i][right] + " ");
+            right--;
+
+            if (top <= bottom){
+                //Print bottom row (reverse order)
+                for (int i = right; i >= left; i--)
+                    System.out.print(matrix[bottom][i] + " ");
+                bottom--;
+            }
+            if (left <= right){
+                //Print left Column (reverse order)
+                for (int i = bottom; i >= top; i--)
+                    System.out.print(matrix[i][left] + " ");
+                left++;
+            }
+        }
+    }
+
+    public static void searchInSortedMatrix(int[][] matrix, int x){
+        //O(R x C) solution
+/*        for (int i = 0; i < matrix.length; i++)
+            for (int j = 0; j < matrix[i].length; j++)
+                if (matrix[i][j] == x) {
+                    System.out.println("Found at " + i + "," + j);
+                    return;
+                }
+        System.out.println("Not Found");
+ */
+        //O(R + C) Solution
+        int i = 0;
+        int j = matrix[0].length - 1;
+        int row = matrix.length;
+
+        while (row > i && j >= 0){
+            if (matrix[i][j] == x) {
+                System.out.println("Found at " + i + "," + j);
+                return;
+            }
+            else if (matrix[i][j] < x)
+                i++;
+            else if (matrix[i][j] > x)
+                j--;
+        }
+        System.out.println("Not found");
     }
 }
