@@ -146,4 +146,35 @@ public class MatrixProblems {
         }
         System.out.println("Not found");
     }
+
+    public static int medianOfRowSortedMatrix(int[][] matrix){
+        //O(log c * r * log (max - min))
+        int row = matrix.length;
+        int column = matrix[0].length;
+        int min = matrix[0][0];
+        int max = matrix[0][column - 1];
+
+        for (int i = 1; i < row; i++) {
+            if (matrix[i][0] < min)
+                min = matrix[i][0];
+            if (matrix[i][column - 1] > max)
+                min = matrix[i][column - 1];
+        }
+        int medianPosition = (row * column + 1) / 2;
+        while (min < max){
+            int mid = (min + max) / 2;
+            int midPosition = 0;
+
+            for (int i = 0; i < row; i++){
+                int pos = Arrays.binarySearch(matrix[i], mid) + 1;
+                midPosition += Math.abs(pos);
+            }
+
+            if (midPosition < medianPosition)
+                min = mid + 1;
+            else
+                max = mid;
+        }
+        return min;
+    }
 }
