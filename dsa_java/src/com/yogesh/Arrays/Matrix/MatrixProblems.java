@@ -177,4 +177,24 @@ public class MatrixProblems {
         }
         return min;
     }
+
+    public static void assignNumbersInMineSweeper(int[][] bombs, int row, int column) {
+        int[][] matrix = new int[row][column];
+
+        for (int[] bomb : bombs) {
+            int rowIndex = bomb[0];
+            int colIndex = bomb[1];
+            matrix[rowIndex][colIndex] = -1;
+
+            for (int i = rowIndex - 1; i < rowIndex + 2; i++) {
+                for (int j = colIndex - 1; j < colIndex + 2; j++) {
+                    if (0 <= i && i < row && 0 <= j && j < column &&
+                            matrix[i][j] != -1) {
+                        matrix[i][j] += 1;
+                    }
+                }
+            }
+        }
+        System.out.println(Arrays.deepToString(matrix));
+    }
 }
