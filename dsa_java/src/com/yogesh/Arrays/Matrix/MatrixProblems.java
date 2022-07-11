@@ -90,11 +90,12 @@ public class MatrixProblems {
     }
 
     public static int[][] rotateMatrixClockWise(int[][] matrix){
-/*        int[][] temp = new int[matrix.length][matrix[0].length];
+        //Naive solution - O(n ^ 2) time and O(n ^ 2) Space
+/*      int[][] temp = new int[matrix.length][matrix[0].length];
 
         for (int i = 0; i < matrix.length; i++)
             for (int j = 0; j < matrix[i].length; j++)
-                temp[j][i] = matrix[i][j];
+                temp[j][matrix.length - 1 - i] = matrix[i][j];
 
         for (int i = 0; i < matrix.length; i++)
             for (int j = 0; j < matrix[i].length; j++)
@@ -102,6 +103,8 @@ public class MatrixProblems {
 
         return matrix;
  */
+
+        //O(n ^ 2) time, O(1) Space
         transposeOfMatrix(matrix);
         for (int i = 0; i < matrix.length; i++){
             int low = 0; int high = matrix.length - 1;
