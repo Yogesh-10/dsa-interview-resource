@@ -62,7 +62,7 @@ public class MatrixProblems {
         int[][] temp = new int[n][n];
         for (int i = 0; i < matrix.length; i++)
             for (int j = 0; j < matrix[i].length; j++)
-                temp[n - j - 1][i] = matrix[i][j];
+                temp[n - 1 - j][i] = matrix[i][j];
 
         for (int i = 0; i < matrix.length; i++)
             for (int j = 0; j < matrix[i].length; j++)
