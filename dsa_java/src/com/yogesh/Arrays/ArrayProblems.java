@@ -665,7 +665,7 @@ public class ArrayProblems {
         return -1;
     }
 
-    public static int[] reArrange(int[] arr){
+    public static int[] reArrangePositiveAndNegativeValues(int[] arr){
 //        //O(n^2) Solution
 //        for (int i = 0; i < arr.length; i++){
 //           for (int j = i + 1; j < arr.length; j++){
