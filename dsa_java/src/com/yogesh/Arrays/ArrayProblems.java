@@ -1288,7 +1288,67 @@ public class ArrayProblems {
         return res;
     }
 
+    /* Sliding window Problems */
 
+    //find the average of all contiguous subarrays of size ‘K’ in it.
+    //Array: [1, 3, 2, 6, -1, 4, 1, 8, 2], K=5
+    //For the first 5 numbers (subarray from index 0-4), the average is: (1+3+2+6-1)/5 => 2.2(1+3+2+6−1)/5=>2.2
+    //The average of next 5 numbers (subarray from index 1-5) is: (3+2+6-1+4)/5 => 2.8(3+2+6−1+4)/5=>2.8
+    //For the next 5 numbers (subarray from index 2-6), the average is: (2+6-1+4+1)/5 => 2.4(2+6−1+4+1)/5=>2.4 and so on.
+    //Output: [2.2, 2.8, 2.4, 3.6, 2.8]
+    public static double[] averageOfSubarrayOfSizeK(int[] arr, int k){
+        //O(N ∗ K) where ‘N’ is the number of elements in the input array, Space - O(k)
+/*      double[] res =  new double[arr.length - k + 1];
+        for (int i = 0; i <= arr.length - k; i++){
+            double sum = 0;
+            for (int j = i; j < i + k; j++)
+                sum += arr[j];
+
+            res[i] = sum / k;
+        }
+        return res;
+ */
+        //O(n) Solution - sliding window, O(k) Space
+        double[] res = new double[arr.length - k + 1];
+        int windowStart = 0; double windowSum = 0;
+        for (int windowEnd = 0; windowEnd < arr.length; windowEnd++){
+            windowSum += arr[windowEnd];
+            // slide the window, we don't need to slide if we've not hit the required window size of 'k'
+            if (windowEnd >= k - 1){
+                res[windowStart] = windowSum / k; // calculate the average
+                windowSum -= arr[windowStart]; // subtract the element going out
+                windowStart++; // slide the window ahead
+            }
+        }
+        return res;
+    }
+
+    //Given an array of positive numbers and a positive number ‘k’, find the maximum sum of any contiguous subarray of size ‘k’.
+    //Input: [2, 1, 5, 1, 3, 2], k=3     Output: 9
+    //Explanation: Subarray with maximum sum is [5, 1, 3].
+    public static int findMaxSubArraySumOfSizeK(int[] arr, int k) {
+        // Naive Solution - time complexity O(N * K)
+/*      int maxSum = 0;
+        for (int i = 0; i <= arr.length - k; i++) {
+            int sum = 0;
+            for (int j = i; j < i + k; j++) {
+                sum += arr[j];
+            }
+            maxSum = Math.max(sum, maxSum);
+        }
+        return maxSum;
+ */
+        //O(n) Solution - Sliding window pattern
+        int windowSum = 0; int maxSum = 0; int windowStart = 0;
+        for (int windowEnd = 0; windowEnd < arr.length; windowEnd++){
+            windowSum += arr[windowEnd];  // add the next element
+            if (windowEnd >= k - 1) {
+                maxSum = Math.max(windowSum, maxSum);
+                windowSum -= arr[windowStart++]; // subtract the element going out and slide the window ahead by windowStart++
+            }
+        }
+        return maxSum;
+    }
 }
 
 class Interval{
