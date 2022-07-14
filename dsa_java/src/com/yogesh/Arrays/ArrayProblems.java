@@ -1349,6 +1349,40 @@ public class ArrayProblems {
         }
         return maxSum;
     }
+
+    //Given an array of positive numbers and a positive number ‘S’, find the length of the smallest contiguous subarray whose sum is greater than or equal to ‘S’. Return 0, if no such subarray exists.
+    //Input: [2, 1, 5, 2, 3, 2], S=7 //Output: 2 //Explanation: The smallest subarray with a sum great than or equal to '7' is [5, 2]
+    //Input: [2, 1, 5, 2, 8], S=7 //Output: 1 //Explanation: The smallest subarray with a sum greater than or equal to '7' is [8].
+    //Input: [3, 4, 1, 1, 6], S=8 //Output: 3 //Explanation: Smallest subarrays with a sum greater than or equal to '8' are [3, 4, 1] or [1, 1, 6].
+    public static int findMinSubArrayLengthEqualToK(int[] array, int k){
+        //O(n^2)
+   /*     int minLength = Integer.MAX_VALUE;
+        for (int i = 0; i < array.length; i++){
+            int sum = array[i];
+            if (array[i] >= k) return 1;
+            for (int j = i + 1; j < array.length; j++){
+                sum += array[j];
+                if (sum >= k) {
+                    minLength = Math.min(minLength, (j - i) + 1);
+                    break;
+                }
+            }
+        }
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+    */
+
+        //The time complexity of the above algorithm will be O(N). The outer for loop runs for all elements and the inner while loop processes
+        //each element only once, therefore the time complexity of the algorithm will be O(N+N) which is asymptotically equivalent to O(N).
+        int windowStart = 0; int windowSum = 0; int minLength = Integer.MAX_VALUE;
+        for (int windowEnd = 0; windowEnd < array.length; windowEnd++){
+            windowSum += array[windowEnd];
+            while (windowSum >= k){
+                minLength = Math.min(minLength, windowEnd - windowStart + 1);
+                windowSum -= array[windowStart++];
+            }
+        }
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+    }
 }
 
 class Interval{
