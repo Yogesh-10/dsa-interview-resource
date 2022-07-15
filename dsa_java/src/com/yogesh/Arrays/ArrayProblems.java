@@ -1,8 +1,6 @@
 package com.yogesh.Arrays;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 public class ArrayProblems {
     //1. Largest element in an array
@@ -1382,6 +1380,36 @@ public class ArrayProblems {
             }
         }
         return minLength == Integer.MAX_VALUE ? 0 : minLength;
+    }
+
+    //Longest Substring with K Distinct Characters - Given a string, find the length of the longest substring in it with no more than K distinct(unique) characters.
+    //Input: String="araaci", K=2 //Output: 4 //Explanation: The longest substring with no more than '2' distinct characters is "araa".
+    //Input: String="araaci", K=1 //Output: 2 //Explanation: The longest substring with no more than '1' distinct characters is "aa".
+    //Input: String="cbbebi", K=3 //Output: 5 //Explanation: The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
+    public static int LongestSubstringKDistinct(String str, int k) {
+        //The time complexity of the above algorithm will be O(N). The outer for loop runs for all elements and the inner while loop processes
+        //each element only once, therefore the time complexity of the algorithm will be O(N+N) which is asymptotically equivalent to O(N).
+        //The space complexity of the algorithm is O(K), as we will be storing a maximum of ‘K+1’ characters in the HashMap.
+        if (str == null || str.length() == 0 || str.length() < k)
+            throw new IllegalArgumentException();
+
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        int maxLength = 0; int windowStart = 0;
+        // in the following loop we'll try to extend the range [windowStart, windowEnd]
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
+            char rightChar = str.charAt(windowEnd);
+            frequencyMap.put(rightChar, frequencyMap.getOrDefault(rightChar, 0) + 1);
+            // shrink the sliding window, until we are left with 'k' distinct characters in the frequency map
+            while (frequencyMap.size() > k){
+                char leftChar = str.charAt(windowStart);
+                frequencyMap.put(leftChar, frequencyMap.get(leftChar) - 1);
+                if (frequencyMap.get(leftChar) == 0)
+                    frequencyMap.remove(leftChar);
+                windowStart++; // shrink the window
+            }
+            maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
+        }
+        return maxLength;
     }
 }
 
