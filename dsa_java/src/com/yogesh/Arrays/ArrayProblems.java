@@ -1411,6 +1411,53 @@ public class ArrayProblems {
         }
         return maxLength;
     }
+
+    public static int longestNoRepeatSubstring(String s){
+        int maxLength = 0; int windowStart = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        for (int windowEnd = 0; windowEnd < s.length(); windowEnd++) {
+            char rightChar = s.charAt(windowEnd);
+            if (frequencyMap.containsKey(rightChar)){
+                windowStart = Math.max(windowStart, frequencyMap.get(rightChar) + 1);
+            }
+            frequencyMap.put(rightChar, windowEnd);
+            maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
+        }
+        return maxLength;
+    }
+
+    //Longest Substring with Same Letters after Replacement
+    //Given a string with lowercase letters only, if you are allowed to replace no more than ‘k’ letters with any letter, find the length of the longest substring having the same letters after replacement.
+    //Input: String="aabccbb", k=2 //Output: 5 //Explanation: Replace the two 'c' with 'b' to have a longest repeating substring "bbbbb".
+    //Input: String="abbcb", k=1 //Output: 4 //Explanation: Replace the 'c' with 'b' to have a longest repeating substring "bbbb".
+    //Input: String="abccde", k=1 //Output: 3 //Explanation: Replace the 'b' or 'd' with 'c' to have the longest repeating substring "ccc".
+    public static int characterReplacement (String str, int k){
+        //The time complexity of the above algorithm will be O(N) where ‘N’ is the number of letters in the input string.
+        //space complexity will be O(26), to store each letter’s frequency in the HashMap, which is asymptotically equal to O(1).
+        int windowStart = 0; int maxLength = 0; int maxRepeatLetterCount = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+
+        // try to extend the range [windowStart, windowEnd]
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
+            char currChar = str.charAt(windowEnd);
+            frequencyMap.put(currChar, frequencyMap.getOrDefault(currChar, 0) + 1);
+            maxRepeatLetterCount = Math.max(maxRepeatLetterCount, frequencyMap.get(currChar));
+
+            // current window size is from windowStart to windowEnd, overall we have a letter which is
+            // repeating 'maxRepeatLetterCount' times, this means we can have a window which has one letter repeating 'maxRepeatLetterCount' times and the remaining letters we should replace.
+            // if the remaining letters are more than 'k', it is the time to shrink the window as we are not allowed to replace more than 'k' letters
+            if (windowEnd - windowStart + 1 - maxRepeatLetterCount > k){
+                char leftChar = str.charAt(windowStart);
+                frequencyMap.put(leftChar, frequencyMap.get(leftChar) - 1);
+                windowStart++;
+            }
+            maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
+        }
+        return maxLength;
+    }
+
+
+
 }
 
 class Interval{
