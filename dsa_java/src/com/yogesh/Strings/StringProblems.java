@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StringProblems {
+    //Return first non repeating characters
+    //Input : "a green apple", output: g
     public static char firstNonRepeatingCharacter(String str){
         Map<Character, Integer> charFrequencyMap = new HashMap<>();
         char[] chars = str.toCharArray();
