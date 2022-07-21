@@ -1,6 +1,5 @@
 package com.yogesh.Hashtables;
 
-
 import java.util.LinkedList;
 
 //Basically, hashtable stores key, value pairs in index of array, but we may have two or more pairs at same index
