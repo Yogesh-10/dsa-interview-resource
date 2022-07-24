@@ -362,7 +362,7 @@ public class HashingProblems {
         //this problem is similar to find largest subarray with zero sum
         //so, we can solve it in same way by converting all zero's to -1 in the array.
         //Note: this solution modifies original array.
-        Map<Integer, Integer> map = new HashMap<>();
+/*        Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1); //insert (0, -1) pair into the set to handle the case when a subarray with zero-sum starts from index 0
 
         int prefixSum = 0; int maxLength = 0;
@@ -378,6 +378,23 @@ public class HashingProblems {
             maxLength = Math.max(maxLength, i - map.get(prefixSum));
         }
         return maxLength;
-    }
+ */
 
+        //Same complexity as previous solution, but does not modify the array
+        //TC-O(n), SC-O(n)
+        int sum = 0, res = 0;
+        // build a <sum, index> hashmap
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); //insert (0, -1) pair into the set to handle the case when a subarray with zero-sum starts from index 0
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) sum++;
+            else sum--;
+
+            if (!map.containsKey(sum))
+                map.put(sum, i);
+
+            res = Math.max(res, i - map.get(sum));
+        }
+        return res;
+    }
 }
