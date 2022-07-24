@@ -280,6 +280,7 @@ public class HashingProblems {
         }
         return false;
  */
+        //TC-O(n), SC-O(n)
         Set<Integer> set = new HashSet<>();
         int prefixSum = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -293,5 +294,90 @@ public class HashingProblems {
         return false;
     }
 
+
+    //10. Find the longest subarray with given sum
+    //I/P - [8, 3, 1, 5, -6, 6, 2, 2], sum=4, O/P = 4
+    //I/P - [2, 3, ,5], sum=5, O/P - 2
+    //I/P - [3, 2, 5 ,6], sum=4, O/P - 0
+    public static int longestSubarrayWithGivenSum(int[] arr, int sum){
+        //TC-O(n^2), SC-O(1)
+/*      int maxLength = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int currSum = 0;
+            for (int j = i; j < arr.length; j++) {
+                currSum += arr[j];
+                if (currSum == sum)
+                    maxLength = Math.max(maxLength, j - i + 1);
+            }
+        }
+        return maxLength;
+ */
+        //TC-O(n), SC-O(n)
+        //this problem is also similar to previous two problems(prefix sum)
+        //here we calculate (prefixSum - sum), to check if a subarray forms the sum.
+        int maxLength = 0; int prefixSum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        //we iterate through the array
+        for (int i = 0; i < arr.length; i++) {
+            //at each iteration add current item to prefixSum
+            prefixSum += arr[i];
+            //if prefixSum is sum, this condition is to check, if the starting of array makes the prefix sum, for example, [2, 3, 5] sum=5, in second iteration we form 5, so we add it to max length
+            //if we don't write this condition, it will fail for cases, when array starts with the sum.
+            if (prefixSum == sum)
+                maxLength = i + 1;
+
+            //if we dont have the prefixSum, already in hashMap, then we add it, because if there are multiple occurrence, we want first occurrence, because we want the max subarray, example - [8, 11, 12,17, 11], we add only the 11 at index-1, because that will max subarray length
+            if (!map.containsKey(prefixSum))
+                map.put(prefixSum, i);
+
+            //if we find a value in map, with (prefixSum - sum), then we have found a subarray with sum, and update the maxLength
+            if (map.containsKey(prefixSum - sum))
+                maxLength = Math.max(maxLength, i - map.get(prefixSum - sum));
+        }
+
+        return maxLength;
+    }
+
+    //11. find largest subarray with equal 0's and 1's
+    //I/P - [1,0,1,1,1,0,0] , O/P - 6 || I/P - [1,1,1,1] , O/P - 0 || I/P - [0, 0, 1, 1, 1, 1, 1, 0] , O/P - 4
+    public static int largestSubarrayWithEqualZeroesAndOnes(int[] arr) {
+        //TC-O(n^2), SC-O(1)
+/*        int sum = 0, maxLength = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int countZeros = 0, countOnes = 0;
+            for (int j = i; j < arr.length; j++) {
+                if (arr[j] == 0)
+                    countZeros++;
+                else
+                    countOnes++;
+
+                if (countOnes == countZeros)
+                    maxLength = Math.max(maxLength, j - i + 1);
+            }
+        }
+        return maxLength;
+ */
+
+        //TC-O(n), SC-O(n)
+        //this problem is similar to find largest subarray with zero sum
+        //so, we can solve it in same way by converting all zero's to -1 in the array.
+        //Note: this solution modifies original array.
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); //insert (0, -1) pair into the set to handle the case when a subarray with zero-sum starts from index 0
+
+        int prefixSum = 0; int maxLength = 0;
+        for (int i = 0; i < arr.length; i++){
+            //if we see 0 in array, replace with -1, if we replace with -1 our problem will get reduced to find max subarray with zero sum.
+            prefixSum += (arr[i] == 0 ? -1 : 1);
+
+            //if the sum is not in hashmap already then add the sum with curr index
+            if (!map.containsKey(prefixSum))
+                map.put(prefixSum, i);
+
+            //update maxLen of subarray
+            maxLength = Math.max(maxLength, i - map.get(prefixSum));
+        }
+        return maxLength;
+    }
 
 }
