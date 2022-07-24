@@ -204,4 +204,94 @@ public class HashingProblems {
 
         return set.size();
     }
+
+    //7. Find Pair with given sum in unsorted array (two sum problems)
+    //I/P - [5, 8, -3, 6], Sum=3, O/P - true - Explanation = -3 + 6 = 3
+    //I/P - [5, 10, -3, 6], Sum=3, O/P - false
+    //I/P - [3, 2, 8, 15, -8], Sum=17, O/P - true - Explanation = 2 + 15 = 17
+    public static boolean pairWithGivenSum(int[] arr, int sum){
+/*        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] + arr[j] == sum)
+                    return true;
+            }
+        }
+        return false;
+ */
+        //TC - O(n), SC-O(n)
+        Set<Integer> set = new HashSet<>();
+        for (int item : arr) {
+            int target = sum - item;
+            if (set.contains(target))
+                return true;
+
+            set.add(item);
+        }
+        return false;
+    }
+
+    //8. Find the subarray with sum equal to zero
+    //I/P - [4, -3, 2, 1], O/P - true, Because -3 and 2 + 1 = 3, makes zero
+    public static boolean subarrayWithSumZero(int[] arr){
+        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            int sum = 0;
+            for (int j = i; j < arr.length; j++) {
+                sum += arr[j];
+                if (sum == 0)
+                    return true;
+            }
+        }
+        return false;
+ */
+        //TC-O(n), SC-O(n)
+        Set<Integer> set = new HashSet<>();
+        //we add the sum in each iteration, and add the sum to set. In the next iteration, if we see that sum already in hashset, we return true,
+        //Let's take a example, [4, -3, 2, 1], here in first iteration, sum will be 0 + 4 = 4 -> we put 4 in hashset, in next iteration sum will be 4 - 3 = 1 -> we put 1 in hashset, in next iteration sum will be 1 + 2 = 3, we put 3 in hashset, in next iteration sum will be 3 + 1 = 4, we already have 4 in hashset so we return true
+        //this works because. [4 ,-3 ,2, 1], in first iteration, we have 4, if we have 4 again at some point of iteration, that means we have got 0 in the subarray, so 4 + 0 will be 4.
+        //in this example, first we have 4, and then we get 4 again in last iteration, that means we have got subarray with zero between, 4 and the last iteration, in this example
+        //small trick is, (prefixSum - 0 = prefixSum), that means we have found subarray with zero
+        int prefixSum = 0;
+        for (int item : arr){
+            prefixSum += item;
+            if (set.contains(prefixSum))
+                return true;
+
+            //this condition is to check, if we have prefixSum as 0, in starting subarray itself. example [-1, 4, -3, 5, 1]
+            if (prefixSum == 0)
+                return true;
+
+            set.add(prefixSum);
+        }
+        return false;
+    }
+
+    //9. Find the subarray with given sum
+    //I/P - [5,8,6,13,3,-1], Sum=22,  O/P - true, Because 6 + 13 + 3, makes 22
+    //same as previous problem, with a small change. If we get (preSum - sum = value(that is already in set)), that means we have found the subarray with sum
+    public static boolean subarrayWithGivenSum(int[] arr, int sum){
+        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            int currSum = 0;
+            for (int j = i; j < arr.length; j++) {
+                currSum += arr[j];
+                if (currSum == sum) return true;
+            }
+        }
+        return false;
+ */
+        Set<Integer> set = new HashSet<>();
+        int prefixSum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            prefixSum += arr[i];
+            if (prefixSum == sum)
+                return true;
+            if (set.contains(prefixSum - sum))
+                return true;
+            set.add(prefixSum);
+        }
+        return false;
+    }
+
+
 }
