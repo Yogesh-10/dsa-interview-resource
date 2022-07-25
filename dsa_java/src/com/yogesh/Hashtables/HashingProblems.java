@@ -1,9 +1,6 @@
 package com.yogesh.Hashtables;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class HashingProblems {
     //1. Find the first non-repeated character
@@ -396,5 +393,114 @@ public class HashingProblems {
             res = Math.max(res, i - map.get(sum));
         }
         return res;
+    }
+
+    //12. longest common span with same sum in two binary arrays
+    //Find longest same sum subarray, both array should have same starting and ending index and should have same sum. The order of one and zero inside subarray does not matter.
+    //Assume both arrays have same length.
+    //I/P: arr1- [0, 1, 0, 0, 0, 0], arr2-[1, 0, 1, 0, 0, 1], O/P-4, Because we have same sum in both the subarray from, index 1 to 4
+    //I/P: arr1- [0, 1, 0, 1, 1, 1, 1], arr2-[1, 1, 1, 1, 1, 0, 1], O/P-6, Because we have same sum in both the subarray from, index 1 to 6
+    public static int longestSubarrayWithSameSumInTwoArrays(int[] arr1, int[] arr2){
+/*        int maxLength = 0;
+        for (int start = 0; start < arr1.length; start++) {
+            int sum1 = 0; int sum2 = 0;
+            for (int end = start; end < arr1.length; end++) {
+                sum1 += arr1[end];
+                sum2 += arr2[end];
+                if (sum1 == sum2)
+                    maxLength = Math.max(maxLength, end - start + 1);
+            }
+        }
+        return maxLength;
+ */
+        //TC-O(n), SC-O(n), space hashmap-O(n), arr-O(n),so O(n+n)=O(2n) which is O(n)
+        //This problem can be reduced to find subarray with zero sum.
+        //the trick is to subtract (arr1 - arr2), or (arr2 - arr1). now in this new array, we have to find subarray with zero sum, so we will get the output
+        //it works, because - let's take a example arr1- {0, 1, 0, 0, 0, 0}; arr2 = {1, 0, 1, 0, 0, 1}. if we subtract it we get, [-1,1,-1,0,0,-1]. Now, if we check for
+        //zero subarray sum, we can get output. now, while subtracting if we have both zeros, we get zeros and if we have both ones in array we get zero. now the extra 1's in arr1 will be 1 in temp
+        //and extras 1's in arr2 will be -1 in temp, so if there are equal 1's and -1's they will cancel each other, and we have zero's already in temp, if both are one's and zero's while subtracting.
+        Map<Integer ,Integer> map = new HashMap<>(); //O(n) SC
+        map.put(0, -1); //insert (0, -1) pair into the map to handle the case when a subarray with zero-sum starts from index 0
+
+        int maxLength = 0; int prefixSum = 0;
+        int[] temp = new int[arr1.length];  //O(n) SC
+        for (int i = 0; i < arr1.length; i++) {  //O(n) TC
+            //subtract arr1 and arr2
+            temp[i] = arr1[i] - arr2[i];
+            //add the prefixSum in each iteration
+            prefixSum += temp[i];
+            //if it does not contain, then add it to hashmap, because if we have two occurrences we need first one because, we need longest subarray
+            if (!map.containsKey(prefixSum))
+                map.put(prefixSum, i);
+
+            //update max length
+            maxLength = Math.max(maxLength , i - map.get(prefixSum));
+        }
+        return maxLength;
+    }
+
+    //13. Find the longest consecutive subsequence
+    //the elements should be in consecutive increasing order, eg: 1 2 3 4 5. //It can be in any order in array, and at any place
+    //I/P - [1, 9, 3, 4, 2, 10, 13] , O/P - 4, Because we have 4 consecutive elements 1,2,3,4
+    //I/P - [8, 20, 7, 30] , O/P - 2, Because we have 2 consecutive elements 7,8
+    //I/P - [20, 30, 40] , O/P - 1, Because we have no consecutive elements, so single element is considered as one consecutive subsequence
+    public static int longestConsecutiveSubsequence(int[] arr){
+/*        Arrays.sort(arr);
+        int maxLength = 1; int count = 1;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] == arr[i] - 1)
+                count++;
+            else
+                count = 1;
+
+            maxLength = Math.max(maxLength, count);
+        }
+        return maxLength;
+ */
+        //Efficient Solution - SC-O(n), TC-O(n). this may look like O(n^2) but it's not, because the for loops runs O(n), and while loops run only for two lookups on overage, for every element. for example if arr[i] - 1 is already present we ignore it. we do only two lookup one on if and another on while, we also do lookups and we also ignore some lookups if arr[i]-1 is already present in set.
+        //so, on average total complexity is O(n) + O(n) for lookups(only 2 lookups on average inside set for every element), which is O(n) operation
+        Set<Integer> set = new HashSet<>();
+        int maxLength = 0;
+        //insert all elements in to set
+        for (var item : arr)
+            set.add(item);
+
+        //iterate thru each element
+        for (int i = 0; i < arr.length; i++) {
+            //if (current element - 1) is not present in set, it means current element is starting of subsequence. If (curr element - 1) is already present, it means it is not starting and we have small number than this, so we simply ignore and move to next iteration
+            if (!set.contains((arr[i] - 1))) {
+                //if it is present, we set curr as 1
+                int curr = 1;
+                //check if we have subsequence, if (curr element + curr) is present we have a consecutive subsequence, so we increment curr. we increment curr till consecutive elements are present
+                while (set.contains(arr[i] + curr))
+                    curr++;
+
+                //update the maxLength
+                maxLength = Math.max(maxLength, curr);
+            }
+        }
+        return maxLength;
+    }
+
+    //14.
+    public static void countDistinctInEveryWindow(int[] arr, int k){
+        //[10, 20, 20, 10, 30, 40, 10]
+/*        for (int i = 0; i <= arr.length - k; i++) {
+            int count = 0;
+            for (int j = 0; j < k; j++){
+                boolean flag = false;
+                for (int p = 0; p < j; p++) {
+                    if (arr[i + j] == arr[i + p]) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) count++;
+            }
+            System.out.print(count + " ");
+        }
+ */
+
+
     }
 }
