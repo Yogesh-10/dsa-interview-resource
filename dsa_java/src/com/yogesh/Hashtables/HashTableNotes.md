@@ -227,3 +227,10 @@ While implementing a hashtable we internally use an array, and store the key,val
 **iii. Double hashing- (hash1 + i ^ hash2) % table_size**, we use second hash function to calculate the index, this solve both of the problems,
 
 Time Complexity - all operations in hashtable runs in O(1)
+
+### ***Reference Materials***
+1. Hashing - Scaler Topics - https://www.scaler.com/topics/data-structures/hashing-in-data-structure/
+2. Hashing - Hackerearth - https://www.hackerearth.com/practice/data-structures/hash-tables/basics-of-hash-tables/tutorial/
+3. Programiz - https://www.programiz.com/dsa/hash-table
+4. Tech Interview Handbook - https://www.techinterviewhandbook.org/algorithms/hash-table/
+5. GFG - https://www.geeksforgeeks.org/hashing-data-structure/
