@@ -137,7 +137,7 @@ Let us consider a simple hash function as “key mod 7” and a sequence of keys
 | Wastage of Space (Some Parts of hash table in chaining are never used). | In Open addressing, a slot can be used even if an input doesn't map to it. |
 | Chaining uses extra space for links. | No links in Open addressing |
 
-**Performance of Open Addressing:**
+#### **Performance of Open Addressing:**
  Like Chaining, the performance of hashing can be evaluated under the assumption that each key is equally likely to be hashed to any slot of the table (simple uniform hashing).
 
 ```jsx
@@ -150,3 +150,80 @@ Expected time to search/insert/delete < 1/(1 - α)
 
 So Search, Insert and Delete take (1/(1 - α)) time
 ```
+
+### **Advantages of Hashing**
+As we have seen, hashing improves the insertion and lookup significantly.
+To insert and lookup large data elements will be a costly operation.
+E.g. Consider the simple example of the Address table, where we store the address of people in the Database(or Arrays/hash tables e.g.).
+Here each row will contain big Strings containing Addresses.
+To search if a particular address exists in the table, we would need to compare each row and then each character of the address contained in each row.
+Now compare this with using Hashing:
+While inserting, we can take a hash to find the index to store this address too.
+
+When we need to look up, we can again calculate the hash and can go to the index we got to fetch the data from there. Hence if you compare it takes constant time to calculate the Hash(as it’s just a mathematical formula) and the lookups and insertions are hence reduced to constant time i.e. O(1).
+
+Being able to look up and insert data on the order of O(1), independent of the size of the data structure is the biggest advantage of Hashing.
+
+However, nothing is perfect.
+
+Hashing also suffers from O(N) worst-case time complexity.
+
+If too many elements were hashed into the same Index: looking at the chained elements at this index may take O(n) time, n being the number of elements in that chain. And in the worst case all elements can get linked to the same Index, hence giving the Worst Case Time Complexity of O(N), N being total elements in the HashTable.
+Note that in such a case, the HashTable will just be a chain of elements, or just be a LinkedList, and search in LinkedList = O(N).
+
+To understand with an example, say if chaining is used, and say 10 elements were chained to 1 single Index. Then to search back we need to linearly search in these 10 elements chained together.
+
+So it becomes very important to choose a hash function that is able to distribute the elements as evenly as possible, to get the average Constant time for its operations.
+
+
+### ***Quick Recap (conclusion)***
+Hashing is a technique to find a small Number from some Data provided as an input. This number can be used to find the location to store this data at. This could be an index in Arrays or the Memory location on the disk in case of Database storage.
+
+Hashing method is used to index and retrieve items as it is faster to search that specific item using the shorter hashed key instead of using its original value.
+Data bucket, Key, Hash function, Linear Probing, Quadratic probing, Hash index,Collisions are important terminologies used in hashing.
+In case the resultant index for 2 different inputs comes to be the same, it’s called a collision.
+Rehashing and chaining are two methods that help you to avoid hashing collisions.
+Rehashing is where we keep on hashing until we find the vacant index, and chaining is where we let both these values be placed at the same index with these values chained to each other.
+Using hashing we can get the Insertion and Search done in Constant Time i.e. O(1) in Average/ cases.
+A good hash function must be chosen, which can bring the complexity close to O(1) if it is able to distribute the elements as evenly as possible.
+
+1. Hash table stores elements in key value pairs
+2. Hash table gives us super fast lookups, and used to optimize lot of algorithms
+3. Hash table are used in real world applications like,
+4. Spell checkers, dictionaries, compilers - to quickly lookup value of address of func and variables, used in code editors
+5. HashTable has different implementations(names),
+6. hashtable have differeny names, in JAVA - Hashmap, Javascript - Objects, Python and C# - dictionaries
+
+Example:
+Key -  employeeNumber is stored in key
+Value - employee object is stored in value
+
+#### Working:
+Now we want to store employee object in a hash table, so our hashtable takes employee number and passes it towards a hash function and this hash func will tell where the employee object should be stored in memory, our hashtable will then store employee object at that location. Now after storing, if we want to look up an employee object using hashtable, our employee num is passed to hash func and it will tell where the object is stored in memory, so it will grab and return it.
+
+Hashtable is deterministic - Everytime we pass an input, it will return the same value. This is why a hash table is used for both storing and retrieving value.
+
+#### Operations - Insert, lookup, Delete - all run in O(1)
+
+#### Sets -
+1. Sets are similar like hashtables, but they only allow keys to store.
+2. Another important characteristic of sets is, they don't allow duplicate keys.
+3. In Java, for map interface we have hashmap implementation, similar to that for set interface we have hashset implementation.
+4. Operations - add, addAll, remove, removeAll, isEmpty
+
+#### Implementation of HashTable:
+While implementing a hashtable we internally use an array, and store the key,value pair at a specific index, using hash function(key % arr.length). But we have a collision problem here, we may have to store two or more key,value pairs at a particular index, but we have already stored a pair at that index, this is the problem we have, this can be solved using different techniques.
+
+1. Chaining(using LinkedList)
+2. Open Addressing - Linear probing,
+3. Open Addressing - Quadratic probing
+4. Open Addressing - Double Hashing
+
+#### TimeComplexity - Open Addressing:
+**i. Linear - (hash + i) % table_size** - This forms clusters together and slows down future insertions or lookups. This is drawback with this approach
+
+**ii. Quadratic - (hash + i ^ 2) % table_size** - This solves problem of clustering, This makes big jump from one index to another, causing an infinite loop with same indices
+
+**iii. Double hashing- (hash1 + i ^ hash2) % table_size**, we use second hash function to calculate the index, this solve both of the problems,
+
+Time Complexity - all operations in hashtable runs in O(1)
