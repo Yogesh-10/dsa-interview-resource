@@ -1,54 +1,50 @@
-Hash Tables
+# **Hash Tables**
 
-Hash table stores elements in key value pairs
-Hash table gives us super fast lookups, and used to optimise lot of algorithms
+## Overview
 
-	Hash table are used in real world applications like - Spell checkers, dictionaries, compilers - to quickly lookup value of address of func and variables, used in code editors
+Hashing is a technique or process of mapping keys, values into the hash table by using a hash function. It is done for faster access to elements. The efficiency of mapping depends on the efficiency of the hash function used.
 
-	HashTable has different implementations(names),
-		 JAVA - Hashmap, Javascript - Objects, Python and
-                          C# - dictionaries
+Before going into Hashing let’s understand what is **mapping**
 
-	Eg:
-		Key -  employeeNumber is stored in key
-		Value - employee object is stored in value
+**Mapping** is the way of linking 2 things together, referred to as “Key” and “Value”. Key – An Identifier to uniquely identify the Data(Entity).Value – The Actual Entity(and its details) which we want to store.
 
-Working:
-Now we want to store employee object in a hash table, so our hashtable takes employee number and passes it towards a hash function and this hash func will tell where the employee object should be stored in memory, our hashtable will then store employee object at that location.
+Hashing is a way where we can get an value from any Key. This Key may or may not be an integer, but after hashing is performed, it will return an Integer value for any Key.
 
-Now after storing, if we want to look up an employee object using hashtable, our employee num is passed to hash func and it will tell where the object is stored in memory, so it will grab and return it.
+**Hashing**
 
-Hashtable is deterministic - Everytime we pass an input, it will return the same value. This is why a hash table is used for both storing and retrieving value.
+is a method of storing and retrieving data from a database efficiently.
 
-Operations - Insert, lookup, Delete - all run in O(1)
+Suppose that we want to design a system for storing employee records keyed using phone numbers. And we want the following queries to be performed efficiently:
 
+1. Insert a phone number and the corresponding information.
+2. Search a phone number and fetch the information.
+3. Delete a phone number and the related information.
 
-Sets - Sets are similar like hashtables, but they only allow keys to store.
-Another important characteristic of sets is, they don't allow duplicate keys.
-In Java, for map interface we have hashmap implementation, similar to that for set interface we have hashset implementation.
+We can think of using the following data structures to maintain information about different phone numbers.
 
-Operations - add, addAll, remove, removeAll, isEmpty
+1. An array of phone numbers and records.
+2. A linked list of phone numbers and records.
+3. A balanced binary search tree with phone numbers as keys.
+4. A direct access table.
 
-While implementing a hashtable we internally use an array, and store the key,value pair at a specific index, using hash function(key % arr.length). But we have a collision problem here, we may have to store two or more key,value pairs at a particular index, but we have already stored a pair at that index, this is the problem we have, this can be solved using different techniques.
-Chaining(using LinkedList)
-Open Addressing - Linear probing,
-Open Addressing - Quadratic probing
-Open Addressing - Double Hashing
+For A**rrays and Linked lists,** we need to search in a linear fashion, which can be costly in practice. If we use arrays and keep the data sorted, then a phone number can be searched in O(Logn) time using Binary Search, but insert and delete operations become costly as we have to maintain sorted order.
 
-We will implement the code using chaining technique with array of linkedlist
+With a **balanced binary search tree**, we get a moderate search, insert and delete time. All of these operations can be guaranteed to be in O(Logn) time.
 
-We have an array of LL and we store a key,value pair as a node and point the index of an array to LL node(we don't store directly in array cell), at some point if we want to store at the same index we simply point or chain to the next node in LL at that array index, this solves the problem of collision.
+Another solution that one can think of is to use a **direct access table** where we make a big array and use phone numbers as indexes in the array. An entry in the array is NIL if the phone number is not present, else the array entry stores pointer to records corresponding to the phone number. Time complexity wise this solution is the best of all, we can do all operations in O(1) time. For example, to insert a phone number, we create a record with details of the given phone number, use the phone number as an index and store the pointer to the record created in the table.
 
-HashTable Implementation (Link)- github link soon
+This solution has many practical limitations. The first problem with this solution is that the extra space required is huge. For example, if the phone number is of n digits, we need 
 
-Summary and TimeComplexity:
-To store key,value pairs
-Insert, lookup, remove in O(1)
-Hash function - hashtable use a hash func to map a key to index value in an  array
-Collision problem can be solved using array cells with linked list,(use array index to point to LL node) - not stored directly in array cell
-Or we can store directly in array cells using open addressing technique, for this technique there are 3 probing algorithm-
-i. Linear - (hash + i) % table_size - This forms clusters together and slows down future insertions or lookups. This is drawback with this approach
-ii. Quadratic - (hash + i ^ 2) % table_size - This solves problem of clustering, This makes big jump from one index to another, causing an infinite loop with same indices
-iii. Double hashing- (hash1 + i ^ hash2) % table_size, we use second hash function to calculate the index, this solve both of the problems,
+O(m * 10^n) space for the table where m is the size of a pointer to the record. Another problem is an integer in a programming language may not store n digits.
 
-Time Complexity - all operations in hashtable runs in O(1)
+Due to the above limitations, the Direct Access Table cannot always be used.
+
+**Hashing** is the solution that can be used in almost all such situations and performs extremely well as compared to above data structures like Array, Linked List, Balanced BST in practice. With hashing, we get O(1) search time on average (under reasonable assumptions) and O(n) in the worst case.
+
+Hashing is an important method designed to solve the problem of efficiently finding and storing data in an array.
+
+[](https://www.techinterviewhandbook.org/algorithms/hash-table/#introduction)
+
+A hash table (commonly referred to as hash map) is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function on an element to compute an index, also called a hash code, into an array of buckets or slots, from which the desired value can be found. During lookup, the key is hashed and the resulting hash indicates where the corresponding value is stored.
+
+Hashing is the most common example of a space-time tradeoff. Instead of linearly searching an array every time to determine if an element is present, which takes O(n) time, we can traverse the array once and hash all the elements into a hash table. Determining if the element is present is a simple matter of hashing the element and seeing if it exists in the hash table, which is O(1) on average.
