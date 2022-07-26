@@ -482,13 +482,18 @@ public class HashingProblems {
         return maxLength;
     }
 
-    //14.
+    //14. Count distinct element in every window
+    //there will be (n - k + 1) windows in array of size n
+    //I/P-[10, 20, 20, 10, 30, 40, 10],k=4, O/P - 2 3 4 3, in first window(10, 20, 20, 10) we have 2 distinct elements, in second window(20, 20, 10, 30) we have 3 distinct elements, in first window(20, 10, 30, 40) we have 4 distinct elements, in first window(10, 30, 40, 10) we have 3 distinct elements,
     public static void countDistinctInEveryWindow(int[] arr, int k){
-        //[10, 20, 20, 10, 30, 40, 10]
+        //TC-O((n-k) * k * k), SC-O(1)
+        //O(n - k)
 /*        for (int i = 0; i <= arr.length - k; i++) {
             int count = 0;
+            //O(k)
             for (int j = 0; j < k; j++){
                 boolean flag = false;
+                //O(K)
                 for (int p = 0; p < j; p++) {
                     if (arr[i + j] == arr[i + p]) {
                         flag = true;
@@ -500,7 +505,118 @@ public class HashingProblems {
             System.out.print(count + " ");
         }
  */
+        //TC - O(n), SC-O(K)
+        //first we insert k elements to hashmap, and print size of hashmap
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < k; i++)
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+        System.out.print(map.size() + " ");
 
+        //then we start iterating from i=k till arr.length
+        //in the next process we have to remove first element from previous window, and insert last element from current window
+        //to remove first element, we decrement first element in the array in hashmap, if it becomes zero we remove it
+        //to insert last element from current window, we simply put arr[i] in to hashmap,
+        //finally print size of hashmap
+        for (int i = k; i < arr.length; i++) {
+            int currItem = arr[i - k];
+            //remove first element from previous window
+            map.put(currItem, map.get(currItem) - 1);
 
+            //if it becomes zero, remove from hashmap
+            if (map.get(currItem) == 0)
+                map.remove(currItem);
+
+            //insert, last element from current window
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+            System.out.print(map.size() + " ");
+        }
+    }
+
+    //15. More than n/k occurrences
+    public static void printOccurrences(int[] arr, int k){
+        //O(n ^ 2) Solution,  SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            boolean flag = false;
+            //check if item is seen before
+            for (int j = 0; j < i; j++) {
+                if (arr[i] == arr[j]) {
+                    flag = true;
+                    break;
+                }
+            }
+            //if it is seen, ignore and move to next iteration
+            if (flag) continue;
+
+            //if not seen before, count frequency
+            int count = 1;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] == arr[j])
+                    count++;
+            }
+            if (count > arr.length / k)
+                System.out.print(arr[i] + " ");
+        }
+ */
+        //TC-overall O(n log n) -> O(n log n) sorting + O(n) traversal, SC-O(1)
+        //The idea is to sort the array and then count the occurrences.
+/*        Arrays.sort(arr); //O(n log n)
+        int i = 1, count = 1;
+        while (i < arr.length){ //O(n), in both the while loops, we are incrementing i, i is bounded by n(arr.length), so overall complexity is O(n)
+            //check if previous element is same, if yes increment count and i, till previous element is same
+            while (i < arr.length && arr[i] == arr[i - 1]){
+                count++;
+                i++;
+            }
+            //check count occurrence and print
+            if (count > arr.length / k)
+                System.out.print(arr[i - 1] + " ");
+
+            //at this point, we have moved to next occurrence of element in arr, so reset count=1 and increment i.
+            count = 1;
+            i++;
+        }
+ */
+        //TC-O(n), SC-O(n), this solution is efficient, but if array is very large and k is small, we have to store everything in hashmap and iterating through is not a good idea
+        //Enter the frequencies of elements in hashmap, traverse through it and print the element with occurrence > n/k
+/*        Map<Integer, Integer> map = new HashMap<>();
+        for (int item : arr)
+            map.put(item, map.getOrDefault(item, 0) + 1);
+
+        for (var item : map.entrySet())
+            if (item.getValue() > arr.length / k)
+                System.out.print(item.getKey() + " ");
+ */
+        //O(nk) Solution, SC-O(k)
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            //in each iteration if, arr[i] is already present increase the value by 1
+            if (map.containsKey(arr[i]))
+                map.put(arr[i], map.get(arr[i]) + 1);
+            //if it a new item and map is not full, then add it to hashmap
+            else if (map.size() < k - 1)
+                map.put(arr[i], 1);
+            //else if map is full
+            else{
+                //iterate through hashmap, and decrease all values in hashmap by 1
+                for (var item : map.entrySet()){
+                    map.put(item.getKey(), item.getValue() - 1);
+                    //if value becomes zero, remove it
+                    if (map.get(item.getKey()) == 0)
+                        map.remove(item.getKey());
+                }
+            }
+        }
+
+        //iterate thru hashmap
+        for(var item : map.entrySet()){
+            int count=0;
+            //for all elements in hashmap, check if it is matching with arr, and increase count
+            for(int i=0; i < arr.length; i++)
+                if(item.getKey()==arr[i])
+                    count++;
+            //if count > n/k, print it
+            if(count > arr.length/k)
+                System.out.print(item.getKey()+" ");
+        }
     }
 }
