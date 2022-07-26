@@ -39,12 +39,10 @@ O(m * 10^n) space for the table where m is the size of a pointer to the record. 
 
 Due to the above limitations, the Direct Access Table cannot always be used.
 
-### **Hashing**
+### **Hashing:**
 Hashing is the solution that can be used in almost all such situations and performs extremely well as compared to above data structures like Array, Linked List, Balanced BST in practice. With hashing, we get O(1) search time on average (under reasonable assumptions) and O(n) in the worst case.
 
 Hashing is an important method designed to solve the problem of efficiently finding and storing data in an array.
-
-[](https://www.techinterviewhandbook.org/algorithms/hash-table/#introduction)
 
 A hash table (commonly referred to as hash map) is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function on an element to compute an index, also called a hash code, into an array of buckets or slots, from which the desired value can be found. During lookup, the key is hashed and the resulting hash indicates where the corresponding value is stored.
 
@@ -60,3 +58,69 @@ A good hash function should have following properties:
 2. It should uniformly distribute the keys (Each table position be equally likely for each key).
 
 For example, for phone numbers, a bad hash function is to take the first three digits. A better function will consider the last three digits. Please note that this may not be the best hash function. There may be better ways.
+
+#### **Hash Table:**
+An array that stores pointers to records corresponding to a given phone number. An entry in hash table is NIL if no existing phone number has hash function value equal to the index for the entry.
+
+### **Collision Handling:**
+
+Since a hash function gets us a small number for a big key, there is a possibility that two keys result in the same value. The situation where a newly inserted key maps to an already occupied slot in the hash table is called collision and must be handled using some collision handling technique. Following are the ways to handle collisions:
+
+- **Chaining:** The idea is to make each cell of the hash table point to a linked list of records that have the same hash function value. Chaining is simple, but it requires additional memory outside the table.
+- **Open Addressing:** In open addressing, all elements are stored in the hash table itself. Each table entry contains either a record or NIL. When searching for an element, we one by one examine the table slots until the desired element is found or it is clear that the element is not present in the table.
+
+**Open Addressing**
+Like separate chaining, open addressing is a method for handling collisions. In Open Addressing, all elements are stored in the hash table itself. So at any point, the size of the table must be greater than or equal to the total number of keys (Note that we can increase table size by copying old data if needed).
+
+**Important Operations**:
+
+- Insert(k): Keep probing until an empty slot is found. Once an empty slot is found, insert k.
+- Search(k): Keep probing until the slot's key doesn't become equal to k or an empty slot is reached.
+- Delete(k): ***Delete operation is interesting***. If we simply delete a key, then the search may fail. So slots of the deleted keys are marked specially as "deleted".
+
+**Open Addressing is done in the following ways**:
+
+1. ***Linear Probing:*** In linear probing, we linearly probe for the next slot. For example, the typical gap between the two probes is 1 as taken in the below example also.let **hash(x)** be the slot index computed using a hash function and **S** be the table size.
+
+```jsx
+If slot hash(x) % S is full, then we try (hash(x) + 1) % S
+If (hash(x) + 1) % S is also full, then we try (hash(x) + 2) % S
+If (hash(x) + 2) % S is also full, then we try (hash(x) + 3) % S 
+..................................................
+..................................................
+```
+
+Let us consider a simple hash function as “key mod 7” and a sequence of keys as 50, 700, 76, 85, 92, 73, 101.
+
+![Hashtable](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/8cd0920f-0eba-4985-9a26-0e15e43da0e1/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220726%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220726T155930Z&X-Amz-Expires=86400&X-Amz-Signature=8c9b5450bbb8ec7e458599d9e2679e25eeb63e309da66277d61eb7ca03e7b794&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+**Clustering:** The main problem with linear probing is clustering, many consecutive elements form groups and it starts taking time to find a free slot or to search an element.
+
+1. ***Quadratic Probing*** We look for i^2 ‘th slot in i'th iteration.
+    
+    ```jsx
+    let hash(x) be the slot index computed using hash function.
+    If slot hash(x) % S is full, then we try (hash(x) + 1*1) % S
+    If (hash(x) + 1*1) % S is also full, then we try (hash(x) + 2*2) % S
+    If (hash(x) + 2*2) % S is also full, then we try (hash(x) + 3*3) % S
+    ..................................................
+    ..................................................
+    ```
+    
+2. **Double Hashing** We use another hash function hash2(x) and look for i*hash2(x) slot in i'th rotation.
+    
+    ```jsx
+    let hash(x) be the slot index computed using hash function.
+    If slot hash(x) % S is full, then we try (hash(x) + 1*hash2(x)) % S
+    If (hash(x) + 1*hash2(x)) % S is also full, then we try (hash(x) + 2*hash2(x)) % S
+    If (hash(x) + 2*hash2(x)) % S is also full, then we try (hash(x) + 3*hash2(x)) % S
+    ..................................................
+    ..................................................
+    ```
+    
+
+**Comparison of above three:**
+
+- Linear probing has the best cache performance but it suffers from clustering. One more advantage of Linear probing that it is easy to compute.
+- Quadratic probing lies between the two in terms of cache performance and clustering.
+- Double hashing has poor cache performance but no clustering. Double hashing requires more computation time as two hash functions need to be computed.
