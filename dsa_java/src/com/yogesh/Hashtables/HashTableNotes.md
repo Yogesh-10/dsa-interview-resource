@@ -124,3 +124,29 @@ Let us consider a simple hash function as “key mod 7” and a sequence of keys
 - Linear probing has the best cache performance but it suffers from clustering. One more advantage of Linear probing that it is easy to compute.
 - Quadratic probing lies between the two in terms of cache performance and clustering.
 - Double hashing has poor cache performance but no clustering. Double hashing requires more computation time as two hash functions need to be computed.
+
+## **Diff b/w Chaining and Open Addressing** 
+
+| Seperate Chaining | Open Addressing |
+| --- | --- |
+| Chaining is Simpler to implement. | Open Addressing requires more computation. |
+| In chaining, Hash table never fills up, we can always add more elements to chain. | In open addressing, table may become full. |
+| Chaining is Less sensitive to the hash function or load factors. | Open addressing requires extra care for to avoid clustering and load factor. |
+| Chaining is mostly used when it is unknown how many and how frequently keys may be inserted or deleted. | Open addressing is used when the frequency and number of keys is known. |
+| Cache performance of chaining is not good as keys are stored using linked list. | Open addressing provides better cache performance as everything is stored in the same table. |
+| Wastage of Space (Some Parts of hash table in chaining are never used). | In Open addressing, a slot can be used even if an input doesn't map to it. |
+| Chaining uses extra space for links. | No links in Open addressing |
+
+**Performance of Open Addressing:**
+ Like Chaining, the performance of hashing can be evaluated under the assumption that each key is equally likely to be hashed to any slot of the table (simple uniform hashing).
+
+```jsx
+m = Number of slots in the hash table
+n = Number of keys to be inserted in the hash table
+ 
+Load factor α = n/m  ( < 1 )
+
+Expected time to search/insert/delete < 1/(1 - α) 
+
+So Search, Insert and Delete take (1/(1 - α)) time
+```
