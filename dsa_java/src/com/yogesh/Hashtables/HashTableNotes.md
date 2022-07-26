@@ -39,7 +39,8 @@ O(m * 10^n) space for the table where m is the size of a pointer to the record. 
 
 Due to the above limitations, the Direct Access Table cannot always be used.
 
-**Hashing** is the solution that can be used in almost all such situations and performs extremely well as compared to above data structures like Array, Linked List, Balanced BST in practice. With hashing, we get O(1) search time on average (under reasonable assumptions) and O(n) in the worst case.
+### **Hashing**
+Hashing is the solution that can be used in almost all such situations and performs extremely well as compared to above data structures like Array, Linked List, Balanced BST in practice. With hashing, we get O(1) search time on average (under reasonable assumptions) and O(n) in the worst case.
 
 Hashing is an important method designed to solve the problem of efficiently finding and storing data in an array.
 
@@ -48,3 +49,14 @@ Hashing is an important method designed to solve the problem of efficiently fin
 A hash table (commonly referred to as hash map) is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function on an element to compute an index, also called a hash code, into an array of buckets or slots, from which the desired value can be found. During lookup, the key is hashed and the resulting hash indicates where the corresponding value is stored.
 
 Hashing is the most common example of a space-time tradeoff. Instead of linearly searching an array every time to determine if an element is present, which takes O(n) time, we can traverse the array once and hash all the elements into a hash table. Determining if the element is present is a simple matter of hashing the element and seeing if it exists in the hash table, which is O(1) on average.
+
+### **Hash Function:**
+
+A function that converts a given big phone number to a small practical integer value. The mapped integer value is used as an index in the hash table. In simple terms, a hash function maps a big number or string to a small integer that can be used as an index in the hash table.
+
+A good hash function should have following properties:
+
+1. It should be efficiently computable.
+2. It should uniformly distribute the keys (Each table position be equally likely for each key).
+
+For example, for phone numbers, a bad hash function is to take the first three digits. A better function will consider the last three digits. Please note that this may not be the best hash function. There may be better ways.
