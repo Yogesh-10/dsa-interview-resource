@@ -532,8 +532,11 @@ public class HashingProblems {
         }
     }
 
-    //15. More than n/k occurrences
-    public static void printOccurrences(int[] arr, int k){
+    //15. Print the values with More than n/k occurrences
+    //I/P-[30, 10, 20, 20, 20, 10, 40, 30, 30], k=4, O/P-20 30
+    //I/P-[1,2,3,4,5], k=2, O/P- (print nothing)
+    //I/P-[3,1,2,2,1,2,3,3], k=4, O/P- 2 3
+    public static void printNbyKOccurrences(int[] arr, int k){
         //O(n ^ 2) Solution,  SC-O(1)
 /*        for (int i = 0; i < arr.length; i++) {
             boolean flag = false;
