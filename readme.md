@@ -1,12 +1,14 @@
-## Dsa-interview-resource
+## DSA-Interview-Resource
 
 ### Data Structures and Algorithms - Interview Preparation resource
 
 DSA Interview Preparation
 
-[Arrays & Array Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Arrays)
+i. [Arrays & Array Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Arrays)
 <br>
-[Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SearchingAlgorithms)
+ii. [Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SearchingAlgorithms)
 <br>
-[Sorting Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SortingAlgorithms)
+iii. [Sorting Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SortingAlgorithms)
+<br>
+iv. [HashTable](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Hashtables)
 
