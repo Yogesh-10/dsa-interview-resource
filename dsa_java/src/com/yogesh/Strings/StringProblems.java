@@ -1,7 +1,6 @@
 package com.yogesh.Strings;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class StringProblems {
     //1. Return first non repeating characters
@@ -83,4 +82,78 @@ public class StringProblems {
         return j == str2.length();
  */
     }
+
+    //5. Check for anagram strings. //An anagram of a string is another string that contains the same characters, only the order of characters can be different. For example, “abcd” and “dabc” are an anagram of each other.
+    //I/P- s1-rat, s2-car, O/P-false //I/P- s1-anagram, s2-nagaram, O/P-true
+    public static boolean isAnagram(String str1, String str2){
+        //TC - O(n), SC-O(1)
+        if (str1.length() != str2.length())
+            return false;
+
+        int[] count = new int[26];
+        //O(n)
+        for (int i = 0; i < str1.length(); i++) {
+            count[str1.charAt(i) - 'a']++;
+            count[str2.charAt(i) - 'a']--;
+        }
+
+        //this loop is considered as constant operation of length 26. If we consider this loop, then TC will be O(n+m), where m is len of count array
+        for (int i = 0; i < count.length; i++)
+            if (count[i] != 0)
+                return false;
+
+        return true;
+    }
+
+    //6. Find the index of Leftmost Repeating Character in a string
+    //I/P-abbcc, O/P-1, //I/P-aba, O/P-1,
+    public static int leftMostRepeatingCharacter(String s){
+        //Naive Approach O(n^2)
+/*        for (int i = 0; i < s.length(); i++)
+            for (int j = i + 1; j < s.length(); j++)
+                if (s.charAt(i) == s.charAt(j))
+                    return i;
+
+        return -1;
+ */
+        //Better Approach O(n) solution - but two traversals, SC-O(1) constant 256 char space
+/*        int[] count = new int[256];
+        for (int i = 0; i < s.length(); i++)
+            count[s.charAt(i)]++;
+
+        for (int i = 0; i < s.length(); i++)
+            if (count[s.charAt(i)] > 1)
+                return i;
+
+        return -1;
+ */
+        //Efficient Solution-1 single traversal- O(n)
+/*        final int CHAR = 256;
+        int res = Integer.MAX_VALUE;
+        int[] count = new int[CHAR];
+        Arrays.fill(count, -1);
+        for (int i = 0; i < s.length(); i++) {
+            int firstIndex = count[s.charAt(i)];
+            if (firstIndex == -1)
+                count[s.charAt(i)] = i;
+            else
+                res = Math.min(res, firstIndex);
+        }
+        return (res == Integer.MAX_VALUE) ? -1 : res;
+ */
+        //More Efficient Solution-2 single traversal- O(n)
+        //In this solution we do less comparisons than previous one, between res and min
+        final int CHAR = 256;
+        boolean[] visited = new boolean[CHAR];
+        int res = -1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            //we set res to i, because we iterate from last, so we come to left most index at last and update the result. so we do little comparison than previous solution
+            if (visited[s.charAt(i)])
+                res = i;
+            else
+                visited[s.charAt(i)] = true;
+        }
+        return res;
+    }
+
 }
