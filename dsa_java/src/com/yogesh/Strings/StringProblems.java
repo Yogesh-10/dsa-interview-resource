@@ -156,4 +156,34 @@ public class StringProblems {
         return res;
     }
 
+    //7. Reverse words in a string
+    // I/P - "coding is great" O/P - "great is coding"
+    public static String reverseAString(String s){
+        int start = 0;
+        char[] chars = s.toCharArray();
+        //iterate thru arr and if there is a empty space found, then reverse the word before that space
+        for (int end = 0; end < s.length(); end++) {
+            if (chars[end] == ' '){
+                //reverse word. //coding //gnidoc
+                reverse(chars, start, end - 1);
+                start = end + 1;
+            }
+        }
+        //reverse last word in a string. because there may be no space after last word, so we explicitly reverse
+        reverse(chars, start, s.length() - 1);
+        //reverse whole string now. //gnidoc si taerg //great is coding
+        reverse(chars, 0 , s.length() - 1);
+
+        //convert char array to string and return
+        return new String(chars);
+    }
+
+    //reverse helper function
+    private static void reverse(char[] arr, int low, int high){
+        while (low < high) {
+            char tmp = arr[low];
+            arr[low++] = arr[high];
+            arr[high--] = tmp;
+        }
+    }
 }
