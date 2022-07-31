@@ -159,20 +159,20 @@ public class StringProblems {
     //7. Reverse words in a string
     // I/P - "coding is great" O/P - "great is coding"
     public static String reverseAString(String s){
+        //TC-O(n), SC-O(n)
         int start = 0;
         char[] chars = s.toCharArray();
         //iterate thru arr and if there is a empty space found, then reverse the word before that space
         for (int end = 0; end < s.length(); end++) {
             if (chars[end] == ' '){
-                //reverse word. //coding //gnidoc
-                reverse(chars, start, end - 1);
+                reverse(chars, start, end - 1); //gnidoc si
                 start = end + 1;
             }
         }
         //reverse last word in a string. because there may be no space after last word, so we explicitly reverse
-        reverse(chars, start, s.length() - 1);
-        //reverse whole string now. //gnidoc si taerg //great is coding
-        reverse(chars, 0 , s.length() - 1);
+        reverse(chars, start, s.length() - 1); //gnidoc si taerg
+        //reverse whole string now.
+        reverse(chars, 0 , s.length() - 1);  //great is coding
 
         //convert char array to string and return
         return new String(chars);
@@ -184,6 +184,47 @@ public class StringProblems {
             char tmp = arr[low];
             arr[low++] = arr[high];
             arr[high--] = tmp;
+        }
+    }
+
+    //8. String Searching Patterns - Naive Searching Pattern
+    //I/P-"abceabefabcd", pattern-abcd O/P-8, abcd occurs in 8th index
+    //I/P-"abcedfgabc", pattern-abcd- abc, O/P-0 7, abc occurs in 0 and 7th position
+    //I/P-"aaaaa", pattern-aaa, O/P-0 1 2
+    public static void naivePatternSearching(String str, String pattern){
+        //TC-O((n-m+1)*m) Quadratic Solution
+/*        int n = str.length();
+        int m = pattern.length();
+        //O(n-m+1)
+        for (int i = 0; i <= n - m; i++) {
+            int j;
+            //O(m)
+            for (j = 0; j < m; j++)
+                if (str.charAt(i + j) != pattern.charAt(j))
+                    break;
+
+            if (m == j)
+                System.out.print(i + " ");
+        }
+ */
+        //Improved Naive Solution(for distinct characters in pattern)
+        //TC-O(n) linear Solution, this is a linear solution because,
+        //we are running j loop m times inside, and we are also saving m loops(i=i+j) skipping some iterations.
+        //so overall we can consider this as O(n) Solution
+        int n = str.length();
+        int m = pattern.length();
+        for (int i = 0; i <= n - m; ) {
+            int j;
+            for (j = 0; j < m; j++)
+                if (str.charAt(i + j) != pattern.charAt(j))
+                    break;
+
+            if (m == j)
+                System.out.print(i + " ");
+            if (j == 0)
+                i++;
+            else
+                i = (i + j);
         }
     }
 }
