@@ -228,58 +228,53 @@ public class StringProblems {
         }
     }
 
+    //9. Rabin Karp Algorithm - For String Pattern Matching
+    //Like naive algorithm, we slide the pattern one by one and instead of calculating hash value sum for each character, we use rolling hash technique to calculate hash value. Calculate hash value for next window of text: Remove leading digit, add trailing digit
+    //i.e we subtract last character of previous window and add last character of current window
+    //compare hash values of pattern and current window. if hash values match, then only compare individual characters
     public static void RabinKarpAlgorithm(String str, String pattern){
-        int M = pattern.length();
-        int N = str.length();
-        int i, j;
-        int p = 0; // hash value for pattern
-        int t = 0; // hash value for txt
-        int h = 1;
-        int d = 256;
-        int q=101;
-        // The value of h would be "pow(d, M-1)%q"
-        for (i = 0; i < M-1; i++)
-            h = (h*d)%q;
+        final int d = 256; //256 ascii characters
+        final int q = 101; //prime number, we use this for modulo %q, reason for this is to use is, the weighted sum can become really large even for smaller strings, so we compute this under modulo, so we can store in integer variable
+                           //we should also select the prime number q as large as possible, so there are less spurious hits, (spurious hits is a condition in which the sum of pattern and text match, but the character in it do not match),
+                           //for eg: string-dog and pattern-god. lets consider a-1, b-2, c-3.....f-6, g-7,o-15. If we calculate sum, dog will be 26 and for god sum will be 26, the values match but pattern do not. this is called spurious hit
+        int n = str.length(); int m = pattern.length();
+        int h = 1; // d^(m-1) % q
+        int p = 0; //hash value of pattern
+        int t = 0; //hash value of current window(m) of text
 
-        // Calculate the hash value of pattern and first
-        // window of text
-        for (i = 0; i < M; i++) {
-            p = (d*p + pattern.charAt(i))%q;
-            t = (d*t + str.charAt(i))%q;
+        //compute d^(m-1) % q, once and use it while matching patterns, otherwise we have to compute d^(m-1) % q in every iteration
+        for (int i = 1; i <= m - 1; i++)
+            h = (h * d) % q;
+
+        //compute hash value of pattern and hash value of first m(window) text
+        for (int i = 0; i < m; i++) {
+            p = (p * d + pattern.charAt(i)) % q;
+            t = (t * d + str.charAt(i)) % q;
         }
 
         // Slide the pattern over text one by one
-        for (i = 0; i <= N - M; i++)
-        {
-
-            // Check the hash values of current window of text
-            // and pattern. If the hash values match then only
-            // check for characters one by one
-            if ( p == t )
-            {
-                /* Check for characters one by one */
-                for (j = 0; j < M; j++)
-                {
-                    if (str.charAt(i+j) != pattern.charAt(j))
+        for (int i = 0; i <= n - m; i++) {
+            //if hash value of string(t) and pattern(p) match, then check if the characters are matching.
+            if (p == t){
+                int j;
+                for (j = 0; j < m; j++)
+                    if (str.charAt(i + j) != pattern.charAt(j))
                         break;
-                }
-
-                // if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
-                if (j == M)
-                    System.out.println("Pattern found at index " + i);
+                if (j == m)
+                    System.out.print(i + " ");
             }
-
-            // Calculate hash value for next window of text: Remove
-            // leading digit, add trailing digit
-            if ( i < N-M )
-            {
-                t = (d*(t - str.charAt(i)*h) + str.charAt(i+M))%q;
-
-                // We might get negative value of t, converting it
-                // to positive
+            //slide to next window by rolling hash formula
+            //Compute ti+1 using ti
+            if (i < n - m){
+                //rolling hash formula, t = d(t - str[i] * d^m-1) + str[i+m]
+                // Calculate hash value for next window of text: Remove leading digit, add trailing digit
+                //i.e we subtract last character of previous window and add last character of current window
+                t = ((d * (t - str.charAt(i) * h)) + str.charAt(i + m)) % q;
+                //some times t can be a negative value, in that case we convert it to positive by adding t by t+q
                 if (t < 0)
-                    t = (t + q);
+                    t = t + q;
             }
         }
     }
+
 }
