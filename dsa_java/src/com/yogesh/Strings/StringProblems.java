@@ -277,4 +277,28 @@ public class StringProblems {
         }
     }
 
+    //10. Constructing and LPS array(Longest prefix suffix)
+    //I/P - ababacab, O/P - [0, 0, 1, 2, 3, 0, 1, 2]
+    //Naive approach, O(n^3)
+    public static void fillLPS(String str){
+        int[] lps = new int[str.length()];
+        for (int i = 0; i < str.length(); i++) {
+            lps[i] = longestPrefixSuffix(str, i + 1);
+        }
+
+        System.out.println(Arrays.toString(lps));
+    }
+
+    private static int longestPrefixSuffix(String str, int n){
+        for (int len = n - 1; len > 0; len--) {
+            boolean flag = true;
+            for (int i = 0; i < len; i++) {
+                int j = n - len + i;
+                if (str.charAt(i) != str.charAt(j))
+                    flag = false;
+            }
+            if (flag) return len;
+        }
+        return 0;
+    }
 }
