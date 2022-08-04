@@ -361,4 +361,86 @@ public class StringProblems {
         }
         return lps;
     }
+
+    //12. Check is one string is rotation of other (rotation can be clockwise or anti clockwise)
+    //I/P- s1-abcd, s2-cdab, O/P-true, because  if we rotate abcd anti clockwise two times, we get bcda in first rotation and cdab in second rotation, so o/p is true
+    //I/P- s1-abaaa, s2-baaaa, O/P-true
+    //I/P- s1-abab, s2-abba, O/P-false
+    public static boolean isStringARotation(String s1, String s2){
+        //O(n^2) solution
+ /*       if (s1.length() != s2.length())
+            return false;
+        if (s1.equals(s2))
+            return true;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1; i < s1.length(); i++) {
+            boolean flag = true;
+            stringBuilder.append(s1, i, s1.length());
+            stringBuilder.append(s1, 0, i);
+            for (int j = 0; j < s2.length(); j++) {
+                if (stringBuilder.charAt(j) != s2.charAt(j)){
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) return true;
+            stringBuilder.delete(0, s1.length());
+        }
+        return false;
+  */
+        //Tc- O(n) -concatenation is O(n) and finding if string is present, is also O(n) so overall O(n),
+        //SC-O(n) space for concatenation of strings
+        if (s1.length() != s2.length()) return false;
+        return ((s1 + s1).contains(s2)); //or, return ((s1 + s1).indexOf(s2) != -1);
+    }
+
+    //13. Anagram substring search,
+    //I/P- str-FGHIJKBCDA, pattern-ABCD, O/P-true, because the substring at index 6, is BCDA, which is anagram of the pattern ABCD
+    //I/P- str-BACDGABCDA, pattern-ABCD, O/P-true, because the substring is at index 0, 5, 6 all are  anagram of the pattern ABCD
+    //I/P- str-AAABABAA, pattern-AABA, O/P-true, because the substring is at index 0, 1, 4 all are anagram of the pattern ABCD
+    //I/P- str-ABCDEFGH, pattern-BEGH, O/P-false, because BEGH  is not anagram in the string str
+    public static boolean anagramSearch(String str, String pattern){
+        //O(m + (n-m) * char), we can drop m since it's smaller than n, so overall
+        //TC-will be O(n*char), if we consider char-256 as constant then it's O(n)
+        //SC-
+        final int CHAR = 256; //all ascii characters
+        int[] stringCountArray = new int[CHAR]; //frequency for string
+        int[] patternCountArray = new int[CHAR]; //frequency for pattern
+
+        //fill the stringCountArray with string frequency and patternCountArray with pattern frequency
+        //O(m)
+        for (int i = 0; i < pattern.length(); i++) {
+            stringCountArray[str.charAt(i)]++;
+            patternCountArray[pattern.charAt(i)]++;
+        }
+
+        //unlike instead of checking every pattern is a anagram, we use sliding window technique
+        //we add last character of current window and remove first character of previous window
+        //O(n)
+        for (int i = pattern.length(); i < str.length(); i++) {
+            //check if values in both arrays are equal
+            if (areCountMatching(stringCountArray, patternCountArray))
+                return true;
+
+            //else move the window to next position,
+            //we add last character of current window and remove first character of previous window
+            stringCountArray[str.charAt(i)]++;
+            stringCountArray[str.charAt(i - pattern.length())]--;
+        }
+        //check explicitly for last window in str.
+        if (areCountMatching(stringCountArray, patternCountArray))
+            return true;
+
+        return false;
+    }
+    //check the values are equal in both arrays, if not equal anagram is not found
+    private static boolean areCountMatching(int[] stringCountArray, int[] patternCountArray) {
+        final int CHAR = 256;
+        //O(char)
+        for (int i = 0; i < CHAR; i++)
+            if (stringCountArray[i] != patternCountArray[i])
+                return false;
+
+        return true;
+    }
 }
