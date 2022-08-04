@@ -402,7 +402,7 @@ public class StringProblems {
     public static boolean anagramSearch(String str, String pattern){
         //O(m + (n-m) * char), we can drop m since it's smaller than n, so overall
         //TC-will be O(n*char), if we consider char-256 as constant then it's O(n)
-        //SC-
+        //SC-O(m)
         final int CHAR = 256; //all ascii characters
         int[] stringCountArray = new int[CHAR]; //frequency for string
         int[] patternCountArray = new int[CHAR]; //frequency for pattern
