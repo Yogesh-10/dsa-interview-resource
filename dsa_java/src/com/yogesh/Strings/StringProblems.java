@@ -189,8 +189,8 @@ public class StringProblems {
 
     //8. String Searching Patterns - Naive Searching Pattern
     //I/P-"abceabefabcd", pattern-abcd O/P-8, abcd occurs in 8th index
-    //I/P-"abcedfgabc", pattern-abcd- abc, O/P-0 7, abc occurs in 0 and 7th position
-    //I/P-"aaaaa", pattern-aaa, O/P-0 1 2
+    //I/P-"abcdfgabcd", pattern-abcd- abc, O/P-0 6, abc occurs in 0 and 6th position
+    //I/P-"aaaaa", pattern-aaa, O/P-0 1 2, //I/P-"abcde", pattern-aaa, O/P - (print nothing)
     public static void naivePatternSearching(String str, String pattern){
         //TC-O((n-m+1)*m) Quadratic Solution
 /*        int n = str.length();
@@ -280,7 +280,7 @@ public class StringProblems {
     //10. Constructing and LPS array(Longest prefix suffix)
     //I/P - ababacab, O/P - [0, 0, 1, 2, 3, 0, 1, 2]
     //Naive approach, O(n^3)
-    public static void fillLPS(String str){
+    public static void fillLPSNaive(String str){
         int[] lps = new int[str.length()];
         for (int i = 0; i < str.length(); i++) {
             lps[i] = longestPrefixSuffix(str, i + 1);
@@ -288,7 +288,6 @@ public class StringProblems {
 
         System.out.println(Arrays.toString(lps));
     }
-
     private static int longestPrefixSuffix(String str, int n){
         for (int len = n - 1; len > 0; len--) {
             boolean flag = true;
@@ -300,5 +299,66 @@ public class StringProblems {
             if (flag) return len;
         }
         return 0;
+    }
+
+    //11. KMP(Knuth-Morris-Pratt) Algorithm for pattern matching.
+    //TC-O(n+m)- n for searching, m-for constructing lps array,
+    //SC-O(m), where m is size of pattern
+    //In naive approach we check every single pattern and match pattern. In KMP the idea is to preprocess the
+    //prefix and suffix count, so we can reduce count of comparison, in lps[i] we store the proper prefix of pattern[0...i] which is also a suffix
+    //so as we move on when a character in pattern and string doesn't match, we dont need to go back to start of string and start searching again, instead we look at lps[patternLength - 1], we go to that index
+    //and start matching again, because we have stored length of prefix which is also a suffix, so if ab is suffix ab is also suffix, so we dont need to match ab again from start.
+    public static void KMPAlgorithm(String str, String pattern){
+        int n = str.length();
+        int m = pattern.length();
+        int i = 0, j = 0;
+        //we construct lps array
+        int[] lps = fillLPS(pattern);
+        //iterate till length of string
+        while (i < n){
+            //if char at string and pattern matches, move both i and j
+            if (str.charAt(i) == pattern.charAt(j)){
+                i++;
+                j++;
+            }
+            //if j == m, that means we have reached end of pattern and matched all characters, so print it
+            //and we set j to lps[j-1] to match other occurrence in string
+            if (j == m){
+                System.out.print(i - j + " ");
+                j = lps[j - 1];
+            }
+            //if char doesn't match, and j is still 0, then increase i by 1
+            //else set j to lps[j-1], and we start our matching from that position, instead of searching from start
+            else if (i < n && str.charAt(i) != pattern.charAt(j)){
+                if (j == 0)
+                    i++;
+                else
+                    j = lps[j - 1];
+            }
+        }
+    }
+    //helper method to construct LPS Array for kmp algorithm
+    private static int[] fillLPS(String pattern){
+        int[] lps = new int[pattern.length()];
+        int i = 1, j = 0;
+        lps[0] = 0; //first position/char will be always 0
+        while (i < pattern.length()){
+            //if both characters are same in pattern then move set lps[i] to current j + 1, this will give length of proper prefix which is also suffix
+            if (pattern.charAt(i) == pattern.charAt(j)){
+                lps[i] = j + 1;
+                i++;
+                j++;
+            }
+            else{
+                //if j is 0 there is no match, set lps[i] to 0 and move i
+                //else, set j to lps[j-1], so that instead of searching from start, we start matching from lps[j-1], and store length of proper prefix and suffix
+                if (j == 0) {
+                    lps[i] = 0;
+                    i++;
+                } else
+                    j = lps[j - 1];
+            }
+        }
+        return lps;
     }
 }
