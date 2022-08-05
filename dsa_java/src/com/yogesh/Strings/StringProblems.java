@@ -6,6 +6,21 @@ public class StringProblems {
     //1. Return first non repeating characters
     //Input : "a green apple", output: g
     public static char firstNonRepeatingCharacter(String str){
+        //O(n^2) Solution
+/*        for (int i = 0; i < str.length(); i++) {
+            boolean flag = true;
+            for (int j = 0; j < str.length(); j++) {
+                if (i != j && str.charAt(i) == str.charAt(j)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                return str.charAt(i);
+        }
+        return Character.MIN_VALUE;
+ */
+        //TC-O(n), SC-O(n)
         Map<Character, Integer> charFrequencyMap = new HashMap<>();
         char[] chars = str.toCharArray();
         for (char ch : chars)
