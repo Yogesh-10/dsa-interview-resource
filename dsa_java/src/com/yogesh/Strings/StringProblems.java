@@ -448,7 +448,9 @@ public class StringProblems {
     //I/P- abcadbd, O/P-4, because longest substring with distinct character is 4, bcad or cadb
     //I/P- aaa, O/P-1, because longest substring with distinct character is 1, a
     public static int longestSubstringDistinct(String str){
-        int[] prevVisitedArray = new int[256]; //initialize a array
+        //TC-O(n), SC-O(CHAR), or O(1) if CHAR is considered constant
+        final int CHAR=256;
+        int[] prevVisitedArray = new int[CHAR]; //initialize a array
         Arrays.fill(prevVisitedArray, -1); //fill array with -1
         int windowStart = 0; int maxLength = 0;
         //iterate thru the string and find max len for every character. return the highest len
