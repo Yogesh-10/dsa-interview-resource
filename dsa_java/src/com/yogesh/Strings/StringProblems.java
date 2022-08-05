@@ -400,9 +400,9 @@ public class StringProblems {
     //I/P- str-AAABABAA, pattern-AABA, O/P-true, because the substring is at index 0, 1, 4 all are anagram of the pattern ABCD
     //I/P- str-ABCDEFGH, pattern-BEGH, O/P-false, because BEGH  is not anagram in the string str
     public static boolean anagramSearch(String str, String pattern){
-        //O(m + (n-m) * char), we can drop m since it's smaller than n, so overall
+        //Tc-overall O(n), O(m + (n-m) * char),where n is str and m is pattern, we can drop m since it's smaller than n, so overall
         //TC-will be O(n*char), if we consider char-256 as constant then it's O(n)
-        //SC-O(m)
+        //SC-O(m), where m is pattern,  if we consider char-256 as constant then it's O(1)
         final int CHAR = 256; //all ascii characters
         int[] stringCountArray = new int[CHAR]; //frequency for string
         int[] patternCountArray = new int[CHAR]; //frequency for pattern
@@ -442,5 +442,26 @@ public class StringProblems {
                 return false;
 
         return true;
+    }
+
+    //14. Find length of longest substring with distinct characters
+    //I/P- abcadbd, O/P-4, because longest substring with distinct character is 4, bcad or cadb
+    //I/P- aaa, O/P-1, because longest substring with distinct character is 1, a
+    public static int longestSubstringDistinct(String str){
+        int[] prevVisitedArray = new int[256]; //initialize a array
+        Arrays.fill(prevVisitedArray, -1); //fill array with -1
+        int windowStart = 0; int maxLength = 0;
+        //iterate thru the string and find max len for every character. return the highest len
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+            //starting window size with 0, increasing windowEnd by 1 in every iteration, if character at current iteration is already visited
+            //update windowStart by value of prevArray at that index
+            windowStart = Math.max(windowStart, prevVisitedArray[str.charAt(windowEnd)] + 1);
+            //calculating maxLength
+            int maxEnd = windowEnd - windowStart + 1;
+            maxLength = Math.max(maxLength, maxEnd);
+            //set prevVisitedArray[str.charAt(windowEnd)] to windowEnd, so next time if char is already visited, move windowStart to that location;
+            prevVisitedArray[str.charAt(windowEnd)] = windowEnd;
+        }
+        return maxLength;
     }
 }
