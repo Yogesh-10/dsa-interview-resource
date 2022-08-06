@@ -481,4 +481,52 @@ public class StringProblems {
         }
         return maxLength;
     }
+
+    //15. one away string
+    //An edit between two strings is one of the following changes. //Add a character //Delete a character //Change a character
+    //Given two string s1 and s2, find if s1 can be converted to s2 with exactly one edit
+    //I/P- s1-abcde, s2-abfde, O/P- true, there is only one char edit made in s2, so true
+    //I/P- s1-abcde, s2-abcd, O/P- true, there is only one  char added in s1, so true
+    //I/P- s1-aaa, s2-abc, O/P- false, there is two char changed in s2, so false
+    public static boolean isOneAway(String s1, String s2) {
+        // If difference between lengths is more than 1, then strings can't be at one edit away. eg: s1-abcde, s2-abc
+        if (s1.length() - s2.length() >= 2 || s2.length() - s1.length() >= 2)
+            return false;
+
+        //if both strings are equal, return true. this condition is also considered as one away, because a character can be replaced with same character in another string
+        if (s1.equals(s2))
+            return true;
+
+        int i = 0, j = 0; int differenceCount = 0; // Count of edits
+        while (i < s1.length() && j < s2.length()) {
+            // If current characters don't match
+            if (s1.charAt(i) != s2.charAt(j)) {
+                //if differenceCount doesn't match there are more than one edit, so it's not one edit away
+                if (differenceCount == 1)
+                    return false;
+
+                // If length of one string is more, then only possible edit is to remove a character
+                if (s1.length() > s2.length())
+                    i++;
+                else if (s1.length() < s2.length())
+                    j++;
+                //If lengths of both strings is same
+                else {
+                    i++;
+                    j++;
+                }
+                // Increment count of edits, because the char doesn't match
+                differenceCount++;
+            } else {
+                i++;
+                j++;
+            }
+        }
+
+        // If last character is extra in any string for eg; s1-abcde s2-abcd, all 4 chars have matched, and loop terminated at index 3.
+        if (i < s1.length() || j < s2.length())
+            differenceCount++;
+
+        return differenceCount == 1;
+    }
 }
