@@ -482,14 +482,15 @@ public class StringProblems {
         return maxLength;
     }
 
-    //15. one away string
+    //15. one away string (Check if edit distance between two strings is one)
     //An edit between two strings is one of the following changes. //Add a character //Delete a character //Change a character
     //Given two string s1 and s2, find if s1 can be converted to s2 with exactly one edit
     //I/P- s1-abcde, s2-abfde, O/P- true, there is only one char edit made in s2, so true
     //I/P- s1-abcde, s2-abcd, O/P- true, there is only one  char added in s1, so true
     //I/P- s1-aaa, s2-abc, O/P- false, there is two char changed in s2, so false
     public static boolean isOneAway(String s1, String s2) {
-        // If difference between lengths is more than 1, then strings can't be at one edit away. eg: s1-abcde, s2-abc
+        //TC-O(n), SC-O(1)
+        //If difference between lengths is more than 1, then strings can't be at one edit away. eg: s1-abcde, s2-abc
         if (s1.length() - s2.length() >= 2 || s2.length() - s1.length() >= 2)
             return false;
 
