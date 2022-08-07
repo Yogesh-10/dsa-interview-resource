@@ -173,9 +173,12 @@ public class StringProblems {
 
     //7. Reverse words in a string
     // I/P - "coding is great" O/P - "great is coding"
-    public static String reverseAString(String s){
-        //TC-O(n), SC-O(n)
-        int start = 0;
+    // I/P - "  coding      is    great  " O/P - "great is coding" //should remove spaces when reversed
+    public static String reverseWordsInAString(String s){
+        //Solution 1 - doesn't handle multiple spaces, multiple spaces in start, middle and end
+        //TC-O(n), SC-O(n) - if input is a string, then we need to convert it to char array, so we need O(n),
+        //if input is char array then space would be O(1)
+/*        int start = 0;
         char[] chars = s.toCharArray();
         //iterate thru arr and if there is a empty space found, then reverse the word before that space
         for (int end = 0; end < s.length(); end++) {
@@ -191,10 +194,48 @@ public class StringProblems {
 
         //convert char array to string and return
         return new String(chars);
-    }
+ */
+        //Solution 2 - handle multiple spaces
+        int start = 0;
+        int end;
+        char[] chars = s.toCharArray();
+        reverse(chars, 0, chars.length - 1);
+//        System.out.println(chars);
+        while (start < chars.length - 1){
+            while (start < chars.length && chars[start] == ' ')
+                start++;
 
+            end = start + 1;
+            while (end < chars.length && chars[end] != ' ')
+                end++;
+
+            reverse(chars, start, end - 1);
+            start = end;
+        }
+        int endIndex = removeSpaces(chars);
+        return String.valueOf(chars).substring(0, endIndex); // use string.valueOf(chars) or new String(chars) to convert charArray to string
+    }
+    //remove spaces
+    private static int removeSpaces(char[] chars) {
+        int i = 0, j = 0;
+        int n = chars.length;
+        while (j < n) {
+            while (j < n && chars[j] == ' ')
+                j++;                     // skip spaces
+            while (j < n && chars[j] != ' ')
+                chars[i++] = chars[j++]; // keep non spaces
+            while (j < n && chars[j] == ' ')
+                j++;                     // skip spaces
+            if (j < n)
+                chars[i++] = ' ';        // keep only one space
+        }
+        return i;
+    }
     //reverse helper function
     private static void reverse(char[] arr, int low, int high){
+        if (arr == null || arr.length < 2)
+            return;
+
         while (low < high) {
             char tmp = arr[low];
             arr[low++] = arr[high];
@@ -529,5 +570,46 @@ public class StringProblems {
             differenceCount++;
 
         return differenceCount == 1;
+    }
+
+    //16. Remove Duplicates In a String.
+    //I/P-aabcdef, O/P-abcdef //I/P-aabcdefbbaaghg, O/P-abcdefg
+    public static String removeDuplicatesInAString(String str) {
+        //TC-O(n^2)
+/*        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            boolean flag = true;
+            for (int j = 0; j < i; j++) {
+                if (str.charAt(i) == str.charAt(j)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                s.append(str.charAt(i));
+        }
+        return s.toString();
+ */
+        //TC-O(n), SC-O(n)
+        Set<Character> set = new LinkedHashSet<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < str.length(); i++)
+            set.add(str.charAt(i));
+
+        for (var item : set)
+            stringBuilder.append(item);
+
+        return stringBuilder.toString();
+    }
+
+    //17. Remove white spaces from a string
+    public static String removeWhiteSpaces(String str){
+        char[] chars = str.toCharArray();
+        int start = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (str.charAt(i) != ' ')
+                chars[start++] = str.charAt(i);
+        }
+        return String.valueOf(chars).substring(0, start);
     }
 }
