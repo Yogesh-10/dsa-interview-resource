@@ -284,3 +284,15 @@ A strings is an array of characters, so the time complexities of basic string op
 | Search | O(n) |
 | Insert | O(n) |
 | Remove | O(n) |
+
+***Reference Materials***
+<br>
+1.Scaler Topics - https://www.scaler.com/topics/data-structures/string-in-data-structure/
+<br>
+2.Programiz - https://www.programiz.com/java-programming/string
+<br>
+3.Tech Interview Handbook - https://www.techinterviewhandbook.org/algorithms/string/
+<br>
+4.GFG - https://www.geeksforgeeks.org/strings-in-java/ and https://www.geeksforgeeks.org/string-data-structure/
+<br>
+
