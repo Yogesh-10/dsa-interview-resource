@@ -274,3 +274,13 @@ Here, the value of the string is not directly provided. Hence, a new `"Java"` 
     String s2 = “fodingisgreat”.replace(‘f’ ,’g’); // returns “codingisgreat”
     
     ```
+    
+## Time complexity
+A strings is an array of characters, so the time complexities of basic string operations will closely resemble that of array operations.
+
+| Operation | Big-O |
+| --- | --- |
+| Access | O(1) |
+| Search | O(n) |
+| Insert | O(n) |
+| Remove | O(n) |
