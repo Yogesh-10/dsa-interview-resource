@@ -121,3 +121,156 @@ String example = new String("Java");
 ```
 
 Here, the value of the string is not directly provided. Hence, a new `"Java"` string is created even though `"Java"` is already present inside the memory pool.
+
+## **Important** **String Methods in Java**
+
+1. **int length():** Returns the number of characters in the String.
+    
+    ```
+    "codingisgreat".length();  // returns 13
+    ```
+    
+2. **Char charAt(int i):** Returns the character at ith index.
+    
+    ```
+    "codingisgreat".charAt(3); // returns  ‘i’
+    ```
+    
+3. **String substring (int i):** Return the substring from the i index character to end.
+    
+    th
+    
+    ```
+    "codingisgreat".substring(3); // returns “ingisgreat”
+    ```
+    
+4. **String substring (int i, int j):** Returns the substring from i to j-1 index.
+    
+    ```
+     "codingisgreat".substring(2, 5); // returns “din”
+    ```
+    
+5. **String concat( String str):** Concatenates specified string to the end of this string.
+    
+    ```
+     String s1 = ”coding”;
+    
+     String s2 = ”isgreat”;
+    
+     String output = s1.concat(s2); // returns “codingisgreat”
+    
+    ```
+    
+6. **int indexOf (String s):** Returns the index within the string of the first occurrence of the specified string.
+    
+    ```
+     String s = ”coding is great”;
+    
+     int output = s.indexOf(“is”); // returns 7
+    
+    ```
+    
+7. **int indexOf (String s, int i):** Returns the index within the string of the first occurrence of the specified string, starting at the specified index.
+    
+    ```
+     String s = ”Learn Share Learn”;
+     indexOf(ch, fromIndex)
+     int output = s.indexOf(‘a’,3);// returns 8
+    
+    ```
+    
+8. **Int lastIndexOf( String s):** Returns the index within the string of the last occurrence of the specified string.
+    
+    ```
+     String s = ”Learn Share Learn”;
+    
+     int output = s.lastIndexOf(‘a’); // returns 14
+    
+    ```
+    
+9. **boolean equals( Object otherObj):** Compares this string to the specified object.
+    
+    ```
+     Boolean out = “coding”.equals(“coding”); // returns true
+    
+     Boolean out = “Coding”.equals(“coding”); // returns false
+    
+    ```
+    
+10. **boolean equalsIgnoreCase (String anotherString):**
+    
+    ```
+     Boolean out= “Coding”.equalsIgnoreCase(“Coding”); // returns true
+    
+     Boolean out = “coding”.equalsIgnoreCase(“coding”); // returns true
+    ```
+    
+11. **int compareTo( String anotherString):** Compares two string lexicographically.
+    
+    ```
+     int out = s1.compareTo(s2);  // where s1 ans s2 are strings to be compared
+    
+     This returns difference s1-s2. If :
+    
+     out < 0  // s1 comes before s2
+    
+     out = 0  // s1 and s2 are equal.
+    
+     out > 0   // s1 comes after s2.
+    
+    ```
+    
+12. **int compareToIgnoreCase( String anotherString):** Compares two string lexicographically, ignoring case considerations.*Note- In this case, it will not consider case of a letter (it will ignore whether it is uppercase or lowercase).*
+    
+    ```
+     int out = s1.compareToIgnoreCase(s2);
+    
+    // where s1 ans s2 are
+    
+    // strings to be compared
+    
+     This returns difference s1-s2. If :
+    
+     out < 0  // s1 comes before s2
+    
+     out = 0   // s1 and s2 are equal.
+    
+     out > 0   // s1 comes after s2.
+    
+    ```
+    
+13. **String toLowerCase():** Converts all the characters in the String to lower case.
+    
+    ```
+    String word1 = “HeLLo”;
+    
+    String word3 = word1.toLowerCase(); // returns “hello"
+    
+    ```
+    
+14. **String toUpperCase():** Converts all the characters in the String to upper case.
+    
+    ```
+    String word1 = “HeLLo”;
+    
+    String word2 = word1.toUpperCase(); // returns “HELLO”
+    
+    ```
+    
+15. **String trim():** Returns the copy of the String, by removing whitespaces at both ends. It does not affect whitespaces in the middle.
+    
+    ```
+    String word1 = “ Learn Share Learn “;
+    
+    String word2 = word1.trim(); // returns “Learn Share Learn”
+    
+    ```
+    
+16. **String replace (char oldChar, char newChar):** Returns new string by replacing all occurrences of *oldChar* with *newChar. Note:- s1 is still fodingisgreat and s2 is codingisgreat*
+    
+    ```
+    String s1 = “fodingisgreat“;
+    
+    String s2 = “fodingisgreat”.replace(‘f’ ,’g’); // returns “codingisgreat”
+    
+    ```
