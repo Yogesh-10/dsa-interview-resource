@@ -51,14 +51,15 @@ public class StringProblems {
     //I/P-"madam", O/P-true, //I/P-"abcd", O/P-false
     public static boolean isPalindrome(String str){
         //TC-O(n), SC-O(1)
-        for (int i = 0; i < str.length()/2; i++)
+/*        for (int i = 0; i < str.length()/2; i++)
             if (str.charAt(i) != str.charAt(str.length() - i - 1))
                 return false;
 
         return true;
+ */
 
         //Another Solution with while loop
-/*      int start = 0;
+        int start = 0;
         int end = str.length() - 1;
         while (start < end) {
             if (str.charAt(start) != str.charAt(end))
@@ -67,7 +68,6 @@ public class StringProblems {
             end--;
         }
        return true;
- */
     }
 
     //4. Check if a string is subsequence of other
@@ -603,6 +603,7 @@ public class StringProblems {
     }
 
     //17. Remove white spaces from a string
+    //I/P - "  a  nice day  ", O/P-"aniceday"
     public static String removeWhiteSpaces(String str){
         char[] chars = str.toCharArray();
         int start = 0;
@@ -612,4 +613,199 @@ public class StringProblems {
         }
         return String.valueOf(chars).substring(0, start);
     }
+
+    //18. Find all palindromic substrings and return total number of palindromes
+    //I/P - "aaab", O/P-7, 'a', 'a', 'a', 'aa', 'aa', 'aaa', 'b' (single character is also considered palindrome)
+    public static int palindromicSubstrings(String str){
+        int count = 0;
+        for(int i=0;i<str.length();i++){
+            //call countPalindromes two times because, if we call only for i,i we will miss some pairs with even length, so we call i,i+1, to cover all pairs
+            count += countPalindromes(str, i, i); //Count odd sized length,  (pass i-1,i+1 - if single letter is not considered as palindrome)
+            count += countPalindromes(str, i, i+1); //Count even sized length
+        }
+        return count;
+    }
+    public static int countPalindromes(String s, int i, int j){
+        int count = 0;
+        while(i>=0 && j<s.length() && s.charAt(i)==s.charAt(j)){    //Check for the palindrome string
+            count++;    //Increment the count if palindrome in substring found
+            i--;    //To trace string in left direction
+            j++;    //To trace string in right direction
+        }
+        return count;
+    }
+
+
+    //19. Permutation in a String
+    //Given a string and a pattern, find out if the string contains any permutation of the pattern. Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations: abc acb bac bca cab cba
+    //Input: String="oidbcaf", Pattern="abc" //Output: true //Explanation: The string contains "bca" which is a permutation of the given pattern.
+    //Input: String="odicf", Pattern="dc" //Output: false //Explanation: No permutation of the pattern is present in the given string as a substring.
+    //Input: String="bcdxabcdy", Pattern="bcdyabcdx" //Output: true //Explanation: Both the string and the pattern are a permutation of each other.
+    //Input: String="aaacb", Pattern="abc" //Output: true //Explanation: The string contains "acb" which is a permutation of the given pattern.
+    public static boolean stringPermutation(String str, String pattern){
+        //Time Complexity - O(N + M), where ‘N’ and ‘M’ are the number of characters in the input string and the pattern respectively.
+        //Space Complexity - The space complexity of the algorithm is O(M) since in the worst case, the whole pattern can have distinct characters which will go into the HashMap.
+        int windowStart = 0; int matched = 0;
+
+        //Create a HashMap to calculate the frequencies of all characters in the pattern
+        Map<Character, Integer> charFrequencyMap = new HashMap<>();
+        for (char ch : pattern.toCharArray())
+            charFrequencyMap.put(ch, charFrequencyMap.getOrDefault(ch, 0) + 1);
+
+        // our goal is to match all the characters from the 'charFrequencyMap' with the current window try to extend the range [windowStart, windowEnd]
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
+            char currChar = str.charAt(windowEnd);
+            if (charFrequencyMap.containsKey(currChar)){
+                // decrement the frequency of the matched character
+                charFrequencyMap.put(currChar, charFrequencyMap.get(currChar) - 1);
+                if (charFrequencyMap.get(currChar) == 0) // character is completely matched
+                    matched++;
+            }
+            if (matched == charFrequencyMap.size())
+                return true;
+
+            if (windowEnd >= pattern.length() - 1){ // shrink the window by one character
+                char leftChar = str.charAt(windowStart++);
+                if (charFrequencyMap.containsKey(leftChar)){
+                    if (charFrequencyMap.get(leftChar) == 0)
+                        matched--;
+                    // put the character back for matching
+                    charFrequencyMap.put(leftChar, charFrequencyMap.get(leftChar) + 1);
+                }
+            }
+        }
+        return false;
+    }
+
+    //20. String Anagrams
+    //Given a string and a pattern, find all anagrams of the pattern in the given string. //Anagram is actually a Permutation of a string, For example, “abc” has the following six anagrams: abc acb bac bca cab cba
+    //Input: String="ppqp", Pattern="pq" //Output: [1, 2] //Explanation: The two anagrams of the pattern in the given string are "pq" and "qp".
+    //Input: String="abbcabc", Pattern="abc" //Output: [2, 3, 4] //Explanation: The three anagrams of the pattern in the given string are "bca", "cab", and "abc".
+    public static List<Integer> stringAnagrams(String str, String pattern){
+        int windowStart = 0, matched = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        for (char ch : pattern.toCharArray())
+            frequencyMap.put(ch, frequencyMap.getOrDefault(ch, 0) + 1);
+
+        List<Integer> resultIndices = new ArrayList<>();
+        // our goal is to match all the characters from the map with the current window
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
+            char currChar = str.charAt(windowEnd);
+            // decrement the frequency of the matched character
+            if (frequencyMap.containsKey(currChar)){
+                frequencyMap.put(currChar, frequencyMap.get(currChar) - 1);
+                if (frequencyMap.get(currChar) == 0)
+                    matched++;
+            }
+
+            if (matched == frequencyMap.size()) // if we found an anagram add index to result
+                resultIndices.add(windowStart);
+
+            if (windowEnd >= pattern.length() - 1){ // shrink the window.
+                char leftChar = str.charAt(windowStart++);
+                if (frequencyMap.containsKey(leftChar)){
+                    if (frequencyMap.get(leftChar) == 0)
+                        matched--; // before putting the character back, decrement the matched count
+
+                    // put the character back
+                    frequencyMap.put(leftChar, frequencyMap.get(leftChar) + 1);
+                }
+            }
+        }
+        return resultIndices;
+    }
+
+    //21. Smallest Window containing Substring
+    //Given a string and a pattern, find the smallest substring in the given string which has all the characters of the given pattern.
+    //Input: String="aabdec", Pattern="abc" //Output: "abdec" //Explanation: The smallest substring having all characters of the pattern is "abdec"
+    //Input: String="abdabca", Pattern="abc" //Output: "abc" //Explanation: The smallest substring having all characters of the pattern is "abc".
+    //Input: String="adcad", Pattern="abc" //Output: "" //Explanation: No substring in the given string has all characters of the pattern.
+    public static String minimumWindowSubstring(String str, String pattern){
+        //The time complexity of the above algorithm will be O(N + M) where ‘N’ and ‘M’ are the number of characters in the input string and the pattern respectively.
+        //The space complexity of the algorithm is O(M) since in the worst case, the whole pattern can have distinct characters which will go into the HashMap. In the worst case, we also need O(N) space for the resulting substring, which will happen when the input string is a permutation of the pattern.
+        int windowStart = 0; int matched = 0; int minLength = str.length() + 1; int subStrStart = 0;
+
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        for (char ch : pattern.toCharArray())
+            frequencyMap.put(ch, frequencyMap.getOrDefault(ch, 0) + 1);
+
+        // try to extend the range [windowStart, windowEnd]
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
+            char currChar = str.charAt(windowEnd);
+            if (frequencyMap.containsKey(currChar)){
+                frequencyMap.put(currChar, frequencyMap.get(currChar) - 1);
+                if (frequencyMap.get(currChar) >= 0) // count every matching of a character
+                    matched++;
+            }
+
+            // shrink the window if we can, finish as soon as we remove a matched character
+            while (matched == pattern.length()) {
+                if (minLength > windowEnd - windowStart + 1) {
+                    minLength = windowEnd - windowStart + 1;
+                    subStrStart = windowStart;
+                }
+
+                char leftChar = str.charAt(windowStart++);
+                if (frequencyMap.containsKey(leftChar)) {
+                    // note that we could have redundant matching characters, therefore we'll decrement the matched count only when a useful occurrence of a matched character is going out of the window
+                    if (frequencyMap.get(leftChar) == 0)
+                        matched--;
+
+                    frequencyMap.put(leftChar, frequencyMap.get(leftChar) + 1);
+                }
+            }
+        }
+        return minLength > str.length() ? "" : str.substring(subStrStart, subStrStart + minLength);
+    }
+
+    //22. Words Concatenation
+    //You are given a string s and an array of strings words of the same length. Return all starting indices of substring(s) in s that is a concatenation of each word in words exactly once, in any order, and without any intervening characters. You can return the answer in any order.
+    //Input: String="catfoxcat", Words=["cat", "fox"] Output: [0, 3] //The two substring containing both the words are "catfox" & "foxcat".
+    //Input: String="catcatfoxfox", Words=["cat", "fox"] Output: [3] Explanation: The only substring containing both the words is "catfox".
+    //Input: s = "barfoothefoobarman", words = ["foo","bar"], Output: [0,9] Explanation: Substrings starting at index 0 and 9 are "barfoo" and "foobar" respectively. The output order does not matter, returning [9,0] is fine too.
+    //Input: s = "wordgoodgoodgoodbestword", words = ["word","good","best","word"] //Output: []
+    //Input: s = "barfoofoobarthefoobarman", words = ["bar","foo","the"] //Output: [6,9,12]
+    //algo: Keep the frequency of every word in a HashMap.
+    //Starting from every index in the string, try to match all the words.
+    //In each iteration, keep track of all the words that we have already seen in another HashMap.
+    //If a word is not found or has a higher frequency than required, we can move on to the next character in the string.
+    //Store the index if we have found all the words.
+    public static List<Integer> findWordConcatenation(String str, String[] words) {
+        //hashmap for frequency of words array
+       Map<String, Integer> wordFrequencyMap = new HashMap<>();
+        for (String item: words)
+            wordFrequencyMap.put(item, wordFrequencyMap.getOrDefault(item, 0) + 1);
+
+        //return indices result
+        List<Integer> resultIndices = new ArrayList<>();
+
+        int wordsCount = words.length, wordLength = words[0].length();
+        for (int i = 0; i <= str.length() - wordsCount * wordLength; i++){
+            //hashmap to check the seen words to keep track of words concatenation, if the word in this hashmap goes more than words in frequencyMap, then we break
+            Map<String, Integer> wordsSeen = new HashMap<>();
+            for (int j = 0; j < words.length; j++) {
+                //calculates nextIndex to be checked
+                int nextWordIndex = i + j * wordLength;
+                // get the next word from the string
+                String word = str.substring(nextWordIndex, nextWordIndex + wordLength);
+                if (!wordFrequencyMap.containsKey(word)) // break if we don't need the word, i.e if the word is not in hashmap
+                    break;
+
+                //if word is in frequency hashmap, then add that word to wordsSeen hashmap
+                wordsSeen.put(word, wordsSeen.getOrDefault(word, 0) + 1);
+
+                //if current word in wordsSeen hashmap is greater than wordFrequencyMap, then we have crossed the number of frequency
+                //for eg: catcatfoxfox, ['cat', 'fox']. here, we have only one cat in words arr, but we have 2 cats continuously in string, so we break since we cannot form a concatenation
+                if (wordsSeen.get(word) > wordFrequencyMap.get(word))
+                    break;
+
+                //if j+1 = wordsCount, that means we have reached till the words length and found a word concatenation in the string, so we add i to result
+                if (j + 1 == wordsCount)
+                    resultIndices.add(i);
+            }
+        }
+        return resultIndices;
+    }
+
+
 }
