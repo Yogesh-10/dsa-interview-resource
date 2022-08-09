@@ -285,14 +285,28 @@ A strings is an array of characters, so the time complexities of basic string op
 | Insert | O(n) |
 | Remove | O(n) |
 
-***Reference Materials***
+## **Operations involving another string[](https://www.techinterviewhandbook.org/algorithms/string/#operations-involving-another-string)**
+
+Here we assume the other string is of length m.
+
+| Operation | Big-O | Note |
+| --- | --- | --- |
+| Find substring | O(n.m) | This is the most naive case. There are more efficient algorithms for string searching such as the KMP algorithm |
+| Concatenating strings | O(n + m) |  |
+| Slice | O(m) |  |
+| Split (by token) | O(n + m) |  |
+| Strip (remove leading and trailing whitespaces) | O(n) |  |
+
 <br>
-1.Scaler Topics - https://www.scaler.com/topics/data-structures/string-in-data-structure/
 <br>
-2.Programiz - https://www.programiz.com/java-programming/string
+
+## ***Reference Materials***
+**1.Scaler Topics** - https://www.scaler.com/topics/data-structures/string-in-data-structure/
 <br>
-3.Tech Interview Handbook - https://www.techinterviewhandbook.org/algorithms/string/
+**2.Programiz** - https://www.programiz.com/java-programming/string
 <br>
-4.GFG - https://www.geeksforgeeks.org/strings-in-java/ and https://www.geeksforgeeks.org/string-data-structure/
+**3.Tech Interview Handbook** - https://www.techinterviewhandbook.org/algorithms/string/
+<br>
+**4.GFG** - https://www.geeksforgeeks.org/strings-in-java/ and https://www.geeksforgeeks.org/string-data-structure/
 <br>
 
