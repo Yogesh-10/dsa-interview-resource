@@ -1528,6 +1528,47 @@ public class ArrayProblems {
        }
        return squares;
     }
+
+    //Triplet Sum to Zero - Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
+    //Input: [-3, 0, 1, 2, -1, 1, -2] Output: [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1] Explanation: There are four unique triplets whose sum is equal to zero.
+    //Input: [-5, 2, -1, -2, 3] Output: [[-5, 2, 3], [-2, -1, 3]] Explanation: There are two unique triplets whose sum is equal to zero.
+    public static List<List<Integer>> tripletSumToZero(int[] arr){
+        //TC-O(n^2) - Sorting the array will take O(N* logN).  Overall it will take O(N * logN + N^2), which is asymptotically equivalent to O(N^2)
+        //SC - O(N)
+        //Idea is first, we will sort the array and then iterate through it taking one number at a time. Let’s say during our iteration we are at number ‘X’, so we need to find ‘Y’ and ‘Z’ such that X + Y + Z == 0.
+        //At this stage, our problem translates into finding a pair whose sum is equal to “−X” (as from the above equation Y + Z == −X).
+        Arrays.sort(arr); //Sort the array first
+        List<List<Integer>> triplets = new ArrayList<>();
+        for (int i = 0; i < arr.length - 2; i++) {
+            // skip same element to avoid duplicate triplets, for eg: [-2, 0, 2] and [0, 2, -2]
+            if (i > 0 && arr[i - 1] == arr[i])
+                continue;
+
+            searchPairs(arr, -arr[i], i + 1, triplets);
+        }
+        return triplets;
+    }
+    private static void searchPairs(int[] arr, int targetSum, int left, List<List<Integer>> triplets) {
+        int right = arr.length - 1;
+        while (left < right){
+            int currentSum = arr[left] + arr[right];
+            //if found the triplet
+            if (currentSum == targetSum){
+                triplets.add(Arrays.asList(-targetSum, arr[left], arr[right]));
+                    left++;
+                    right--;
+                // skip same element to avoid duplicate triplets
+                while (left < right && arr[left] == arr[left - 1])
+                    left++;
+                // skip same element to avoid duplicate triplets
+                while (left < right && arr[right] == arr[right + 1])
+                    right--;
+            } else if (targetSum > currentSum)
+                left++; // we need a pair with a bigger sum, so increment left
+            else
+                right--; // we need a pair with a smaller sum, so decrement right
+        }
+    }
 }
 
 class Interval{
