@@ -1569,6 +1569,61 @@ public class ArrayProblems {
                 right--; // we need a pair with a smaller sum, so decrement right
         }
     }
+
+    //Triplet Sum Close to Target
+    //Given an array of unsorted numbers and a target number, find a triplet in the array whose sum is as close to the target number as possible, return the sum of the triplet. If there are more than one such triplet, return the sum of the triplet with the smallest sum.
+    //Input: [-2, 0, 1, 2], target=2 Output: 1 Explanation: The triplet [-2, 1, 2] has the closest sum to the target.
+    //Input: [-3, -1, 1, 2], target=1 Output: 0 Explanation: The triplet [-3, 1, 2] has the closest sum to the target.
+    //Input: [1, 0, 1, 1], target=100 Output: 3 Explanation: The triplet [1, 1, 1] has the closest sum to the target.
+    public static int tripletSumCloseToTarget(int[] arr, int target){
+        //TC- overall O(n^2), sorting and searching triplet will take O(n log n + n^2)
+        //SC-O(1)
+        Arrays.sort(arr); //sort the array first
+        int closestSum = Integer.MAX_VALUE;
+        //we use 2 pointer approach, we fix element at i, and move start and end and calculate sum
+        for (int i = 0; i < arr.length - 2; i++) {
+            int start = i + 1;
+            int end = arr.length - 1;
+            while (start < end){
+                int currentSum = arr[i] + arr[start] + arr[end];
+                //if sum = target return target
+                if (currentSum == target)
+                    return target;
+
+                //else, find the difference between currentSum and target, which will give the closest value, for eg: if sum is 2 and target is 1, we do 2 - 1 = 1, so the closestSum will be 1, in next iteration if currentSum-target is smaller than 1, we update currentSum to that value
+                //we use abs, because difference might be negative.
+                if (Math.abs(currentSum - target) < Math.abs(closestSum - target)) {
+                    closestSum = currentSum;
+                }
+                //if currentSum is greater than target, we decrement end, because we want sum closer to target
+                if (currentSum > target)
+                    end--;
+                else
+                    start++;
+            }
+        }
+        return closestSum;
+    }
+
+    public static int tripletsWithSmallerSum(int[] arr, int target){
+        Arrays.sort(arr);
+        int smallSumCount = 0;
+        for (int i = 0; i < arr.length - 2; i++) {
+            int start = i + 1;
+            int end = arr.length - 1;
+            while (start < end){
+                int currentSum = arr[i] + arr[start] + arr[end];
+                if (currentSum < target)
+                    smallSumCount++;
+
+                if (currentSum < target)
+                    end--;
+                else
+                    start++;
+            }
+        }
+        return smallSumCount;
+    }
 }
 
 class Interval{
