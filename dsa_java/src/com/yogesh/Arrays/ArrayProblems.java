@@ -1216,15 +1216,24 @@ public class ArrayProblems {
         System.out.println(Arrays.toString(arr));
     }
 
-    //sort array with three types of elements
+    //Sort an array of 0s, 1s and 2s - sort array with three types of elements
+    //Given an array A[] consisting only 0s, 1s and 2s. The task is to write a function that sorts the given array. The functions should put all 0s first, then all 1s and all 2s in last.
+    //Input: [1, 0, 2, 1, 0] Output: [0 0 1 1 2],  Input: [2, 2, 0, 1, 2, 0]Output: [0 0 1 2 2 2 ]
     public static void sortZerosOnesAndTwos(int[] arr){
+        //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1] and all the two's will be in range [high+1 to n] and all the ones will be in [low to mid-1]
+        //We can use a Two Pointers approach while iterating through the array. Let’s say the two pointers are called low and high which are pointing to the first and the last element of the array respectively.
+        //So while iterating, we will move all 0s before low and all 2s after high so that in the end, all 1s will be between low and high.
         int low = 0; int high = arr.length - 1; int mid = 0;
 
+        //if mid is greater than high, then we have sorted the array
         while (mid <= high){
+            //if currentElement is zero, we swap low with mid, because we move zeros before low. after swapping increment low and mid
             if (arr[mid] == 0)
                 swap(arr, low++, mid++);
+            //if currentElement is mid, then we just increase the mid, because one's should be in-between zero's and two's
             else if (arr[mid] == 1)
                 mid++;
+            //if currentElement is two, we swap low with high, because we move two's after high, after swapping decrement high
             else
                 swap(arr, mid, high--);
         }
@@ -1605,25 +1614,86 @@ public class ArrayProblems {
         return closestSum;
     }
 
+    //Triplets with Smaller Sum - Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
+    //Input: [-1, 0, 2, 3], target=3 Output: 2 Explanation: There are two triplets whose sum is less than the target: [-1, 0, 3], [-1, 0, 2]
+    //Input: [-1, 4, 2, 1, 3], target=5 Output: 4 Explanation: There are four triplets whose sum is less than the target:[-1, 1, 4], [-1, 1, 3], [-1, 1, 2], [-1, 2, 3]
+    //Input: [5, 1, 3, 4, 7], target=12 Output: 4 Explanation: There are four triplets whose sum is less than the target:(1, 3, 4), (1, 3, 5), (1, 3, 7) and (1, 4, 5)
     public static int tripletsWithSmallerSum(int[] arr, int target){
-        Arrays.sort(arr);
-        int smallSumCount = 0;
+        //TC- overall O(n^2), sorting and searching triplet will take O(n log n + n^2)
+        //SC-O(1)
+        Arrays.sort(arr); //sort the array first
+        int smallSumCount = 0; //count of triplets smaller than target
         for (int i = 0; i < arr.length - 2; i++) {
+            //we fix the element at arr[i] and use 2 pointer approach from i + 1 to n
             int start = i + 1;
             int end = arr.length - 1;
             while (start < end){
                 int currentSum = arr[i] + arr[start] + arr[end];
-                if (currentSum < target)
-                    smallSumCount++;
-
-                if (currentSum < target)
-                    end--;
+                //if currentSum is small than target, that means we have found a triplet sum, smaller than target
+                //so if arr[i] + arr[start] + arr[end] is a smaller sum, then if we decrement end and calculate sum, it will be definitely smaller than target, because array is sorted
+                //eg: [-1, 1, 2, 3, 4], target=5, -1 + 1 + 4 = 4, smaller than target, so if we decrement end now, -1 + 1 + 3 = 3, will also be smaller than target. so we can say that (end-start) will give total count of triplets smaller than target
+                if (currentSum < target) {
+                    smallSumCount += (end - start);
+                    start++; //increment start to check next triplet
+                }
                 else
-                    start++;
+                    end--; //else if target is greater than sum, we need a value smaller than target, so we decrement end
             }
         }
         return smallSumCount;
     }
+
+    //Subarrays with Product Less than a Target(k) - Given an array with positive numbers and a target number, find all of its contiguous subarrays whose product is less than the target number.
+    //Input: [2, 5, 3, 10], target=30 Output: 6 Explanation: There are six contiguous subarrays whose product is less than the target. [2], [5], [2, 5], [3], [5, 3], [10]
+    //Input: [8, 2, 6, 5], target=50 Output: 7 Explanation: There are seven contiguous subarrays whose product is less than the target. [8], [2], [8, 2], [6], [2, 6], [5], [6, 5]
+    //Input : arr[] = [1, 2, 3, 4] target = 10 Output : 7 The subarrays are {1}, {2}, {3}, {4} {1, 2}, {1, 2, 3} and {2, 3}
+    public static int subarrayProductLessThanK(int[] arr, int k){
+        //TC-O(n^2), SC-O(1)
+/*        int count = 0; int product;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < k)
+                count++;
+            product = arr[i];
+            for (int j = i + 1; j < arr.length; j++){
+                product *= arr[j];
+                if (product >= k)
+                    break;
+
+                count++;
+            }
+        }
+        return count;
+ */
+
+        //sliding window approach
+        //TC-O(n), SC-O(1)
+        if (k <= 1) //if k is 1 or less than 1, we will not have a product less than 1, so return 0
+            return 0;
+        int product = 1;
+        int count = 0; //subarray count
+        int windowStart = 0;
+        //we start from 1st element in array
+        for (int windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+            //multiply product with arr[windowEnd] in each iteration
+            product *= arr[windowEnd];
+
+            //if product is greater than k, we slide our window, but removing element at arr[windowStart]
+            while (windowStart < windowEnd && product >= k)
+                product /= arr[windowStart++];
+
+            //if the product is less than k, we add it to count.
+            //windowEnd - windowStart + 1, means that how many contiguous arrays does this step produce? It is: (windowEnd-windowStart) + 1 -For  example nums = [10,5,2,6]: If we start at the 0th index, [10,5,2,6], the number of intervals is obviously 1.
+            //If we move to the 1st index, the window is now [10,5,2,6]. The new intervals created are [5] and [10,5], so we add 2. Now, expand the window to the 2nd index: [10,5,2,6]. The new intervals are [2], [5,2], and [10,5,2], so we add 3.
+            //The pattern should be obvious by now; we add right - left + 1 to the output variable every loop!
+            //since the product of all numbers from left to right is less than the target therefore, all subarrays from lef to right will have a product less than the target too; to avoid duplicates, we will start with a subarray containing only arr[right] and then extend it
+            if (product < k)
+                count += windowEnd - windowStart + 1;
+
+        }
+        return count;
+    }
+
+
 }
 
 class Interval{
