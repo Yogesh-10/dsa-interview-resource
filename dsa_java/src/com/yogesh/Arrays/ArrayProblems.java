@@ -1216,16 +1216,19 @@ public class ArrayProblems {
         System.out.println(Arrays.toString(arr));
     }
 
-    //Sort an array of 0s, 1s and 2s - sort array with three types of elements
+    //Sort an array of 0s, 1s and 2s - sort array with three types of elements (Dutch National flag Problem)
     //Given an array A[] consisting only 0s, 1s and 2s. The task is to write a function that sorts the given array. The functions should put all 0s first, then all 1s and all 2s in last.
     //Input: [1, 0, 2, 1, 0] Output: [0 0 1 1 2],  Input: [2, 2, 0, 1, 2, 0]Output: [0 0 1 2 2 2 ]
     public static void sortZerosOnesAndTwos(int[] arr){
-        //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1] and all the two's will be in range [high+1 to n] and all the ones will be in [low to mid-1]
+        //TC- O(n), SC-O(1)
+        //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1]i.e, before low and all the two's will be in range [high+1 to n]i.e, after high and all the ones will be in [low to mid-1]i.e, between 0's and 2's
         //We can use a Two Pointers approach while iterating through the array. Let’s say the two pointers are called low and high which are pointing to the first and the last element of the array respectively.
         //So while iterating, we will move all 0s before low and all 2s after high so that in the end, all 1s will be between low and high.
-        int low = 0; int high = arr.length - 1; int mid = 0;
+        int low = 0; //low pointer to swap 0's
+        int mid = 0; //mid pointer to check value of current element, and swap with low and high
+        int high = arr.length - 1; //high pointer to swap 2's
 
-        //if mid is greater than high, then we have sorted the array
+        //if mid is greater than high, then we have sorted the array, so break the loop
         while (mid <= high){
             //if currentElement is zero, we swap low with mid, because we move zeros before low. after swapping increment low and mid
             if (arr[mid] == 0)
@@ -1692,8 +1695,6 @@ public class ArrayProblems {
         }
         return count;
     }
-
-
 }
 
 class Interval{
