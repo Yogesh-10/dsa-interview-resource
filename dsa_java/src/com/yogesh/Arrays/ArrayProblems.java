@@ -1695,6 +1695,7 @@ public class ArrayProblems {
         }
         return count;
     }
+
 }
 
 class Interval{
