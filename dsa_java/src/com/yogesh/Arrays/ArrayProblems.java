@@ -1696,6 +1696,42 @@ public class ArrayProblems {
         return count;
     }
 
+    //Minimum Window Sort - Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
+    //Input: [1, 2, 5, 3, 7, 10, 9, 12] Output: 5 Explanation: We need to sort only the subarray [5, 3, 7, 10, 9] to make the whole array sorted
+    //Input: [1, 3, 2, 0, -1, 7, 10] Output: 5 Explanation: We need to sort only the subarray [1, 3, 2, 0, -1] to make the whole array sorted
+    //Input: [1, 2, 3] Output: 0 Explanation: The array is already sorted, Input: [3, 2, 1] Output: 3 Explanation: The whole array needs to be sorted.
+    public static int minimumWindowSort(int[] arr){
+        //TC-O(n), SC-O(1)
+        int low = 0;
+        int high = arr.length - 1;
+
+        //From the beginning and end of the array, find the first elements that are out of the sorting order. The two elements will be our candidate subarray.
+        //find the first number out of sorting order from the beginning
+        while (low < high && arr[low] <= arr[low + 1])
+            low++;
+        if (low == high) // if the array is sorted
+            return 0;
+        // find the first number out of sorting order from the end
+        while (high > 0 && arr[high] >= arr[high - 1])
+            high--;
+
+        // find the maximum and minimum of the subarray
+        int subarrayMax = Integer.MIN_VALUE;
+        int subarrayMin = Integer.MAX_VALUE;
+        for (int i = low; i <= high; i++){
+            subarrayMax = Math.max(subarrayMax, arr[i]);
+            subarrayMin = Math.min(subarrayMin, arr[i]);
+        }
+
+        // extend the subarray towards left to include any number which is bigger than the minimum of the subarray
+        while (low > 0 && arr[low - 1] > subarrayMin)
+            low--;
+        // extend the subarray towards right to include any number which is smaller than the maximum of the subarray
+        while (high < arr.length - 1 && arr[high + 1] < subarrayMax)
+            high++;
+
+        return high - low + 1;
+    }
 }
 
 class Interval{
