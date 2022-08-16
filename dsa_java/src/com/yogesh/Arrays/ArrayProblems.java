@@ -6,8 +6,21 @@ public class ArrayProblems {
     //1. Largest element in an array
     //I/p: [10, 50, 20, 8], O/P - 1(index of largest element in array)
     //I/p: [10, 20, 30, 80], O/P - 3(index of largest element in array)
-    //O(n) solution - Efficient solution
     public static int largestElement(int[] arr) {
+        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            boolean flag = true;
+            for (int j = 0; j < arr.length; j++) {
+                if (arr[j] > arr[i]){
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) return i;
+        }
+        return -1;
+ */
+        //O(n) solution - Efficient solution, SC-O(1)
         int max = arr[0];
         for (int i = 1; i < arr.length; i++) {
             if (arr[i] > max)
@@ -16,18 +29,22 @@ public class ArrayProblems {
         return max;
     }
 
-    //1. Second Largest element in an array
+    //2. Second Largest element in an array
     //I/p: [10, 50, 20, 8], O/P - 2(index of largest element in array)
     //I/p: [10, 20, 30, 80], O/P - 2(index of largest element in array)
-    //O(n) solution - Efficient solution
     public static int secondLargestElement(int[] arr) {
+        //O(n) solution - Efficient solution
         int largest = 0;
         int secondLargest = -1; //we initialize second largest -1 because, we may have same values in array, eg: {10,10,10}. so here only we can have largest value. we cannot have second largest value. so we simply return -1
+        //we traverse from first element, and check curr element is greater than arr[largest], if yes, we set current element to largest, and largest element to second largest
         for (int i = 1; i < arr.length; i++) {
+            //the idea is to find largest element, and update secondLargest as largest element, and current element as largest element, because we have found a largest element, which is greater then previous largest element, so we set previous largest as second largest, and largest to current element
+            //if curr element is greater than largest element, update secondLargest to largest and update current element as largest
             if (arr[i] > arr[largest]) {
-                secondLargest = largest;
-                largest = i;
-            } else if (arr[i] != arr[largest]) {
+                secondLargest = largest; //update secondLargest to largest
+                largest = i; //update largest to current element
+            } else if (arr[i] != arr[largest]) { //if curr element is equal to largest, we dont want to update. so we simply ignore
+                // if curr element is not greater than largest, and not equal to largest or if secondLargest remains -1, in this example{10, 10, 10, 9}, then we update secondLargest
                 if (secondLargest == -1 || arr[i] > arr[secondLargest])
                     secondLargest = i;
             }
@@ -36,7 +53,18 @@ public class ArrayProblems {
     }
 
     //3. Check if array is sorted
-    public static boolean isSortedArray(int[] arr) {
+    //I/P-[10, 20, 20, 20, 4, 30, 40, 50], Output - false //I/P-[10, 20, 20, 20, 30, 40, 50], Output - true
+    public static boolean isArraySorted(int[] arr) {
+        //O(n^2) Solution
+/*        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] > arr[j])
+                    return false;
+            }
+        }
+        return true;
+ */
+        //O(n) Solution
         for (int i = 1; i < arr.length; i++) {
             if (arr[i] < arr[i - 1])
                 return false;
@@ -46,16 +74,28 @@ public class ArrayProblems {
 
     //4. Reverse an array
     public static int[] reverseArray(int[] arr) {
-        for (int i = arr.length - 1, j = 0; i > j; j++, i--) {
+        //TC-O(n), SC-O(1)
+        int low = 0; int high = arr.length - 1;
+        while (low < high){
+            int temp = arr[low];
+            arr[low] = arr[high];
+            arr[high] = temp;
+            low++;
+            high--;
+        }
+        return arr;
+        //using for loop
+/*        for (int i = arr.length - 1, j = 0; i > j; j++, i--) {
             int temp = arr[j];
             arr[j] = arr[i];
             arr[i] = temp;
         }
         return arr;
+ */
     }
 
     //5. remove duplicates from sorted array
-    //Input: [2, 3, 3, 3, 6, 9, 9] Output: 4 Explanation: The elements after removing the duplicates will be [2, 3, 6, 9].
+    //Input: [2, 3, 3, 3, 6, 9, 9] Output: 4(len of arr) Explanation: The elements after removing the duplicates will be [2, 3, 6, 9].
     //Input: [2, 2, 2, 11], Output: 2 Explanation: The elements after removing the duplicates will be [2, 11].
     public static int removeDuplicates(int[] arr) {
         //TC-O(n), SC-O(1)
@@ -67,13 +107,30 @@ public class ArrayProblems {
                 res++;
             }
         }
-        return res;
+        return res; //return len of array
     }
 
     //6. Move zeros to end.
+    //I/P - [0, 1, 0, 2, 0, 3, 0, 4, 0, 5], O/P-[1, 2, 3, 4, 5, 0, 0, 0, 0, 0]
+    //I/P - [10,5,0,0,8,0,9,0], O/P-[10, 5, 8, 9, 0, 0, 0, 0]
     public static int[] moveZerosToEnd(int[] arr) {
+        //TC-O(n^2), SC-O(1)
+/*       for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 0){
+                for (int j = i + 1; j < arr.length; j++) {
+                    if (arr[j] != 0){
+                        int temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                        break;
+                    }
+                }
+            }
+        }
+        return arr;
+ */
+        //TC-O(n), SC-O(1)
         int count = 0;
-
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != 0) {
                 //swap zero and non-zero number
@@ -88,7 +145,9 @@ public class ArrayProblems {
     }
 
     //7. Left Rotate Array.
+    //I/P-[10, 20, 30, 40, 50, 60], O/P-[20, 30, 40, 50, 60, 10]
     public static int[] leftRotate(int[] arr) {
+        //TC-O(n), SC-O(1)
         for (int i = 0; i < arr.length - 1; i++) {
             int temp = arr[i + 1];
             arr[i + 1] = arr[i];
@@ -96,6 +155,13 @@ public class ArrayProblems {
         }
 
         return arr;
+        //another approach
+/*      int temp = arr[0];
+        for (int i = 1; i < arr.length; i++)
+            arr[i - 1] = arr[i];
+
+        arr[arr.length - 1] = temp;
+ */
     }
 
     public static int[] rightRotate(int[] arr){
