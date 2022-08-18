@@ -164,7 +164,10 @@ public class ArrayProblems {
  */
     }
 
+    //8.Right Rotate Array.
+    //I/P-[10, 20, 30, 40, 50, 60], O/P- [60, 10, 20, 30, 40, 50]
     public static int[] rightRotate(int[] arr){
+        //TC-O(n), SC-O(1)
         for (int i = arr.length - 1; i > 0; i--){
             int temp = arr[i - 1];
             arr[i - 1] = arr[i];
@@ -173,6 +176,9 @@ public class ArrayProblems {
         return arr;
     }
 
+    //9. Left Rotate Array by d times
+    //Input: arr[] = {1, 2, 3, 4, 5, 6, 7}, d=2 Output: 3 4 5 6 7 1 2
+    //Input: arr[] = {3, 4, 5, 6, 7, 1, 2}, d=3 Output: 6 7 1 2 3 4 5
     public static int[] leftRotateByDTimes(int[] arr, int d) {
         //solution 1 - O(nd) time, Aux space - O(1)
 //        for (int i = 0; i < d; i++) {
@@ -190,18 +196,13 @@ public class ArrayProblems {
 //            arr[arr.length - d + i] = temp[i];
 //        return arr;
 
-        //solution-3 O(n) time and O(1) space
-
-        //reverse the d elements
-        reverse(arr, 0, d - 1);
-        //reverse the remaining elements
-        reverse(arr, d, arr.length - 1);
-        //reverse entire array
-        reverse(arr, 0, arr.length - 1);
-
+        //solution-3 Reversal algo for array rotation
+        //O(n) time and O(1) space
+        reverse(arr, 0, d - 1); //reverse the first d-1 elements
+        reverse(arr, d, arr.length - 1);//reverse the remaining elements from d to end of array
+        reverse(arr, 0, arr.length - 1);//reverse entire array
         return arr;
     }
-
     private static void reverse(int[] arr, int low, int high){
         while (low < high){
             int temp = arr[low];
@@ -212,26 +213,29 @@ public class ArrayProblems {
         }
     }
 
+    //10. Leaders in an array - An element is leader if it is greater than all the elements to its right side. And the rightmost element is always a leader. For example in the array {16, 17, 4, 3, 5, 2}, leaders are 17, 5 and 2.
+    //I/P-[16, 17, 4, 3, 5, 2], O/P - 17 5 2
     public static void leaderInArray(int[] arr) {
-        //7,10,4,3,6,5,2
-        //O(n^2)
-//        for (int i = 0; i < arr.length; i++){
-//            boolean flag = false;
-//            for (int j = i + 1; j < arr.length; j++){
-//                if (arr[i] <= arr[j]) {
-//                    flag = true;
-//                    break;
-//                }
-//            }
-//            if (!flag){
-//                System.out.print(arr[i] + " ");
-//            }
-//        }
-
-        //O(n) - solution
-        int currLeader = arr[arr.length - 1];
+        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++){
+            boolean flag = false;
+            for (int j = i + 1; j < arr.length; j++){
+                if (arr[i] <= arr[j]) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag){
+                System.out.print(arr[i] + " ");
+            }
+        }
+ */
+        //O(n) - solution NOTE:This solution prints the values in reverse order, if we want to print as same order in array, we can use a stack or store values in arr and reverse them.
+        int currLeader = arr[arr.length - 1]; //last element is always a leader, so we set it as currLeader
         System.out.print(currLeader + " ");
 
+        //we traverse from secondLast element, if current element is greater than currLeader, then set currElement as currLeader and print it
+        //we scan from right to left, and keep track of maxvalue from right, if currElement is greater than currLeader, that means we have a leader that is greater than the elements to the right side of it
         for (int i = arr.length - 2; i >= 0; i--){
             if (currLeader < arr[i]) {
                 currLeader = arr[i];
@@ -240,20 +244,26 @@ public class ArrayProblems {
         }
     }
 
+    //11. Find maximum difference of arr[j] - arr[i], such that j > i.
+    //Input:[7,9,5,6,3,2], Output-2, because the max difference is 9-7=2
+    //Input:[2,3,10,6,4,8,1], Output-8, because the max difference is 10-2=8
     public static int maximumDifference(int[] arr){
 //        O(n ^ 2) solution,  Aux Space - O(1)
-//        int max = arr[1] - arr[0];
-//        for (int i = 0; i < arr.length; i++){
-//            for (int j = i + 1; j < arr.length; j++){
-//                max = Math.max(max, arr[j] - arr[i]);
-//            }
-//        }
-//        System.out.println(max);
+/*        int max = arr[1] - arr[0];
+        for (int i = 0; i < arr.length; i++){
+            for (int j = i + 1; j < arr.length; j++){
+                max = Math.max(max, arr[j] - arr[i]);
+            }
+        }
+        System.out.println(max);
+ */
+        //O(n) solution, Space - O(1)
+        int minValue = arr[0]; //we set minValue as first ele in arr
+        int res = arr[1] - arr[0]; //we set res as difference of arr[1] - arr[0]
 
-        //O(n ^ 2) solution, Aux Space - O(1)
-        int minValue = arr[0];
-        int res = arr[1] - arr[0];
-
+        //we iterate from 1st element and check, if currentElement - minvalue is greater than result,if yes we update res, and update minvalue to currentElement if currentElement is smaller than minVal
+        //since (currentElement(if it is a greater element)-minvalue) in the array gives the maximum difference, we set minvalue as first element and iterate through array and check difference of (currentElement-minvalue),
+        //if it greater than previous res we update res, and update minValue if it smaller than previous minvalue, because we need max difference
         for (int i = 1; i < arr.length; i++){
             res = Math.max(res, arr[i] - minValue);
             minValue = Math.min(minValue, arr[i]);
@@ -261,7 +271,10 @@ public class ArrayProblems {
         return res;
     }
 
+    //12. count frequency of element in sorted array
+    //I/P - [10, 10, 20, 20, 20, 30], O/P- 10 2, 20 2, 30 1
     public static void frequencyInSortedArray(int[] arr){
+        //TC-O(n), SC-O(1) , NOTE: This solution is for sorted array, for unsorted array check hashingproblems.java (4. printFrequency)
         int count = 1;
         for (int i = 0; i < arr.length - 1; i++){
             if (arr[i] == arr[i + 1])
@@ -274,10 +287,14 @@ public class ArrayProblems {
         System.out.println(arr[arr.length-1] + " " + count);
     }
 
-
+    //13. Stock Buy Sell to Maximize Profit - The cost of a stock on each day is given in an array, find the max profit that you can make by buying and selling in those days
+    //For example, if the given array is {100, 180, 260, 310, 40, 535, 695}, the maximum profit can earn by buying on day 0, selling on day 3. Again, buy on day 4 and sell on day 6.
+    //Input: [1,5,3,8,12], Output-13, we buy stock on day 0 and sell on day 1, so (5-1)=4, and buy stock on day 2 and sell on day 4, so (12-3)=9, total profit is 4+9=13
+    //Input: [10,20,30], Output-20 Input: [30,20,10], Output-0
+    //Input: [1,5,3,1,2,8], Output-11
     public static int maxProfit(int[] price, int start, int end){
-       //O(n^2) solution, Aux Space - O(n)
-       /* if (end <= start)
+       //O(n^2) solution, Space - O(n) for recursive call stack
+/*     if (end <= start)
             return 0;
 
         int profit = 0;
@@ -300,6 +317,8 @@ public class ArrayProblems {
         */
 
         //O(n) solution, Aux Space - O(1)
+        //valley peak approach - The key point is we need to consider every peak immediately following a valley to maximize the profit
+        //In this approach, we just need to find the next greater element and subtract it from the current element so that the difference keeps increasing until we reach a minimum
         int profit = 0;
         //the idea is simple, we iterate through array, when i is greater than i-1,
         //we simply subtract (i and i-1) and add it to the profit. this means that
@@ -311,6 +330,7 @@ public class ArrayProblems {
         return profit;
     }
 
+    //14.
     public static int trapRainWater(int[] arr){
     /*    //O(n^2) solution
         int res = 0;
