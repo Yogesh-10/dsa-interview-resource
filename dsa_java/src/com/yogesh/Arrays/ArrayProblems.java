@@ -330,9 +330,11 @@ public class ArrayProblems {
         return profit;
     }
 
-    //14.
+    //14. Trapping Rain Water - Given an array of non-negative integers representation elevation of ground. Your task is to find the water that can be trapped after rain.
+    //Input: height= [0,1,0,2,1,0,1,3,2,1,2,1] Output: 6
+    //Input:  [4,2,0,3,2,5] Output:9
     public static int trapRainWater(int[] arr){
-    /*    //O(n^2) solution
+/*      //TC-O(n^2), SC-O(1)
         int res = 0;
         for (int i = 1; i < arr.length - 1; i++) {
             //find the left max bar
@@ -354,7 +356,7 @@ public class ArrayProblems {
         return res;
 */
       //O(n) solution, Aux Space - O(n)
-      int res = 0;
+/*    int res = 0;
       int n = arr.length;
       int[] lMax = new int[n];
       int[] rMax = new int[n];
@@ -374,6 +376,43 @@ public class ArrayProblems {
           res += (Math.min(lMax[i], rMax[i]) - arr[i]);
 
       return res;
+ */
+        //TC-O(n), SC-O(1) //Two pointer approach
+        //The intuition is we use two pointers and set leftMax and rightMax as 0, in previous solution we used a prefix array to store height of buildings, but we calculate buildings height on the go
+        //we check if left building is smaller or equal to right building, because one building(right or left) will be limiting the amount of water trapped, i.e, if left building is smaller and right is larger, the maximum amount of water we can store is, only height of left building, after that water will overflow
+        //so, if left building is smaller than right building and current building at left is smaller than leftMax, then we can store water here
+        //similarly, if right building is smaller or equal to left building and current building at right is smaller than rightMax, we can store water here
+        int left = 0; //left pointer
+        int right = arr.length - 1; //right pointer
+        int leftMax = 0; //maximum building on left
+        int rightMax = 0;//maximum building on right
+        int res = 0; //units of water stored
+        while (left <= right){
+            //if left building is smaller than right building
+            if (arr[left] <= arr[right]){
+                //if current building is greater than left max building, update leftMax
+                if (arr[left] > leftMax)
+                    leftMax = arr[left];
+                //else if current building is smaller than leftMax building, that means we can store a water here, because we are in a condition where(arr[left] <= arr[right]) i.e,left building is smaller or equal to right building
+                //and current building is smaller than leftMax building, so we can definitely store water here(because we have buildings greater than currentBuilding on left and right side), we can get water stored in current building trap is by taking
+                //difference between leftMax and current building at left
+                else
+                    res += (leftMax - arr[left]);
+                left++; //move the pointer
+            }
+            else{ // else if arr[left] > arr[right], that means left building is greater than right building
+                //if currentBuilding a right is greater than rightMax building then update rightMax
+                if (arr[right] > rightMax)
+                    rightMax = arr[right];
+                //else if current building is smaller than rightMax building, that means we can store water here, because we are inside a condition(arr[left] > arr[right]), i.e,right building is smaller than left building
+                //and current building is smaller than rightMax building, so we can definitely store water here(because we have buildings greater than currentBuilding on left and right side), we can get water stored in current building trap is by taking
+                //difference between rightMax and current building at right
+                else
+                    res += (rightMax - arr[right]);
+                right--; //decrement right pointer
+            }
+        }
+        return res;
     }
 
     public static int maxConsecutiveOnes(int[] arr){
