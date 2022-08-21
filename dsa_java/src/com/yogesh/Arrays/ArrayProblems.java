@@ -574,28 +574,41 @@ public class ArrayProblems {
         return maxSum > 0 ? Math.max(maxSum, total - minSum) : maxSum;
     }
 
-    //19.
+    //19. Find the majority element in array - The majority element is the element that appears more than ⌊n / 2⌋ times
+    //Input : {3, 3, 4, 2, 4, 4, 2, 4, 4} Output : 4(index of array) Explanation: The frequency of 4 is 5 which is greater than the half of the size of the array size.
+    //Input : {3, 3, 4, 2, 4, 4, 2, 4} Output : No Majority Element Explanation: There is no element whose frequency is greater than the half of the size of the array size.
     public static int majorityElement(int[] arr){
-//        TC-O(N^2), SC-O(1)
-//        for (int i = 0; i < arr.length;i++){
-//            int count = 1;
-//            for (int j = i + 1; j < arr.length;j++){
-//                if (arr[i] == arr[j]){
-//                    count++;
-//                }
-//            }
-//            if (count > arr.length/2) return i;
-//        }
-//        return -1;
-
-        //O(n) solution - Moore's voting algorithm
-        int res = 0;
-        int count = 1;
+          //TC-O(N^2), SC-O(1)
+/*        for (int i = 0; i < arr.length;i++){
+            int count = 1;
+            for (int j = i + 1; j < arr.length;j++){
+                if (arr[i] == arr[j]){
+                    count++;
+                }
+            }
+            if (count > arr.length/2) return i;
+        }
+        return -1;
+ */
+        //O(n) solution - Moore's voting algorithm - This algorithm works on the fact that if an element occurs more than N/2 times, it means that the remaining elements other than this would definitely be less than N/2. So let us check the proceeding of the algorithm.
+        //choose a candidate from the given set of elements if it is the same as the candidate element, increase the votes.
+        //Otherwise, decrease the votes if votes become 0, select another new element as the new candidate.
+        //Intuition of Algorithm: When the elements are the same as the candidate element, votes are incremented when some other element is found not equal to the candidate element. We decreased the count. This actually means that we are decreasing the priority of winning ability of the selected
+        //candidate, since we know that if the candidate is a majority it occurs more than N/2 times and the remaining elements are less than N/2. We keep decreasing the votes since we found some different element than the candidate element. When votes become 0, this actually
+        //means that there are the same number of different elements, which should not be the case for the element to be the majority element. So the candidate element cannot be the majority, so we choose the present element as the candidate and continue the same till all the
+        //elements get finished. The final candidate would be our majority element. We check using the 2nd traversal to see whether its count is greater than N/2. If it is true, we consider it as the majority element.
+        int count = 1; //for tracking the count of element
+        int res = 0; //for which element we are counting
         //find the candidate, that appears maximum
         for (int i = 1; i < arr.length; i++){
-            if (arr[res] == arr[i]) count++;
-            else count--;
+            //If the traversing integer of array and Element are same increase Count by 1
+            if (arr[res] == arr[i])
+                count++;
+            //If they are different decrease Count by 1
+            else
+                count--;
 
+            //If Count is 0 then initialize the current traversing integer of array as Element
             if (count == 0) {
                 count = 1;
                 res = i;
@@ -603,14 +616,16 @@ public class ArrayProblems {
         }
 
         //check if the candidate is actually a majority
+        //this step is not needed if array always contains a majority element.
         count = 0;
-        for (int i = 0; i < arr.length; i++){
+        for (int i = 0; i < arr.length; i++)
             if (arr[res] == arr[i])
                 count++;
-        }
-        if (count <= arr.length / 2) res = -1;
 
-        return res;
+        if (count <= arr.length / 2)
+            res = -1;
+
+        return res; //majority element
     }
 
     public static boolean equilibriumPoint(int[] arr){
