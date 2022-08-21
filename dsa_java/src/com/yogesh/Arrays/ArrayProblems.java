@@ -415,10 +415,12 @@ public class ArrayProblems {
         return res;
     }
 
+    //15. Find the length of Maximum consecutive ones in binary array
+    //Input:[1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1], Output: 4
+    //Input:[1, 1, 1, 1], Output: 4 //Input:[0 , 0, 0], Output: 0 //Input:[0 ,1, 1, 0, 1, 0], Output: 2
     public static int maxConsecutiveOnes(int[] arr){
         //O(n^2) solution
-        /*
-        int res = 0;
+/*      int res = 0;
         for (int i = 0; i < arr.length; i++){
             int curr = 0;
             for (int j = i; j < arr.length; j++){
@@ -430,51 +432,78 @@ public class ArrayProblems {
         return res;
 */
         //O(n) solution
-        int res = 0;
-        int curr = 0;
-        for (int i = 0; i < arr.length; i++){
-            if (arr[i] == 0)
-                curr = 0;
-            else{
-                curr++;
+        int res = 0; int count = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 1) {
+                count++;
+                res = Math.max(res, count);
+            }
+            else
+                count = 0;
+        }
+        return res;
+    }
+
+    //16. Find the maximum subarray sum.
+    //Input:[-3, 8, -2, 4, -5, 6], Output: 11, 8-2+4-5+6=11
+    //Input:[-6, -1, -8], Output: -1, is the single subarray with max value
+    public static int maxSubarraySum(int[] arr){
+        //TC-O(n^2) SC-O(1)
+/*        int res = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            int curr = 0;
+            for (int j = i; j < arr.length; j++) {
+                curr += arr[j];
                 res = Math.max(res, curr);
             }
         }
         return res;
-    }
-
-    public static int maxSubarraySum(int[] arr){
+ */
+        //TC-O(n), SC-O(1) //kadane's algorithm
         int res = arr[0];
         int maxEnding = arr[0];
         for (int i = 1; i < arr.length; i++){
-            //we extend the previous subarray by (arr[i] + maxending), or we start new subarray from arr[i]
+            //we extend the previous subarray by (arr[i] + maxending), or we start new subarray from arr[i], if arr[i] is greater then (arr[i] + maxending)
+            //maxEnding will have the sum of subarray we have visited so far
             maxEnding = Math.max(arr[i] + maxEnding, arr[i]);
             res = Math.max(res, maxEnding);
         }
-
         return res;
+
+        //another similar approach //TC-O(n), SC-O(1) //kadane's algorithm
+/*      int sum = 0;
+        int res = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i]; //we add sum in each iteration
+            res = Math.max(sum, res); //if sum is greater than res, we update res and extend subarray
+            if (sum < 0) //if sum goes below 0, that means sum is negative and we dont carry forward sum, so we set sum to 0
+                sum = 0;
+        }
+        return res;
+ */
     }
 
+    //17. Find the length  of longest even odd subarray
     public static int longestEvenOddSubarray(int[]arr){
-        //O(n^2) solution
-//        int res = 1;
-//        for (int i = 0; i < arr.length; i++){
-//            int curr = 1;
-//            for (int j = i + 1; j < arr.length; j++){
-//                if (arr[j] % 2 == 0 && arr[j - 1] % 2 != 0 || arr[j] %2 != 0 && arr[j - 1] % 2 == 0)
-//                    curr++;
-//                else break;
-//            }
-//            res = Math.max(res, curr);
-//        }
-//        return res;
-
+        //TC-O(n^2), SC-O(1)
+/*        int res = 1;
+        for (int i = 0; i < arr.length; i++){
+            int curr = 1;
+            for (int j = i + 1; j < arr.length; j++){
+                if (arr[j] % 2 == 0 && arr[j - 1] % 2 != 0 || arr[j] %2 != 0 && arr[j - 1] % 2 == 0)
+                    curr++;
+                else break;
+            }
+            res = Math.max(res, curr);
+        }
+        return res;
+ */
         //O(n) solution - kadane's algorithm
         int res = 1;
         int curr = 1;
         for (int i = 1; i < arr.length; i++){
             //if it's alternative we extend previous subarray and increase curr
-            if (arr[i] % 2 == 0 && arr[i - 1] % 2 != 0 || arr[i] %2 != 0 && arr[i - 1] % 2 == 0){
+            if ((arr[i] % 2 == 0 && arr[i - 1] % 2 != 0) || (arr[i] %2 != 0 && arr[i - 1] % 2 == 0)){
                 curr++;
                 res = Math.max(res, curr);
             }
@@ -484,48 +513,70 @@ public class ArrayProblems {
         return res;
     }
 
+    //18. Find the maximum circular subarray sum.
+    //Input: [8, -8, 9, -9, 10, -11, 12], Output:22 (8, -8, 9, -9, 10, -11, 12)
+    //Input: [10, -3, -4, 7, 6, 5, -4, -1], Output:23 (7 + 6 + 5 - 4 -1 + 10)
+    //Input: [3,4,6,-2], Output: 10 (4+6), output can also contain normal maximum subarray, it doesn't need to be only circular, we need the maximumSubarraySum, either it's normal or circular
     public static int maximumCircularSubarraySum(int[] arr){
-//        O(n^2) solution
-//        int res = arr[0];
-//        for (int i = 0; i < arr.length; i++) {
-//            int currMax = arr[i];
-//            int currSum = arr[i];
-//            for (int j = 1; j < arr.length; j++){
-//                //when calculate index, so that index comes back to first position in array, after reaching the last
-//                int index = (i + j) % arr.length;
-//                currSum += arr[index];
-//                currMax = Math.max(currMax, currSum);
-//            }
-//            res = Math.max(res, currMax);
-//        }
-//        return res;
+//        TC-O(n^2) SC-O(1)
+/*      int res = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            int currMax = arr[i];
+            int currSum = arr[i];
+            for (int j = 1; j < arr.length; j++){
+                //when calculate index, so that index comes back to first position in array, after reaching the last
+                int index = (i + j) % arr.length;
+                currSum += arr[index];
+                currMax = Math.max(currMax, currSum);
+            }
+            res = Math.max(res, currMax);
+        }
+        return res;
+ */
 
-        //O(n^2) solution
-        //in this solution we can find maxsubarray sum in circular array by finding min sum value in subarray and subtracting it with total sum of array
-        //we first find the max subarray sum in the array, without checking circular array.(using kadane's algorithm)
+        //O(n) solution - using kadane's algorithm
+/*      //in this solution we can find maxSubarraySum in circular array by finding minSumSubarray and subtracting it with totalSum of array
+        //So there are two case. Case 1. The first is that the subarray take only a middle part, and we can find that using maxSubarraySum(kadane's algo).
+        //Case2. The second is that the subarray take a part of head array and a part of tail array. (circular sum subarray), We can transfer this case to the first one. The maximum result equals to the total sum minus the minimum subarray sum.
+        //we first find the maxSubarraySum in the array, without checking circular array.(using kadane's algorithm) because the array can also have normal maxSubarraySum
         int maxNormalSubarray = maxSubarraySum(arr);
 
         //if it's negative then all elements in array is negative, so we return max of normal subarray sum
         if (maxNormalSubarray < 0)
             return maxNormalSubarray;
 
-        //we find the total sum of array, and subtract it with min subarray value
-        //instead of writing other function for finding min subarray sum, we can reuse max subarray sum
-        //the trick here is, we invert all the elements of the array and find max subarray sum value, which is a result of
-        //min value of subarray sum
+        //we find the total sum of array, and subtract it with minSumSubarray value
+        //Modified Kadane's algo - instead of writing other function(kadane's algo) for finding minSubarraySum, we can reuse maxSubarraySum function
+        //the trick here is, we invert all the elements of the array from +ve to -ve and vice versa, and find maxSubarraySum value, which is a result of minSubarraySum value(because it's inverted)
         int arrSum = 0;
         for (int i = 0; i < arr.length; i++){
-            arrSum += arr[i];
-            arr[i] = -arr[i];
+            arrSum += arr[i]; //totalSum
+            arr[i] = -arr[i]; //inverting elements in arr
         }
 
-        //instead of subtracting we add, because we have inverted and found the max value(which is minvalue), for eg:-6 is value of minsum, but we have inverted and found result as 6, so we add
+        //instead of subtracting(minSumSubarray and totalSum of array) we add, because we have inverted and found the maxSumSubarray(which is minSumSubarray), for eg:-6 is value of minSum, but we have inverted and found result as 6, so we add
         int maxCircularSubarray = arrSum + maxSubarraySum(arr);
-        return Math.max(maxNormalSubarray, maxCircularSubarray);
+        return Math.max(maxNormalSubarray, maxCircularSubarray); //return max from normalSubArray and circularSubarray
+ */
+        //O(N) - one pass - more efficient solution, SC-O(1)
+        int total = 0, maxSum = arr[0], curMax = 0, minSum = arr[0], curMin = 0;
+        for (int i = 0; i < arr.length; i++) {
+            //find maxSumSubarray (kadane's algo)
+            curMax = Math.max(curMax + arr[i], arr[i]);
+            maxSum = Math.max(maxSum, curMax);
+            //find minSumSubarray (kadane's algo)
+            curMin = Math.min(curMin + arr[i], arr[i]);
+            minSum = Math.min(minSum, curMin);
+            //total sum of array
+            total += arr[i];
+        }
+        //if maxSum is positive then return max(maxSum, total - minSum), else if maxSum is negative that means all the values in arr are negative, so simply return maxSum
+        return maxSum > 0 ? Math.max(maxSum, total - minSum) : maxSum;
     }
 
+    //19.
     public static int majorityElement(int[] arr){
-//        O(N^2) solution
+//        TC-O(N^2), SC-O(1)
 //        for (int i = 0; i < arr.length;i++){
 //            int count = 1;
 //            for (int j = i + 1; j < arr.length;j++){
