@@ -1,6 +1,6 @@
 ## DSA Interview Preparation Resource
 
-### [Data Structures and Algorithms - for Interview Preparation](https://github.com/Yogesh-10/dsa-interview-resource)
+### [Data Structures and Algorithms - For Interview Preparation](https://github.com/Yogesh-10/dsa-interview-resource)
 
 ### ***Topics***
 
