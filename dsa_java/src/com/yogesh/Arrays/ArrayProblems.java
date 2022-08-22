@@ -628,7 +628,12 @@ public class ArrayProblems {
         return res; //majority element
     }
 
-    public static boolean equilibriumPoint(int[] arr){
+    //20. Equilibrium index of an array - Equilibrium index of an array is an index such that the sum of elements at lower indexes is equal to the sum of elements at higher indexes
+    //Input: A[] = {-7, 1, 5, 2, -4, 3, 0} Output: true, 3 is an equilibrium index, because: A[0] + A[1] + A[2] = A[4] + A[5] + A[6]
+    //Input: A[] = {1, 2, 3} Output: false
+    //Input: A[] = {4, 2, -2} Output: true, 0 is a equilibrium index, because on left of 4, there is nothing so it's considered as zero, on right side of 4, 2-2=0
+    //Input: A[] = {2, -2, 4} Output: true, 2 is a equilibrium index, because on left of 4, 2-2=0, on right side of 4 there is nothing so it's considered as zero
+    public static boolean isEquilibriumPoint(int[] arr){
 //        //Using Prefix sum technique - O(n^2) Solution
 //        for (int i = 0; i < arr.length; i++){
 //            int leftSum = 0; int rightSum = 0;
@@ -647,15 +652,15 @@ public class ArrayProblems {
         for (int i = 0; i < arr.length; i++)
             sum += arr[i];
 
-        int lSum = 0;
+        int leftSum = 0;
         for (int i = 0; i < arr.length; i++){
-            //we calculate lSum as we traverse and we ger right sum by,
+            //we calculate lSum as we traverse and we get right sum by,
             //subtracting sum - arr[i] in each iteration, which will gives us rightSum
             int rightSum = sum - arr[i];
-            if (lSum == rightSum)
+            if (leftSum == rightSum)
                 return true;
 
-            lSum += arr[i];
+            leftSum += arr[i];
             sum -= arr[i];
         }
         return false;
