@@ -666,8 +666,13 @@ public class ArrayProblems {
         return false;
     }
 
-    public static int mostFreqItem(int[] arr){
-        int res = 1;
+    //21. Most frequently occurring item in an array
+    //Input: [1, 3, 1, 3, 2, 1], Output: 1, 1 is the most frequently occurring item in this array
+    //Input: [0, -1, 10, 10, -1, 10, -1, -1, -1, 1], Output: -1
+    //Input: [0, -1, 10, 10, -1, 10, -1, -1, -1, 1], Output: -1 //Input: [0], Output: 0
+    public static int mostFreqOccurringItem(int[] arr){
+        //TC-O(n^2), SC-O(1)
+/*        int res = 1;
         int maxCount = 1;
         for (int i = 0; i < arr.length; i++){
             int count = 1;
@@ -680,9 +685,33 @@ public class ArrayProblems {
             }
         }
         return res;
+ */
+        //TC-O(n), SC-O(n)
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 1; int res = 0;
+        for (int i = 0; i < arr.length; i++) {
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+
+            if (map.get(arr[i]) > max){
+                max = map.get(arr[i]);
+                res = arr[i];
+            }
+        }
+        return res;
     }
 
+    //22. Common Elements in two sorted arrays
+    //Input - array1 = {1, 3, 4, 6, 7, 9}, array2 = {1, 2, 4, 5, 9, 10}, Output: [1, 4, 9]
+    //Input - array1 = {1, 2, 9, 10, 11, 12}, array2 = {0, 1, 2, 3, 4, 5, 8, 9, 10, 12, 14, 15}, Output: [1, 2, 9, 10, 12]
+    //Input - array1 = {0, 1, 2, 3, 4, 5}, array2 = {6, 7, 8, 9, 10, 11}, Output: []
     public static void commonElementsIn2SortedArrays(int[] arr1, int[] arr2){
+        //TC-O(n^2) SC-O(1)
+/*        for (int i = 0; i < arr1.length; i++)
+            for (int j = 0; j < arr2.length; j++)
+                if (arr1[i] == arr2[j])
+                    System.out.print(arr1[i] + " ");
+ */
+        //TC-O(n), SC-O(1) , Two pointer approach
         int i = 0, j = 0;
         while (i < arr1.length && j < arr2.length){
             if (arr1[i] < arr2[j])
@@ -697,24 +726,33 @@ public class ArrayProblems {
         }
     }
 
-    public static boolean isRotation(int[] arr1, int[] arr2){
+    //23. Is one array rotation of other
+    //Input: arr1 = {1, 2, 3, 4, 5, 6, 7}, arr2 = {4, 5, 6, 7, 1, 2, 3}, Output: true
+    //Input: arr1 = {1, 2, 3, 4, 5, 6, 7}, arr2 = {4, 5, 6, 7, 8, 1, 2, 3}, Output: false
+    //Input: arr1 = {1, 2, 3, 4, 5, 6, 7}, arr2 = {1, 2, 3, 4, 5, 6, 7}, Output: true
+    public static boolean isOneArrayRotationOfOther(int[] arr1, int[] arr2){
+        //TC-O(n), SC-O(1)
         int m = arr1.length; int n = arr2.length;
         if (n != m) return false;
 
-        int target = arr1[0]; int key = -1;
-        for (int k= 0; k < n; k++){
+        int target = arr1[0]; //set 1st element in first arr as target
+        int key = -1;
+        for (int k = 0; k < n; k++){
+            //if we find target in second arr, set that index as key
             if (arr2[k] == target){
                 key = k;
                 break;
             }
         }
+        //if we didn't find the target we return false
         if (key == -1) return false;
 
+        //iterate through the arr, and compare arr1 and arr2, if value doesn't match return false
         for (int i = 0; i < m; i++){
             int index = (key + i) % n; //or use (key % n) and increment key++ in every iteration
-            if (arr1[i] != arr2[index]) return false;
+            if (arr1[i] != arr2[index])
+                return false;
         }
-
         return true;
     }
 
