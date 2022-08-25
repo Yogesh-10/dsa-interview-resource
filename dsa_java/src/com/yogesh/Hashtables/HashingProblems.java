@@ -225,6 +225,18 @@ public class HashingProblems {
             set.add(item);
         }
         return false;
+
+        //TC-O(n), SC-O(n) //I/P - [3, 2, 8, 15, -8], Sum=17, O/P - [2, 15] - Explanation = 2 + 15 = 17
+        //slight variation of two sum problem
+/*      Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (map.containsKey(sum - arr[i]))
+                return new int[]{arr[map.get(sum - arr[i])], arr[i]};
+
+            map.put(arr[i], i);
+        }
+        return new int[]{ };
+ */
     }
 
     //8. Find the subarray with sum equal to zero
