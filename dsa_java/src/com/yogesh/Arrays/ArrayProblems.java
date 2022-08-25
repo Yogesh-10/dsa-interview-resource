@@ -756,13 +756,32 @@ public class ArrayProblems {
         return true;
     }
 
+    //24. Remove Even Integers from array - Given an array of size n, remove all even integers from it.
+    //Input: arr = {1, 2, 4, 5, 10, 6, 3}, Output: {1, 5, 3}
     public static void removeEvenItems(int[] arr){
-        int index = 0;
+        //TC-O(n), SC-O(1)
+        int evenPointer = 0;
+        int i = 0;
+        while (i < arr.length){
+            if (arr[i] % 2 == 0){
+                i++;
+            }
+            else{
+                arr[evenPointer++] = arr[i++];
+            }
+        }
+        for (int j = 0; j < evenPointer; j++) {
+            System.out.print(arr[j] + " ");
+        }
+
+        //TC-O(n), SC-O(1)
+        //another approach to remove even items and make it zero.
+/*        int index = 0;
         int size = arr.length;
         for (int i = 0; i < arr.length; i++){
            if (arr[i] % 2 == 1){
                arr[index] = arr[i];
-               if (i > index) {
+               if (i != index) {
                    arr[i] = 0;
                }
                index++;
@@ -773,8 +792,11 @@ public class ArrayProblems {
         }
         for (int i = 0; i < size; i++)
             System.out.print(arr[i] + " ");
+ */
     }
 
+    //25. Merge two sorted arrays
+    //Input - arr1 = {1, 3, 4, 5} arr2 = {2, 6, 7, 8}, Output: arr = {1, 2, 3, 4, 5, 6, 7, 8}
     public static int[] mergeTwoSortedArrays(int[] arr1, int[] arr2){
         //Time Complexity : O(n1 + n2)
         //Auxiliary Space : O(n1 + n2)
@@ -782,35 +804,37 @@ public class ArrayProblems {
         int[] temp = new int[arr1.length + arr2.length];
 
         while (i < arr1.length && j < arr2.length){
-            if (arr1[i] > arr2[j]){
-                temp[index++] = arr2[j];
-                j++;
-            }
-            else {
-                temp[index++] = arr1[i];
-                i++;
-            }
+            if (arr1[i] > arr2[j])
+                temp[index++] = arr2[j++];
+            else
+                temp[index++] = arr1[i++];
         }
+
         while (i < arr1.length) temp[index++] = arr1[i++];
         while (j < arr2.length) temp[index++] = arr2[j++];
         return temp;
     }
 
+    //26. Find sum that add up to N (two sum problem)
+    //Input: [1, 21, 3, 14, 5, 60, 7, 6], sum-27, Output: {21, 6} or {6, 21}
+    //Input: [3,3], sum-6, Output: {3, 3}
     public static int[] findSumAddUpToN(int[] arr, int sum){
-//        O(n^2) solution
-//        int[] res = new int[2];
-//        for (int i = 0; i < arr.length; i++){
-//            for (int j = i + 1; j < arr.length; j++){
-//                if (arr[i] + arr[j] == sum) {
-//                    res[0] = arr[i];
-//                    res[1] = arr[j];
-//                    return result;
-//                }
-//            }
-//        }
-//        return new int[]{};
+//      TC-O(n^2), SC-O(1)
+/*      int[] res = new int[2];
+        for (int i = 0; i < arr.length; i++){
+            for (int j = i + 1; j < arr.length; j++){
+                if (arr[i] + arr[j] == sum) {
+                    res[0] = arr[i];
+                    res[1] = arr[j];
+                    return result;
+                }
+            }
+        }
+        return new int[]{};
+ */
 
-        //O(n logn) solution - sorting takes O(nlogn) and the algorithm to find two numbers takes O(n) time, the overall time complexity of this code is O(nlogn).
+        //TC-O(n log n), SC-O(1) - sorting takes O(n log n) and the algorithm to find two numbers takes O(n) time, the overall time complexity of this code is O(n log n).
+        //can also be solved in O(n) - (check hashing problems section - pairWithGivenSum for unsorted two sum array problem)
         Arrays.sort(arr);
         int[] res = new int[2];
         int leftPointer = 0;
@@ -823,53 +847,48 @@ public class ArrayProblems {
             }
             else if(arr[leftPointer] + arr[rightPointer] < sum)
                 leftPointer++;
-            else // A[i] + A[j] > sum
+            else // A[leftPointer] + A[rightPointer] > sum
                 rightPointer--;
         }
         return new int[]{};
     }
 
-    public static int[] findProduct(int[] arr){
-//        O(n^2) solution
-//        int[] res = new int[arr.length];
-//        int index = 0;
-//        for (int i = 0; i < arr.length; i++){
-//            int prod = 1;
-//            for (int j = 0; j < arr.length; j++){
-//                if (i != j) prod *= arr[j];
-//            }
-//            res[index++] = prod;
-//        }
-//        return res;
-
-        //O(n) solution
+    //27. Array of Products of All Elements Except Itself
+    //Input: [1,2,3,4], Output: [24,12,8,6]
+    //Input: [-1,1,0,-3,3], Output: [0,0,9,0,0], Input: [2,3,0,0], Output: [0,0,0,0]
+    public static int[] findProductsExceptItself(int[] arr){
+//      Tc-O(n^2), SC-O(1)
+/*      int[] res = new int[arr.length];
+        int index = 0;
+        for (int i = 0; i < arr.length; i++){
+            int prod = 1;
+            for (int j = 0; j < arr.length; j++){
+                if (i != j)
+                    prod *= arr[j];
+            }
+            res[index++] = prod;
+        }
+        return res;
+ */
+        //TC-O(n), SC-O(1), since the arr returned as result is not considered for SC
         int n = arr.length;
-        int i, temp = 1;
-
-        // Allocation of result array
+        int i;
+        int temp = 1;
         int[] result = new int[n];
 
-        // Initializing the result array by 1
-        for(int j=0; j < n; j++)
-            result[j] = 1;
-
-        // Product of elements on left side excluding arr[i]
-        for (i = 0; i < n; i++)
-        {
+        // Product of elements on left side of input arr, excluding arr[i]
+        for (i = 0; i < n; i++) {
+            result[i] = 1; // Initializing the result array by 1;
             result[i] = temp;
             temp *= arr[i];
         }
 
-        // Initializing temp to 1 for product on right side
-        temp = 1;
-
-        // Product of elements on right side excluding arr[i]
-        for (i = n - 1; i >= 0; i--)
-        {
+        temp = 1; // Initializing temp to 1 for product on right side
+        // Product of elements on right side of input arr, excluding arr[i]
+        for (i = n - 1; i >= 0; i--) {
             result[i] *= temp;
             temp *= arr[i];
         }
-
         return result;
     }
 
