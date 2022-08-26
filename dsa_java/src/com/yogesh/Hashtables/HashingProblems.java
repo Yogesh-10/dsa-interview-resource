@@ -634,4 +634,19 @@ public class HashingProblems {
                 System.out.print(item.getKey()+" ");
         }
     }
+
+    //16. Find First non-repeating integer in array
+    public static int findFirstUniqueInArray(int[] arr) {
+        //TC-O(n^2), SC-O(1)
+        //O(n) Solution can be solved using hashing(check hashing problems section)
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++)
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+
+        for (var item : arr)
+            if (map.get(item) == 1)
+                return item;
+
+        return -1;
+    }
 }
