@@ -892,7 +892,11 @@ public class ArrayProblems {
         return result;
     }
 
+    //28. smallest element in an array
+    //Input: [9, 2, 3, 6], Output: 2
+    //Input: [10, 1, -3, 0], Output: -3
     public static int smallestElement(int[] arr) {
+        //TC-O(n), SC-O(1)
         int min = arr[0];
         for (int i = 1; i < arr.length; i++) {
             if (arr[i] < min)
@@ -901,7 +905,12 @@ public class ArrayProblems {
         return min;
     }
 
-    public static int findFirstUnique(int[] arr) {
+    //29. First Non-Repeating Integer in an Array
+    //Input: [9, 2, 3, 2, 6, 6], Output: 9
+    //Input: [9, 4, 9, 6, 7, 4], Output: 6
+    public static int findFirstUniqueInArray(int[] arr) {
+        //TC-O(n^2), SC-O(1)
+        //O(n) Solution can be solved using hashing(check hashing problems section - 16. findFirstUniqueInArray)
         for (int i = 0; i < arr.length; i++) {
             boolean flag = true;
             for (int j = 0; j < arr.length; j++) {
@@ -912,22 +921,25 @@ public class ArrayProblems {
             }
             if (flag) return arr[i];
         }
-
         return -1;
     }
 
+    //30. Re-arrange Positive & Negative Values
+    //Input: [10, -1, 20, 4, 5, -9, -6], Output: [-1, -9, -6, 4, 5, 10, 20]
     public static int[] reArrangePositiveAndNegativeValues(int[] arr){
-//        //O(n^2) Solution
-//        for (int i = 0; i < arr.length; i++){
-//           for (int j = i + 1; j < arr.length; j++){
-//               if (arr[i] > arr[j]){
-//                   int temp = arr[j];
-//                   arr[j] = arr[i];
-//                   arr[i] = temp;
-//               }
-//           }
-//        }
-        //O(n) solution
+//        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++){
+           for (int j = i + 1; j < arr.length; j++){
+               if (arr[i] > arr[j]){
+                   int temp = arr[j];
+                   arr[j] = arr[i];
+                   arr[i] = temp;
+               }
+           }
+        }
+        return arr;
+ */
+        //TC-O(n), SC-O(1)
         //In this solution, we keep two variables i and j. Both of them are 0 initially. i iterates over the array
         //while j keeps track of the position where next encountered negative number should be placed. When we come
         //across a negative number, the values at i and j indexes are swapped, and j is incremented. This continues until the end of the array is reached.
@@ -945,8 +957,10 @@ public class ArrayProblems {
         return arr;
     }
 
+    //31. Rearrange Sorted Array in Max/Min Form
+    //Input: [1, 2, 3, 4, 5], Output: [5, 1, 4, 2, 3]
     public static int[] maxMinOrder(int[] arr){
-        //O(n^2) solution
+        //O(n) solution
         int[] result = new int[arr.length];
         int last = arr[(arr.length - 1)/2];
         int i = 0; int j = arr.length - 1;
@@ -960,7 +974,6 @@ public class ArrayProblems {
     }
 
     //Binary Search Problems
-
     public static int binarySearch(int[] arr, int low, int high, int x){
         while (low <= high){
             int mid = (low + high) / 2;
