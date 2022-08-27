@@ -959,18 +959,46 @@ public class ArrayProblems {
 
     //31. Rearrange Sorted Array in Max/Min Form
     //Input: [1, 2, 3, 4, 5], Output: [5, 1, 4, 2, 3]
+    //Input: [1, 2, 3, 4, 5, 6, 7], Output: [7, 1, 6, 2, 5, 3, 4]
     public static int[] maxMinOrder(int[] arr){
-        //O(n) solution
-        int[] result = new int[arr.length];
-        int last = arr[(arr.length - 1)/2];
+        //TC-O(n), SC-O(n)
+/*      int[] result = new int[arr.length];
         int i = 0; int j = arr.length - 1;
         int index = 0;
-        while (i < j){
+        while (i <= j){
             result[index++] = arr[j--];
-            result[index++] = arr[i++];
+            if(j > i) //because i can become greater than j, and go out of bounds in next step
+                result[index++] = arr[i++];
         }
-        result[result.length-1] = last;
         return result;
+ */
+        //TC-O(n), SC-O(1)
+        //This solution is very tricky and has an formula. We actually store two elements at one index mathematically. The original element is stored as the remainder,
+        //while the max/min element is stored as the multiplier. The following expression achieves this, arr[i] += (arr[maxIdx] % maxElem ) * maxElem;
+        //How does expression “(arr[i] += arr[maxIdx] % maxElem * maxElem)” work ?
+        //The purpose of this expression is to store two elements at index arr[i]. arr[max_index] is stored as multiplier and “arr[i]” is stored as remainder.
+        //For example in {1 2 3 4 5 6 7 8 9}, max_element is 10 and we store 91 at index 0. With 91, we can get original element as 91%10 and new element as 91/10.
+        //This allows us to swap the numbers in place without losing any data or using any extra space. To get the final array, we simply divide each element by maxElem as done in the last for loop.
+        int maxIdx = arr.length - 1;
+        int minIdx = 0;
+        int maxElem = arr[maxIdx] + 1; // store any element that is greater than the maximum element in the array. Instead of +1, we can also do + 2, +3 or any number, we do this so that the remainder will not be zero when we do (arr[maxIdx] % maxElem)
+        for( int i = 0; i < arr.length; i++) {
+            // at even indices we will store maximum elements
+            if (i % 2 == 0){
+                arr[i] += (arr[maxIdx] % maxElem) * maxElem;
+                maxIdx -= 1;
+            }
+            else { // at odd indices we will store minimum elements
+                arr[i] += (arr[minIdx] % maxElem ) * maxElem;
+                minIdx += 1;
+            }
+        }
+        // dividing with maxElem to get original values.
+        for( int i = 0; i < arr.length; i++) {
+            arr[i] = arr[i] / maxElem;
+        }
+
+        return arr;
     }
 
     //Binary Search Problems
