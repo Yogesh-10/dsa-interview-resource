@@ -1001,8 +1001,9 @@ public class ArrayProblems {
         return arr;
     }
 
-    //Binary Search Problems
+    //32. Binary Search Algorithm - Sorted Array
     public static int binarySearch(int[] arr, int low, int high, int x){
+        //TC-O(log n), SC-O(1)
         while (low <= high){
             int mid = (low + high) / 2;
             if (arr[mid] == x)
@@ -1015,18 +1016,28 @@ public class ArrayProblems {
         return -1;
     }
 
-    public static int firstOccurrence(int[] arr, int low, int high, int x){
-        //normal binary search
-        if (low > high)
+    //33.Find index of first occurrence in a sorted array
+    //Input: [1, 10, 10 ,10, 20,20,40], x=20, Output: 4
+    //Input: [10, 20, 30], x=15, Output: -1 //Input: [15,15,15], x=15, Output: 0
+    public static int firstOccurrenceInSortedArray(int[] arr, int low, int high, int x){
+        //TC-O(n), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == x)
+                return i;
+        }
+        return -1;
+ */
+        //TC-O(log n), SC-O(log n) for recursive calls
+        //we do normal binary search here
+/*        if (low > high)
             return -1;
 
         int mid = (low + high) / 2;
-
         if (arr[mid] < x)
-            return firstOccurrence(arr, mid+1, high, x);
+            return firstOccurrenceInSortedArray(arr, mid+1, high, x);
         else if (arr[mid] > x)
-            return firstOccurrence(arr, low, mid-1,x);
-        //special case for first occurrence
+            return firstOccurrenceInSortedArray(arr, low, mid-1,x);
+        //we add special case for first occurrence here
         else{
             //if mid is 0, it means it is the first element
             //and we check if arr[mid] is first occurrence, if yes we return mid
@@ -1034,33 +1045,67 @@ public class ArrayProblems {
                 return mid;
             else
                 //else we recursively go to left side to find first occurrence
-                return firstOccurrence(arr, low, mid - 1, x);
+                return firstOccurrenceInSortedArray(arr, low, mid - 1, x);
         }
+ */
+        //TC-O(log n), SC-O(1)
+        int lowIndex = 0;
+        int highIndex = arr.length - 1;
+        //we do normal binary search here
+        while (lowIndex < highIndex){
+            int mid = (lowIndex + highIndex) / 2;
+
+            if (arr[mid] < x)
+                lowIndex = mid + 1;
+            else if (arr[mid] > x)
+                highIndex = mid - 1;
+            //we add special case for first occurrence here
+            else{
+                //if mid is 0, it means it is the first element
+                //or we check if arr[mid] is first occurrence, if yes we return mid
+                if (mid == 0 || arr[mid] != arr[mid - 1])
+                    return mid;
+                //else we go to left side to find first occurrence
+                else
+                    highIndex = mid - 1;
+            }
+        }
+        return -1;
     }
 
-    public static int lastOccurrence(int[] arr, int low, int high, int x){
-//        for (int i = arr.length - 1; i >= 0; i--){
-//            if (arr[i] == x)
-//                return i;
-//            else if(arr[i] < x)
-//                break;
-//        }
-//        return -1;
-//        if (low > high) return -1;
-//
-//        int mid = (low + high) / 2;
-//        if (arr[mid] < x)
-//            return lastOccurrence(arr, mid + 1, high, x);
-//        else if(arr[mid] > x)
-//            return lastOccurrence(arr, low, mid - 1, x);
-//        else{
-//            if (mid == arr.length - 1 || arr[mid] != arr[mid + 1])
-//                return mid;
-//            else
-//                return lastOccurrence(arr, mid + 1, high, x);
-//        }
+    //34. Find index of last occurrence in sorted array
+    //Input: [1, 10, 10 ,10, 20,20,40], x=20, Output: 5
+    //Input: [10, 20, 30], x=15, Output: -1 //Input: [15,15,15], x=15, Output: 2
+    public static int lastOccurrenceInSortedArray(int[] arr, int low, int high, int x){
+        //TC-O(n), SC-O(1)
+/*       for (int i = arr.length - 1; i >= 0; i--){
+            if (arr[i] == x)
+                return i;
+            else if(arr[i] < x) //small optimisation, if x is greater than arr[i], then x will be present before that since arr is sorted, so we break
+                break;
+        }
+        return -1;
+ */
 
-        //O(log n) solution
+        //TC-O(log n), SC-O(log n)
+/*      if (low > high)
+            return -1;
+
+        int mid = (low + high) / 2;
+        if (arr[mid] < x)
+            return lastOccurrence(arr, mid + 1, high, x);
+        else if(arr[mid] > x)
+            return lastOccurrence(arr, low, mid - 1, x);
+        else{
+            if (mid == arr.length - 1 || arr[mid] != arr[mid + 1])
+                return mid;
+            else
+                return lastOccurrence(arr, mid + 1, high, x);
+        }
+ */
+
+        //TC-O(log n), SC-O(1)
+        //we do normal binary search here
         while (low <= high){
             int mid = (low + high) / 2;
 
@@ -1068,9 +1113,13 @@ public class ArrayProblems {
                 high = mid - 1;
             else if (arr[mid] < x)
                 low = mid + 1;
+            //we add special case for last occurrence here
             else{
+                //if mid is last, it means it is the last element
+                //or we check if arr[mid] is last occurrence by arr[mid] != arr[mid + 1], if yes we return mid
                 if (mid == arr.length - 1 || arr[mid] != arr[mid + 1])
                     return mid;
+                //else we go to right side to find last occurrence
                 else
                     low = mid + 1;
             }
@@ -1078,33 +1127,38 @@ public class ArrayProblems {
         return -1;
     }
 
+    //35. count occurrence of element in sorted array
+    //Input: [10, 10 ,20, 20, 20, 30, 30], x=20, Output: 3
+    //Input: [10, 10, 10, 10, 10], x=10, Output: 5 //Input: [5, 8, 10], x=15, Output: 0
     public static int countOccurrence(int[] arr, int x){
-//        O(n) Solution
-//        int count = 0;
-//        for (int i = 0; i < arr.length; i++)
-//            if (arr[i] == x)
-//                count++;
-//
-//        return count;
+//        TC-O(n), SC-O(1)
+/*        int count = 0;
+        for (int i = 0; i < arr.length; i++)
+            if (arr[i] == x)
+                count++;
 
-        //O(log n) Solution -  finding first occurrence is O(log n) + last occurrence is O(log n)- totally O(log n)
-        int first = firstOccurrence(arr, 0, arr.length - 1, x);
+        return count;
+ */
+        //TC-O(log n) -  finding first occurrence is O(log n) + last occurrence is O(log n)- totally O(log n) and SC-O(1)
+        int first = firstOccurrenceInSortedArray(arr, 0, arr.length - 1, x);
+        //if there is no element in array, return 0
         if (first == -1)
             return 0;
         else
             //first occurrence - last occurrence + 1 - will give total number of occurrence of x
-            return (lastOccurrence(arr, 0, arr.length - 1, x) - first + 1);
+            return (lastOccurrenceInSortedArray(arr, 0, arr.length - 1, x) - first + 1);
     }
 
-    public static int countOnes(int[] arr){
-        //O(n) Solution
-//        int count = 0;
-//        for (int i = 0; i < arr.length; i++)
-//            if (arr[i] == 1) count++;
-//
-//        return count;
+    //36. count ones in sorted binary array
+    public static int countOnesInSortedBinaryArray(int[] arr){
+        //TC-O(n), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++)
+            if (arr[i] == 1)
+                return arr.length - i;
 
-        //O(log n) Solution
+        return 0;
+ */
+        //TC-O(log n), SC-O(1)
         int low = 0; int high = arr.length - 1;
         while (low <= high){
             int mid = (low + high) / 2;
@@ -1112,7 +1166,7 @@ public class ArrayProblems {
             if (arr[mid] == 0)
                 low = mid + 1;
             else{
-                //if mid is 0, then it is the first element, so we return or if arr[mid-1] is not zero, we move left side to find first occurrence of 1
+                //if mid is 0, then it is the first element, so we return mid or if arr[mid-1] is not zero,then it's not first occurrence of 1, so we move left side to find first occurrence of 1
                 if (mid == 0 || arr[mid - 1] == 0)
                     return arr.length - mid;
                 else
