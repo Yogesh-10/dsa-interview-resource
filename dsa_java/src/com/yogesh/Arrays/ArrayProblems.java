@@ -1176,21 +1176,25 @@ public class ArrayProblems {
         return 0;
     }
 
-    public static int squareRoot(int[] arr, int x){
-        //O(x^1/2) solution
-//        int i = 1;
-//        while (i * i <= x)
-//            i++;
-//
-//        return i - 1;
-
-        //O(log x) solution
+    //37. find the square root of a number
+    //Input: 25, Output: 5
+    //Input: 14, Output: 3, sqrt of 14 will be 3.74, we return floor of that number
+    public static int squareRoot(int x){
+        //TC-O(x^1/2), SC-O(1)
+/*      int i = 1;
+        while (i * i <= x)
+            i++;
+        return i - 1;
+ */
+        //TC-O(log x), SC-O(1)
         int low = 1; int high = x; int ans = -1;
         while (low <= high){
             int mid = (low + high) / 2;
             int sq = mid * mid;
-            if (sq == x) return mid;
-            else if (sq > x) high = mid - 1;
+            if (sq == x)
+                return mid;
+            else if (sq > x)
+                high = mid - 1;
             else{
                 low = mid + 1;
                 ans = mid;
@@ -1199,27 +1203,35 @@ public class ArrayProblems {
         return ans;
     }
 
-    //Search in a infinite sized array
-    public static int searchInfiniteSizedArray(int[] arr, int x){
-/*      //O(x) time, where x is position
-        int i = 0;
+    //38. Search in a infinite sized sorted array
+    //Input: [1,10,15,20,40,80,90,100,120,500.....], x=100, Output: 7
+    //Input: [20,40, 100,300.....], x=50, Output: -1
+    public static int searchInfiniteSizedSortedArray(int[] arr, int x){
+      //TC-O(x) where x is position, SC-O(1)
+/*      int i = 0;
         while (true){
             if (arr[i] == x) return i;
             if (arr[i] > x) return -1;
             i++;
         }
  */
-        //O(log x) solution
-        if (x > arr[arr.length - 1]) return -1;
-        if (arr[0] == x) return 0;
+        //TC-O(log x), SC-O(1)
+        //check for arr[0] explicitly, because in next step we initialize i as 1, is i is 0, product will always be zero
+        if (x > arr[arr.length - 1])
+            return -1;
+
+        if (arr[0] == x)
+            return 0;
 
         int i = 1;
         //we double the i in each step, as soon as x > arr[i] we stop.
+        //if arr[i] > x, that means we cannot find x after that since array is sorted, so we terminate
         while (arr[i] < x)
             i = i * 2;
 
         //at this point if arr[i] == x, we return i
-        if (arr[i] == x) return i;
+        if (arr[i] == x)
+            return i;
 
         //else, we do a binary search for a specific range
         //In this example {1,10,15,20,40,60,80,100,200,500.....}, our i is at 8,(stopped this in while loop)
@@ -1227,7 +1239,7 @@ public class ArrayProblems {
         //we can start from (i/2)+1 because, if we do (i/2) we can go to previously where i was, because we are doubling (i*2)
         //so we start from (i/2)+1, because (i/2) will be definitely smaller than x, we need to search next from i/2,
         //similarly we end at i-1, because i will be definitely greater than x.
-        //for this binary search, low- (i/2)+1, high- (i-1)
+        //for this we do binary search, low-> (i/2)+1 and high-> (i-1)
         return binarySearch(arr, (i / 2) + 1, i - 1, x);
     }
 
