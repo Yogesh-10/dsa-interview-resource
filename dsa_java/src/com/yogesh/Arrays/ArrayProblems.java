@@ -1215,7 +1215,8 @@ public class ArrayProblems {
             i++;
         }
  */
-        //TC-O(log x), SC-O(1)
+        //TC-O(log(x)), where x is position, SC-O(1)
+        //The technique for this solution is called as (unbounded binary search), because we do binary search on infinite array and array is unbounded(infinite)
         //check for arr[0] explicitly, because in next step we initialize i as 1, is i is 0, product will always be zero
         if (x > arr[arr.length - 1])
             return -1;
@@ -1243,24 +1244,40 @@ public class ArrayProblems {
         return binarySearch(arr, (i / 2) + 1, i - 1, x);
     }
 
+    //39. search x in sorted rotated array
+    //Input: [10, 20, 30, 40, 50, 8, 9], x=30, Output: 2
+    //Input: [100, 200, 300, 10, 20], x=40, Output: -1
     public static int searchInSortedRotatedArray(int[] arr, int x){
-        //normal binary search
+        //TC-O(n), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == x)
+                return i;
+        }
+        return -1;
+ */
+        //TC-O(log n), SC-O(1)
         int low = 0; int high = arr.length - 1;
         while (low <= high){
+            //normal binary search
             int mid = (low + high) / 2;
-            if (arr[mid] == x) return mid;
+            if (arr[mid] == x)
+                return mid;
+
             //checking if left half is sorted, since it is sorted rotational array, so one side must be sorted definitely
             if (arr[mid] > arr[low]){
                 //if it is left sorted, we check if x exists between that range
                 if (x >= arr[low] && x < arr[mid])
                     high = mid - 1;
+                //else we go to right half
                 else
                     low = mid + 1;
             }
-            //checking if right half is sorted, , since it is sorted rotational array, so one side must be sorted definitely
+            //else, checking if right half is sorted, since it is sorted rotational array, so one side must be sorted definitely
             else{
+                //if it is right sorted, we check if x exists between that range
                 if (x > arr[mid] && x <= arr[high])
                     low = mid + 1;
+                //else we go to left half
                 else
                     high = mid - 1;
             }
