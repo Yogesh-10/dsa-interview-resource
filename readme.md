@@ -6,7 +6,7 @@
 
 1. [Time and Space Complexity](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Time-and-space-complexity) <br>
 2. [Array and Array Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Arrays)<br>
-3. [Matrix Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Matrix)<br>
+3. [2D-Array Matrix Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Matrix)<br>
 4. [Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SearchingAlgorithms)<br>
 5. [Sorting Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SortingAlgorithms)<br>
 6. [HashTable & Hashing Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Hashtables)<br>
