@@ -1285,23 +1285,27 @@ public class ArrayProblems {
         return -1;
     }
 
-    //A element is a peak element, if it's neighbour(left and right) element are smaller than current element
+    //40.Find peak element in a array - A element is a peak element, if it's neighbour(left and right) element are smaller than current element
+    //Input: [5, 10, 20, 15, 17], Output: 20 //Input: [10, 20, 15, 5, 23, 90, 67] Output: 20 or 90
+    //Input: [80, 70, 60] Output: 80
     public static int peakElement(int[] arr){
-          //O(n) solution
-/*        if (arr[0] > arr[1])
+        //TC-O(n), SC-O(1)
+/*      if (arr[0] > arr[1])
             return arr[0];
-
         if (arr[arr.length - 1] > arr[arr.length - 2])
             return arr[arr.length - 1];
-
         for (int i = 1; i < arr.length - 1; i++){
-            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1])
+            if (arr[i] >= arr[i - 1] && arr[i] >= arr[i + 1])
                 return arr[i];
         }
         return -1;
-       */
-
-        //O(log n) Solution
+*/
+        //TC-O(log n), SC-O(1), This is a tricky approach, we use binary search on a unsorted array
+        //The idea here is we first check mid element, if the mid element is a peak element return mid,
+        //or if element left side of mid element is greater i.e, arr[mid-1] > arr[mid], then it means we search for peak element on left side, because if element left side to mid is greater,
+        //it means the next to that left will be smaller or greater, if smaller then we will have peak element, if greater then we move to next left element, and if that is also greater and if we reach to first element, it will be peak element
+        //so it doesn't mean that, the element will not be in right half, it might be there, but we can surely say element will be in left half, if arr[mid-1] > arr[mid]
+        //else for arr[mid-1] < arr[mid], similarly we also do for right side, if element right side of mid is greater than mid. //this is also called as valley approach, as the element goes up and down like a valley
         int low = 0; int high = arr.length - 1;
         while (low <= high){
             int mid = (low + high) / 2;
@@ -1315,11 +1319,20 @@ public class ArrayProblems {
         return -1;
     }
 
-    //Given Given an array of sorted numbers and a target sum, find a pair in the array whose sum is equal to the given target.
+    //41. Given Given an array of sorted numbers and a target sum, find a pair in the array whose sum is equal to the given target.
     //Input: [1, 2, 3, 4, 6], target=6 Output: [1, 3] Explanation: The numbers at index 1 and 3 add up to 6: 2+4=6
     //Input: [2, 5, 9, 11], target=11 Output: [0, 2] Explanation: The numbers at index 0 and 2 add up to 11: 2+9=11
     //(check hashing problems section - pairWithGivenSum for unsorted two sum array problem)
     public static int[] twoSumInSortedArray(int[] arr,int x){
+        //TC-O(n^2), SC-O(1)
+/*      for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] + arr[j] == x)
+                    return new int[]{i, j};
+            }
+        }
+        return new int[]{-1, -1};
+ */
         //Two pointer approach(sorted array)
         //TC-O(n), SC-O(1)
         int left = 0; int right = arr.length - 1;
@@ -1336,9 +1349,9 @@ public class ArrayProblems {
         return new int[]{-1, -1};
     }
 
-    //Find Repeating elements
-    //Slow and Fast Pointer Approach
+    //42. Find Repeating elements
     public static int repeatingElements(int[] arr){
+        //Slow and Fast Pointer Approach
         //O(n) Solution, O(1) Space, Original array is not modified
         //we increase slow and fast by +1 because, if we don't do it, it will cause unnecessary loops within it.
         //for eg: {0,2,1,3,5,4,6,2} - here first element is 0, so if we dont increase slow by 1, we will begin with first element, we will go to zero
@@ -1360,22 +1373,6 @@ public class ArrayProblems {
         return slow - 1;
     }
 
-    private static boolean isPossible(ArrayList < Integer > A, int pages, int students) {
-        int cnt = 0;
-        int sumAllocated = 0;
-        for (int i = 0; i < A.size(); i++) {
-            if (sumAllocated + A.get(i) > pages) {
-                cnt++;
-                sumAllocated = A.get(i);
-                if (sumAllocated > pages) return false;
-            } else {
-                sumAllocated += A.get(i);
-            }
-        }
-        if (cnt < students) return true;
-        return false;
-    }
-
     //Allocate minimum number of pages.
     public static int minPages(int[] arr, int k){
         int n = arr.length;
@@ -1395,7 +1392,6 @@ public class ArrayProblems {
         }
         return res;
     }
-
     private static boolean isPossible(int[] arr, int mid, int k) {
         int requiredStudent = 1; int sum = 0;
         for (int i = 0; i < arr.length; i++){
