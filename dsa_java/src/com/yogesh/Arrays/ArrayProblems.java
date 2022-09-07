@@ -1349,10 +1349,40 @@ public class ArrayProblems {
         return new int[]{-1, -1};
     }
 
-    //42. Find Repeating elements
+    //42. Find Repeating elements in an array
     public static int repeatingElements(int[] arr){
+        //TC-O(n^2), SC-O(1)
+/*        for (int i = 0; i < arr.length; i++)
+            for (int j = i + 1; j < arr.length; j++)
+                if (arr[i] == arr[j])
+                    return arr[i];
+        return -1;
+ */
+
+        //TC-O(n log n), SC-O(1)
+/*        Arrays.sort(arr);
+        for (int i = 0; i < arr.length - 1; i++)
+            if (arr[i] == arr[i + 1])
+                return arr[i];
+
+        return -1;
+ */
+
+        //TC-O(n), SC-O(n)
+        //we can use this approach since the elements in the array will be from zero to maximum element in array, eg: [0, 2, 1, 3, 2, 2], here elements are from 0 to max element(2), so we will have 0,1,2
+        //so we can create boolean array and store that number as true when we visit, if we revisit same number again, we return true
+/*        boolean[] visited = new boolean[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            if (visited[arr[i]])
+                return arr[i];
+
+            visited[arr[i]] = true;
+        }
+        return -1;
+ */
+
+        //TC-O(n), SC-O(1), Original array is not modified
         //Slow and Fast Pointer Approach
-        //O(n) Solution, O(1) Space, Original array is not modified
         //we increase slow and fast by +1 because, if we don't do it, it will cause unnecessary loops within it.
         //for eg: {0,2,1,3,5,4,6,2} - here first element is 0, so if we dont increase slow by 1, we will begin with first element, we will go to zero
         // again we will find a value with index zero, so we will have a self loop here
