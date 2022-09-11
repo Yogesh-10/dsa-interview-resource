@@ -1383,6 +1383,7 @@ public class ArrayProblems {
 
         //TC-O(n), SC-O(1), Original array is not modified
         //Slow and Fast Pointer Approach (Floyd's cycle method).
+        //Detailed Explanation and Intuition- https://www.notion.so/DSA-PATTERN-EXPLANATION-6a2cfbd6b8764a0e8beaff62860c3900#115a418c8b124bd994cf1bb2975e650a
         //we increase slow and fast by +1 because, if we don't do it, it will cause unnecessary loops within it.
         //for eg: {0,2,1,3,5,4,6,2} - here first element is 0, so if we dont increase slow by 1, we will begin with first element, we will go to zero
         // again we will find a value with index zero, so we will have a self loop here
