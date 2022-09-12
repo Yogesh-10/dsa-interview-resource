@@ -1349,7 +1349,9 @@ public class ArrayProblems {
         return new int[]{-1, -1};
     }
 
-    //42. Find Repeating elements in an array
+    //42. Find Repeating elements in an array (duplicate number)
+    //Array size is always >= 2 //All elements in the array are from 0 to max element of array //Only one element repeats (any no. of times)
+    //Input: [0, 2, 1, 3, 2, 2], Output: 2 //Input: [1, 2, 3, 0, 3, 4, 5], Output: 3 //Input: [0, 0], Output: 0
     public static int repeatingElements(int[] arr){
         //TC-O(n^2), SC-O(1)
 /*        for (int i = 0; i < arr.length; i++)
@@ -1404,8 +1406,16 @@ public class ArrayProblems {
         return slow - 1;
     }
 
-    //Allocate minimum number of pages.
-    public static int minPages(int[] arr, int k){
+    //43. Allocate minimum number of pages.
+    //You have to allocate books to K number of students so that the maximum number of pages allocated to a student is minimum.
+    //Conditions given : 1. A book will be allocated to exactly one student. //Each student has to be allocated at least one book.
+    //Allotment should be in contiguous order, for example, A student cannot be allocated book 1 and book 3, skipping book 2. //Calculate and return the minimum possible number. Return -1 if a valid assignment is not possible.
+    //Input: A = [12, 34, 67, 90] K = 2 Output: 113
+    //Input: A = [10, 20, 30, 40] K = 2 Output: 60 //Input: A = [5, 17, 100, 11] K = 4 Output: 100
+    //Explanation and intuition - https://takeuforward.org/data-structure/allocate-minimum-number-of-pages/ and https://www.geeksforgeeks.org/allocate-minimum-number-pages/
+    public static int minPagesAllocation(int[] arr, int k){
+        //Time Complexity : O(NlogN), Binary search takes O(log N). For every search, we are checking if an allocation is possible or not. Checking for allocation takes O(N).
+        //Space Complexity: O(1)
         int n = arr.length;
         int sum = 0; int max = 0;
         for (int i = 0; i < n; i++){
@@ -1424,15 +1434,15 @@ public class ArrayProblems {
         return res;
     }
     private static boolean isPossible(int[] arr, int mid, int k) {
-        int requiredStudent = 1; int sum = 0;
+        int requiredStudent = 0; int sum = 0;
         for (int i = 0; i < arr.length; i++){
             if (sum + arr[i] > mid){
                 requiredStudent++;
-                sum = arr[i];
+                sum = arr[i]; //set sum to arr[i] for new student
             }
             else sum += arr[i];
         }
-        return (requiredStudent <= k);
+        return (requiredStudent < k);
     }
 
     public static void intersectionOfTwoSortedArrays(int[] arr1, int[] arr2){
