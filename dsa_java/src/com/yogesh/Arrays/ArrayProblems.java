@@ -798,6 +798,20 @@ public class ArrayProblems {
     //25. Merge two sorted arrays
     //Input - arr1 = {1, 3, 4, 5} arr2 = {2, 6, 7, 8}, Output: arr = {1, 2, 3, 4, 5, 6, 7, 8}
     public static int[] mergeTwoSortedArrays(int[] arr1, int[] arr2){
+        //TC-O((n1+n2) log (n1+n2)), SC-O(n1+n2)
+/*      int n1 = arr1.length;
+        int n2 = arr2.length;
+        int[] temp = new int[n1 + n2];
+        for (int i = 0; i < arr1.length; i++)
+            temp[i] = arr1[i];
+
+        for (int i = 0; i < arr2.length; i++)
+            temp[n1 + i] = arr2[i];
+
+        Arrays.sort(temp);
+        return temp;
+ */
+
         //Time Complexity : O(n1 + n2)
         //Auxiliary Space : O(n1 + n2)
         int i = 0; int j = 0; int index = 0;
@@ -809,7 +823,7 @@ public class ArrayProblems {
             else
                 temp[index++] = arr1[i++];
         }
-
+        //add remaining elements
         while (i < arr1.length) temp[index++] = arr1[i++];
         while (j < arr2.length) temp[index++] = arr2[j++];
         return temp;
@@ -1445,9 +1459,13 @@ public class ArrayProblems {
         return (requiredStudent < k);
     }
 
+    //44.Intersection of two sorted arrays (print common elements in both arr)
+    //Input: arr1[] = {1, 3, 4, 5, 7} arr2[] = {2, 3, 5, 6},  Output: {3, 5}
+    //Input: arr1[] = {2, 5, 6} arr2[] = {4, 6, 8, 10}, Output: {6}
+    //Input: arr1[] = {2, 3, 3, 3, 4, 4} arr2[] = {2, 2, 4, 4}, Output: {2, 4}
     public static void intersectionOfTwoSortedArrays(int[] arr1, int[] arr2){
-        //O(n * m) Solution
-        /*for (int i = 0; i < arr1.length; i++){
+        //TC-O(n * m), SC=O(1)
+/*      for (int i = 0; i < arr1.length; i++){
             if (i > 0 && arr1[i] == arr1[i - 1]) continue;
             for (int j = 0; j < arr2.length; j++){
                 if (arr1[i] == arr2[j]){
@@ -1456,17 +1474,19 @@ public class ArrayProblems {
                 }
             }
         }
-         */
-
-        //O(m + n) Solution
+*/
+        //TC-O(m + n), SC-O(1)
         int i = 0; int j = 0;
         while (i < arr1.length && j < arr2.length){
+            //skip duplicate elements
             if (i > 0 && arr1[i] == arr1[i - 1]){
                 i++;
                 continue;
             }
-            if (arr1[i] > arr2[j]) j++;
-            else if (arr1[i] < arr2[j]) i++;
+            if (arr1[i] > arr2[j])
+                j++;
+            else if (arr1[i] < arr2[j])
+                i++;
             else{
                 System.out.print(arr1[i] + "  ");
                 i++;
@@ -1475,14 +1495,36 @@ public class ArrayProblems {
         }
     }
 
+    //45. Union of two sorted arrays
+    //Input: arr1[] = {1, 3, 4, 5, 7} arr2[] = {2, 3, 5, 6},  Output: {1, 2, 3, 4, 5, 6, 7}
+    //Input: arr1[] = {2, 5, 6} arr2[] = {4, 6, 8, 10}, Output: {2, 4, 5, 6, 8, 10}
+    //Input: arr1[] = {2, 3, 3, 3, 4, 4} arr2[] = {4, 4}, Output: {2, 3, 4}
     public static void unionOfTwoSortedArrays(int[] arr1, int[] arr2){
-        //O(m + n) Solution
+        //TC-O((m+n) log (m+n)), SC-O(m+n)
+/*      int n1 = arr1.length;
+        int n2 = arr2.length;
+        int[] temp = new int[n1 + n2];
+        for (int i = 0; i < arr1.length; i++)
+            temp[i] = arr1[i];
+
+        for (int i = 0; i < arr2.length; i++)
+            temp[n1 + i] = arr2[i];
+
+        Arrays.sort(temp);
+        for (int i = 0; i < temp.length; i++) {
+            if (i == 0 || temp[i] != temp[i - 1])
+                System.out.print(temp[i] + " ");
+        }
+ */
+        //TC-O(m + n), SC-O(1)
         int i = 0; int j = 0;
         while (i < arr1.length && j < arr2.length) {
+            //skip duplicate elements in arr1
             if (i > 0 && arr1[i] == arr1[i - 1]){
                 i++;
                 continue;
             }
+            //skip duplicate elements in arr2
             if (j > 0 && arr2[j] == arr2[j - 1]){
                 j++;
                 continue;
@@ -1497,6 +1539,7 @@ public class ArrayProblems {
             }
         }
 
+        //process remaining elements
         while (i < arr1.length){
             if (i > 0 && arr1[i] == arr1[i - 1])
                 i++;
@@ -1510,22 +1553,20 @@ public class ArrayProblems {
         }
     }
 
-    //Count Inversions in an array
+    //46. Count Inversions in an array
     public static int countInversions(int[] arr, int left, int right){
-        //O(n^2) Solution
-        /* int res = 0;
+        //O(n^2)
+/*      int res = 0;
         for (int i = 0; i < arr.length; i++)
             for (int j = i + 1; j < arr.length; j++)
                 if (arr[i] > arr[j])
                     res++;
-
         return res;
-         */
-
-        //Time - O(n log n), Space - O(n)
-       int res = 0;
+*/
+        //TC-O(n log n), Space - O(n)
+        int res = 0;
         if (left < right){
-            int mid =  left + (right - left) / 2; //or left + (right - left) / 2
+            int mid =  left + (right - left) / 2; //or (left + right) / 2
             res += countInversions(arr,left, mid);
             res += countInversions(arr, mid + 1, right);
             res += countAndMerge(arr, left, mid, right);
