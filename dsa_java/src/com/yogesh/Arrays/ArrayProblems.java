@@ -1553,9 +1553,11 @@ public class ArrayProblems {
         }
     }
 
-    //46. Count Inversions in an array
+    //46. Count Inversions in an array - A pair (arr[i], arr[j]) forms a inversion when i < j and arr[i] > arr[j]
+    //Input: [2,4,1,3,5], Output: 3, because there are three inversions, (2, 1), (4, 1), (4, 3)
+    //Input: [10, 20, 30, 40], Output: 0 //Input: [40, 30, 30, 10], Output: 6
     public static int countInversions(int[] arr, int left, int right){
-        //O(n^2)
+        //TC-O(n^2), SC-O(1)
 /*      int res = 0;
         for (int i = 0; i < arr.length; i++)
             for (int j = i + 1; j < arr.length; j++)
@@ -1563,13 +1565,14 @@ public class ArrayProblems {
                     res++;
         return res;
 */
-        //TC-O(n log n), Space - O(n)
+        //TC-O(n log n), SC - O(n) for merging arrays
+        //This solution is same as merge sort, we additionally add one extra logic here to count inversions, res = res + (n1 - i);
         int res = 0;
         if (left < right){
             int mid =  left + (right - left) / 2; //or (left + right) / 2
-            res += countInversions(arr,left, mid);
-            res += countInversions(arr, mid + 1, right);
-            res += countAndMerge(arr, left, mid, right);
+            res += countInversions(arr,left, mid); //recursively divide arrays on left side and count inversions
+            res += countInversions(arr, mid + 1, right); //recursively divide arrays on right side and count inversions
+            res += countAndMerge(arr, left, mid, right); //sort and merge arrays and count inversion
         }
         return res;
     }
@@ -1585,14 +1588,18 @@ public class ArrayProblems {
 
         int res = 0; int i = 0; int j = 0; int k = left;
         while (i < n1 && j < n2){
+            //if no inversions just sort the array
             if (leftArr[i] <= rightArr[j])
                 arr[k] = leftArr[i++];
             else{
+                //if there is a inversion sort arr and calculate res
                 arr[k] = rightArr[j++];
-                res = res + (n1 - i);
+                res = res + (n1 - i); //we do this because if leftArr[i] > rightArr[j], it means all elements after leftArr[i] will be greater than rightArr[j], since we have sorted the array individually
+                //so instead of linearly traversing and counting inversions, we can count inversions efficiently using this method, res + (n1 - i)
             }
             k++;
         }
+        //process remaining elements
         while (i < n1){
             arr[k] = leftArr[i++];
             k++;
@@ -1605,23 +1612,30 @@ public class ArrayProblems {
         return res;
     }
 
-    //Find Kth smallest element in an array
+    //47. Find Kth smallest element in an array
     //input - [10, 5, 30, 12], k = 2, Output - Kth smallest element is 10
     //input - [30, 20, 5, 10, 8], k = 4, Output - Kth smallest element is 20
     public static int KthSmallestElement(int[] arr, int k) {
-        //Naive Solution - O(n log n)
-/*      Arrays.sort(arr);
-        return arr[k - 1];
-*/
-        //O(n^2) Solution - even though it's n^2, this solution works much better than naive solution on average
+        //TC-O(n log n)
+//      Arrays.sort(arr);
+//      return arr[k - 1];
+
+        //TC-O(n^2) - even though it's n^2, this solution works much better than naive solution-O(nlogn) on average
         //This algorithm is called QuickSelect
+        //We use lomuto partition to find kth smallest element
         int left = 0;
         int right = arr.length - 1;
         while (left <= right) {
             int p = lomutoPartition(arr, left, right);
-            if (p == k - 1) return arr[p];
-            else if (p > k - 1) right = p - 1;
-            else left = p + 1;
+            //if partition returns k-1, we return it, because the array will be sorted, and if partition returns a value that matches with p, i.e p = k-1, we found the result
+            if (p == k - 1)
+                return arr[p];
+            //if p is greater than k-1 means, k lies in left part, so we search in left part
+            else if (p > k - 1)
+                right = p - 1;
+            //if p is smaller than k-1 means, k lies in right part, so we search in right part
+            else
+                left = p + 1;
         }
         return -1;
     }
@@ -1641,7 +1655,7 @@ public class ArrayProblems {
         arr[index2] = temp;
     }
 
-    //Chocolate distribution problem
+    //48. Chocolate distribution problem
     //input1-[7,3,2,4,9,12,56], m = 3, output = 2
     //input2-[3,4,1,9,56,7,9,12], m = 5, output = 6
     //Explanation - input array contains number of chocolates in a packet, we need to distribute a packet to m children
