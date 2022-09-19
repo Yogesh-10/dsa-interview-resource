@@ -1671,26 +1671,59 @@ public class ArrayProblems {
         return res;
     }
 
-    //sort array with two types of elements
-    public static void separatePositiveAndNegative(int[] arr){
-        //O(n) Time and O(1) Space
-        if (arr[0] > 0)
-            swap(arr, 0, 1);
+    //49. sort array with two types of elements.  output can be in any order(satisfying the condition)
+    //1. segregate positive and negative integers, //Input: [-1,2,-3,4,-5,6,-7,8,-9], Output: [-1, -3, -5, -7, -9, 6, 4, 8, 2]
+    //2. segregate even and odd integers, //Input: [1,2,3,4,5,6,7,8,9], Output: [2, 4, 6, 8, 5, 3, 7, 1, 9], in solution change condition to if(arr[i] % 2 == 0)
+    //3. segregate binary array //Input: [0, 1, 0 ,1 ,0 ,1, 0, 0, 1, 1], Output: [0, 0, 0 ,0, 0 ,1, 1, 1, 1, 1],  in solution change condition to if(arr[i] == 0)
+    public static void sortArrayWithTwoTypesOfElements(int[] arr){
+        //TC-O(n) - but three traversals, SC-O(n)
+/*      int[] temp = new int[arr.length];
+        int i = 0;
+        for (int j = 0; j < arr.length; j++)
+            if (arr[j] < 0)
+                temp[i++] = arr[j];
 
-        int j = 1;
-        for (int i = 1; i < arr.length; i++)
+        for (int j = 0; j < arr.length; j++)
+            if (arr[j] >= 0)
+                temp[i++] = arr[j];
+
+        for (int j = 0; j < arr.length; j++)
+            arr[j] = temp[j];
+
+        System.out.println(Arrays.toString(arr));
+ */
+
+        //Hoare's Partition, TC-O(n), SC-O(1)
+/*      int i = -1; int j = arr.length;
+        while (true){
+            do {
+                i++;
+            }while (arr[i] < 0); //change, arr[i] == 0 for binary arr //arr[i] % 2 == 0 for odd and even segregation
+            do {
+                j--;
+            }while (arr[j] >= 0); //change, arr[j] == 1 for binary arr //arr[j] % 2 == 1 for odd and even segregation
+
+            if (i >= j)
+                break;
+
+            swap(arr, i, j);
+        }
+ */
+        //TC-O(n), SC-O(1)
+        int j = 0;
+        for (int i = 0; i < arr.length; i++) {
             if (arr[i] < 0)
                 swap(arr, j++, i);
-
+        }
         System.out.println(Arrays.toString(arr));
     }
 
-    //Sort an array of 0s, 1s and 2s - sort array with three types of elements (Dutch National flag Problem)
+    //50. Sort an array of 0s, 1s and 2s - sort array with three types of elements (Dutch National flag Problem)
     //Given an array A[] consisting only 0s, 1s and 2s. The task is to write a function that sorts the given array. The functions should put all 0s first, then all 1s and all 2s in last.
     //Input: [1, 0, 2, 1, 0] Output: [0 0 1 1 2],  Input: [2, 2, 0, 1, 2, 0]Output: [0 0 1 2 2 2 ]
     public static void sortZerosOnesAndTwos(int[] arr){
         //TC- O(n), SC-O(1)
-        //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1]i.e, before low and all the two's will be in range [high+1 to n]i.e, after high and all the ones will be in [low to mid-1]i.e, between 0's and 2's
+        //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1]i.e, before low and all the two's will be in range [high+1 to n]i.e after high, and all the ones will be in [low to mid-1]i.e, between 0's and 2's
         //We can use a Two Pointers approach while iterating through the array. Let’s say the two pointers are called low and high which are pointing to the first and the last element of the array respectively.
         //So while iterating, we will move all 0s before low and all 2s after high so that in the end, all 1s will be between low and high.
         int low = 0; //low pointer to swap 0's
