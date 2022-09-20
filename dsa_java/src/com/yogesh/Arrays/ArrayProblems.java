@@ -1719,13 +1719,18 @@ public class ArrayProblems {
     }
 
     //50. Sort an array of 0s, 1s and 2s - sort array with three types of elements (Dutch National flag Problem)
-    //Given an array A[] consisting only 0s, 1s and 2s. The task is to write a function that sorts the given array. The functions should put all 0s first, then all 1s and all 2s in last.
-    //Input: [1, 0, 2, 1, 0] Output: [0 0 1 1 2],  Input: [2, 2, 0, 1, 2, 0]Output: [0 0 1 2 2 2 ]
-    public static void sortZerosOnesAndTwos(int[] arr){
+    //1. Given an array A[] consisting only 0s, 1s and 2s. The task is to write a function that sorts the given array. The functions should put all 0s first, then all 1s and all 2s in last.
+          //Input: [1, 0, 2, 1, 0] Output: [0 0 1 1 2],  Input: [2, 2, 0, 1, 2, 0] Output: [0 0 1 2 2 2 ]
+    //2. Three way partitioning - Input: [2,1,2,20,10,20,1],Pivot=2 Output: [1,1,2,2,20,10,20], In three way partitioning all the pivot elements should come together, and all the elements smaller than pivot should move
+          //before pivot, and all elements greater than pivot should move after pivot
+    //3. Partition around a range - Input: [10,5,6,3,20,9,40], lowVal=5, highVal=10 Output:[3,5,6,9,10,20,40]
+          //all elements which are less than 5 are present before 5(lowVal), all elements which are greater than 5(lowVal) and less than 10(highVal) are present in between 5 and 10, and all elements which are greater than 10 are present after 10
+    public static void sortArrayWithThreeTypesOfElements(int[] arr){
         //TC- O(n), SC-O(1)
         //Dutch National flag Problem - The algorithm states that, all the zeros will be in the range [0 to low-1]i.e, before low and all the two's will be in range [high+1 to n]i.e after high, and all the ones will be in [low to mid-1]i.e, between 0's and 2's
         //We can use a Two Pointers approach while iterating through the array. Let’s say the two pointers are called low and high which are pointing to the first and the last element of the array respectively.
         //So while iterating, we will move all 0s before low and all 2s after high so that in the end, all 1s will be between low and high.
+        //1. sort 0's 1's and 2's
         int low = 0; //low pointer to swap 0's
         int mid = 0; //mid pointer to check value of current element, and swap with low and high
         int high = arr.length - 1; //high pointer to swap 2's
@@ -1743,10 +1748,42 @@ public class ArrayProblems {
                 swap(arr, mid, high--);
         }
         System.out.println(Arrays.toString(arr));
+
+        //2. Three way Partition
+/*      int low = 0; int mid = 0;
+        int high = arr.length - 1;
+        int pivot = 2;
+        while (mid <= high){
+            if (arr[mid] < pivot)
+                swap(arr, low++, mid++);
+            else if (arr[mid] > pivot)
+                swap(arr, mid, high--);
+            else
+                mid++;
+        }
+        System.out.println(Arrays.toString(arr));
+ */
+        //3. Partition around range
+/*      int low = 0; int mid = 0;
+        int high = arr.length - 1;
+        int lowVal = 5, highVal = 10; //instead of hardcoding, pass low and high values through function params
+        while (mid <= high){
+            if (arr[mid] < lowVal)
+                swap(arr, low++, mid++);
+            else if (arr[mid] > highVal)
+                swap(arr, mid, high--);
+            else
+                mid++;
+        }
+        System.out.println(Arrays.toString(arr));
+ */
     }
 
+    //51. Find minimum difference in array
+    //Input:[1,8,12,5,18], Output: 3, the min difference is (8-5) = 3
+    //Input:[8,15], Output: 7 //Input:[8,-1,0,3], Output: 1
     public static int minimumDifferenceInArray(int[] arr){
-        //O(n^2) Solution
+        //TC-O(n^2), SC-O(1)
 /*      int res = Integer.MAX_VALUE;
         for (int i = 0; i < arr.length; i++)
             for (int j = i + 1; j < arr.length; j++)
@@ -1754,7 +1791,7 @@ public class ArrayProblems {
 
         return res;
  */
-        //O(n log n) Solution
+        //TC-O(n log n), SC-O(1)
         int res = Integer.MAX_VALUE;
         Arrays.sort(arr);
         for (int i = 1; i < arr.length; i++)
@@ -1763,33 +1800,43 @@ public class ArrayProblems {
         return res;
     }
 
-    //Merge Overlapping intervals
+    //52. Merge Overlapping intervals
+    //Input: Intervals = {{1,3},{2,4},{6,8},{9,10}} Output: {{1, 4}, {6, 8}, {9, 10}} Explanation: Given intervals: [1,3],[2,4],[6,8],[9,10], we have only two overlapping intervals here,[1,3] and [2,4]. Therefore we will merge these two and return [1,4],[6,8], [9,10].
+    //Input: Intervals = {{6,8},{1,9},{2,4},{4,7}} Output: {{1, 9}} Explanation: we have overlapping intervals between 1 and 9
     public static void mergeIntervals(Interval[] arr) {
-        //O(n log n) Solution
-        Arrays.sort(arr, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval i1, Interval i2) {
-                return i1.start - i2.start;
-            }
-        });
+        //TC-O(n log n), SC-O(1)
+        //The idea is sort the array and check if interval at index.end is greater than interval at arr[i].start, it means we have a overlap and merge them
+        //if there is no overlap, we simply increment index and copy interval at i to current index
+        sortIntervals(arr);
         int index = 0;
         for (int i = 1; i < arr.length; i++){
+            //if there is a overlap, then merge the intervals by taking minimum of two values from start, and maximum values from end
             if (arr[index].end >= arr[i].start){
                 arr[index].start = Math.min(arr[index].start, arr[i].start);
                 arr[index].end = Math.max(arr[index].end, arr[i].end);
             }
             else{
                 index++;
-                arr[index] = arr[i];
+                arr[index] = arr[i]; //copy intervals at i to index
             }
         }
+        //print merged intervals
         for (int i = 0; i <= index; i++)
             System.out.print("[" + arr[i].start + "," + arr[i].end + "]");
     }
+    private static void sortIntervals(Interval[] arr){
+        Arrays.sort(arr, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
+            }
+        });
+    }
 
-    //Meeting the maximum guests
+    //53. Meeting the maximum guests
+    //
     public static int maxGuests(int[] arrival, int[] departure){
-        //O(n log n) Solution
+        //TC-O(n log n), SC-O(1)
         Arrays.sort(arrival);
         Arrays.sort(departure);
         int res = 1; int arrivalIndex = 1; int departureIndex = 0; int curr = 1;
