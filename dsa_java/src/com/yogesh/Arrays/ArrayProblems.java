@@ -1834,29 +1834,40 @@ public class ArrayProblems {
     }
 
     //53. Meeting the maximum guests
-    //
-    public static int maxGuests(int[] arrival, int[] departure){
+    //900 means 9:00, and 2359 means 23:59
+    //Input: arrival=[900,600,700], departure=[1000, 800, 730], Output: 2, we can meet two guest if we arrive between 700 to 730
+    //Input: arrival=[900,940], departure=[1000, 1030], Output: 2, we can meet two guest if we arrive between 940 to 1000
+    //Input: arrival=[900,940,950,1100,1500,1800], departure=[900,1200,1120,1130,1900,2000], Output: 3, we can meet two guest if we arrive between 1100 to 1120
+    public static int meetMaxGuests(int[] arrival, int[] departure){
         //TC-O(n log n), SC-O(1)
+        //Idea is to sort both arrival and departures, and find the no. of maximum guest that can be met
+        //we sort both arrays and then check if arrival[arrivalIndex] <= departure[departureIndex], that means a new guest has arrived so we increment currGuests by 1
+        //else the guest has left, so decrease the currGuest by 1.
+        //This solution is similar to merge function of merge sort, we check two arrays simultaneously and increment arrivalIndex and departureIndex based on conditions
         Arrays.sort(arrival);
         Arrays.sort(departure);
-        int res = 1; int arrivalIndex = 1; int departureIndex = 0; int curr = 1;
+        int res = 1;
+        int arrivalIndex = 1; //we start res and arrivalIndex at 1, because for arr[0], we would have met one guest for sure, so we start from 1st index
+        int departureIndex = 0; int currGuests = 1;
 
         while (arrivalIndex < arrival.length && departureIndex < departure.length){
+            // a new guest has arrived so we increment currGuests by 1
             if (arrival[arrivalIndex] <= departure[departureIndex]){
-                curr++;
+                currGuests++;
                 arrivalIndex++;
-            } else{
-                curr--;
+            }
+            //the guest has left, so decrease the currGuest by 1.
+            else{
+                currGuests--;
                 departureIndex++;
             }
-            res = Math.max(res, curr);
+            res = Math.max(res, currGuests);
         }
         return res;
     }
 
     /* Sliding window Problems */
-
-    //find the average of all contiguous subarrays of size ‘K’ in it.
+    //54. find the average of all contiguous subarrays of size ‘K’ in it.
     //Array: [1, 3, 2, 6, -1, 4, 1, 8, 2], K=5
     //For the first 5 numbers (subarray from index 0-4), the average is: (1+3+2+6-1)/5 => 2.2(1+3+2+6−1)/5=>2.2
     //The average of next 5 numbers (subarray from index 1-5) is: (3+2+6-1+4)/5 => 2.8(3+2+6−1+4)/5=>2.8
