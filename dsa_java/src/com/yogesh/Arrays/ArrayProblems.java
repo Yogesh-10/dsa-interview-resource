@@ -1867,14 +1867,14 @@ public class ArrayProblems {
     }
 
     /* Sliding window Problems */
-    //54. find the average of all contiguous subarrays of size ‘K’ in it.
+    //54. Average of subarray of size K - find the average of all contiguous subarrays of size ‘K’ in it.
     //Array: [1, 3, 2, 6, -1, 4, 1, 8, 2], K=5
     //For the first 5 numbers (subarray from index 0-4), the average is: (1+3+2+6-1)/5 => 2.2(1+3+2+6−1)/5=>2.2
     //The average of next 5 numbers (subarray from index 1-5) is: (3+2+6-1+4)/5 => 2.8(3+2+6−1+4)/5=>2.8
     //For the next 5 numbers (subarray from index 2-6), the average is: (2+6-1+4+1)/5 => 2.4(2+6−1+4+1)/5=>2.4 and so on.
     //Output: [2.2, 2.8, 2.4, 3.6, 2.8]
     public static double[] averageOfSubarrayOfSizeK(int[] arr, int k){
-        //O(N ∗ K) where ‘N’ is the number of elements in the input array, Space - O(k)
+        //O(N * K) where ‘N’ is the number of elements in the input array, Space - O(k)
 /*      double[] res =  new double[arr.length - k + 1];
         for (int i = 0; i <= arr.length - k; i++){
             double sum = 0;
@@ -1900,8 +1900,8 @@ public class ArrayProblems {
         return res;
     }
 
-    //Given an array of positive numbers and a positive number ‘k’, find the maximum sum of any contiguous subarray of size ‘k’.
-    //Input: [2, 1, 5, 1, 3, 2], k=3     Output: 9
+    //55. Maximum Sum Subarray - Given an array of positive numbers and a positive number ‘k’, find the maximum sum of any contiguous subarray of size ‘k’.
+    //Input: [2, 1, 5, 1, 3, 2], k=3 Output: 9
     //Explanation: Subarray with maximum sum is [5, 1, 3].
     public static int findMaxSubArraySumOfSizeK(int[] arr, int k) {
         // Naive Solution - time complexity O(N * K)
@@ -1919,6 +1919,7 @@ public class ArrayProblems {
         int windowSum = 0; int maxSum = 0; int windowStart = 0;
         for (int windowEnd = 0; windowEnd < arr.length; windowEnd++){
             windowSum += arr[windowEnd];  // add the next element
+            // slide the window, we don't need to slide if we've not hit the required window size of 'k'
             if (windowEnd >= k - 1) {
                 maxSum = Math.max(windowSum, maxSum);
                 windowSum -= arr[windowStart++]; // subtract the element going out and slide the window ahead by windowStart++
@@ -1927,7 +1928,7 @@ public class ArrayProblems {
         return maxSum;
     }
 
-    //Given an array of positive numbers and a positive number ‘S’, find the length of the smallest contiguous subarray whose sum is greater than or equal to ‘S’. Return 0, if no such subarray exists.
+    //56. Smallest Subarray with a given sum - Given an array of positive numbers and a positive number ‘S’, find the length of the smallest contiguous subarray whose sum is greater than or equal to ‘S’. Return 0, if no such subarray exists.
     //Input: [2, 1, 5, 2, 3, 2], S=7 //Output: 2 //Explanation: The smallest subarray with a sum great than or equal to '7' is [5, 2]
     //Input: [2, 1, 5, 2, 8], S=7 //Output: 1 //Explanation: The smallest subarray with a sum greater than or equal to '7' is [8].
     //Input: [3, 4, 1, 1, 6], S=8 //Output: 3 //Explanation: Smallest subarrays with a sum greater than or equal to '8' are [3, 4, 1] or [1, 1, 6].
