@@ -1904,7 +1904,7 @@ public class ArrayProblems {
     //Input: [2, 1, 5, 1, 3, 2], k=3 Output: 9
     //Explanation: Subarray with maximum sum is [5, 1, 3].
     public static int findMaxSubArraySumOfSizeK(int[] arr, int k) {
-        // Naive Solution - time complexity O(N * K)
+        //Naive Solution - time complexity O(N * K)
 /*      int maxSum = 0;
         for (int i = 0; i <= arr.length - k; i++) {
             int sum = 0;
@@ -1933,8 +1933,8 @@ public class ArrayProblems {
     //Input: [2, 1, 5, 2, 8], S=7 //Output: 1 //Explanation: The smallest subarray with a sum greater than or equal to '7' is [8].
     //Input: [3, 4, 1, 1, 6], S=8 //Output: 3 //Explanation: Smallest subarrays with a sum greater than or equal to '8' are [3, 4, 1] or [1, 1, 6].
     public static int findMinSubArrayLengthEqualToK(int[] array, int k){
-        //O(n^2)
-   /*     int minLength = Integer.MAX_VALUE;
+        //TC-O(n^2), SC-O(1)
+/*      int minLength = Integer.MAX_VALUE;
         for (int i = 0; i < array.length; i++){
             int sum = array[i];
             if (array[i] >= k) return 1;
@@ -1949,8 +1949,9 @@ public class ArrayProblems {
         return minLength == Integer.MAX_VALUE ? 0 : minLength;
     */
 
-        //The time complexity of the above algorithm will be O(N). The outer for loop runs for all elements and the inner while loop processes
+        //TC-O(N). The outer for loop runs for all elements and the inner while loop processes
         //each element only once, therefore the time complexity of the algorithm will be O(N+N) which is asymptotically equivalent to O(N).
+        //SC-O(1)
         int windowStart = 0; int windowSum = 0; int minLength = Integer.MAX_VALUE;
         for (int windowEnd = 0; windowEnd < array.length; windowEnd++){
             windowSum += array[windowEnd];
@@ -1962,14 +1963,14 @@ public class ArrayProblems {
         return minLength == Integer.MAX_VALUE ? 0 : minLength;
     }
 
-    //Longest Substring with K Distinct Characters - Given a string, find the length of the longest substring in it with no more than K distinct(unique) characters.
+    //57. Longest Substring with K Distinct Characters - Given a string, find the length of the longest substring in it with no more than K distinct(unique) characters.
     //Input: String="araaci", K=2 //Output: 4 //Explanation: The longest substring with no more than '2' distinct characters is "araa".
     //Input: String="araaci", K=1 //Output: 2 //Explanation: The longest substring with no more than '1' distinct characters is "aa".
     //Input: String="cbbebi", K=3 //Output: 5 //Explanation: The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
-    public static int LongestSubstringKDistinct(String str, int k) {
-        //The time complexity of the above algorithm will be O(N). The outer for loop runs for all elements and the inner while loop processes
+    public static int longestSubstringKDistinct(String str, int k) {
+        //TC-O(N). The outer for loop runs for all elements and the inner while loop processes
         //each element only once, therefore the time complexity of the algorithm will be O(N+N) which is asymptotically equivalent to O(N).
-        //The space complexity of the algorithm is O(K), as we will be storing a maximum of ‘K+1’ characters in the HashMap.
+        //SC-O(K), as we will be storing a maximum of ‘K+1’ characters in the HashMap.
         if (str == null || str.length() == 0 || str.length() < k)
             throw new IllegalArgumentException();
 
@@ -1992,6 +1993,7 @@ public class ArrayProblems {
         return maxLength;
     }
 
+    //58.
     public static int longestNoRepeatSubstring(String s){
         int maxLength = 0; int windowStart = 0;
         Map<Character, Integer> frequencyMap = new HashMap<>();
