@@ -1963,10 +1963,16 @@ public class ArrayProblems {
         return minLength == Integer.MAX_VALUE ? 0 : minLength;
     }
 
-    //57. Longest Substring with K Distinct Characters - Given a string, find the length of the longest substring in it with no more than K distinct(unique) characters.
+    //57. 1. Longest Substring with K Distinct Characters - Given a string, find the length of the longest substring in it with no more than K distinct(unique) characters.
     //Input: String="araaci", K=2 //Output: 4 //Explanation: The longest substring with no more than '2' distinct characters is "araa".
     //Input: String="araaci", K=1 //Output: 2 //Explanation: The longest substring with no more than '1' distinct characters is "aa".
     //Input: String="cbbebi", K=3 //Output: 5 //Explanation: The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
+
+    //2. Fruits in to baskets - Given an array of characters where each character represents a fruit tree, you are given two baskets and your goal is to put maximum number of fruits in each basket. The only restriction is that each basket can have only one type of fruit.
+    //You can start with any tree, but once you have started you can’t skip a tree. You will pick one fruit from each tree until you cannot, i.e., you will stop when you have to pick from a third fruit type.
+    //Input: Fruit=['A', 'B', 'C', 'A', 'C'] Output: 3 Explanation: We can put 2 'C' in one basket and one 'A' in the other from the subarray ['C', 'A', 'C']
+    //Input: Fruit=['A', 'B', 'C', 'B', 'B', 'C'] Output: 5 Explanation: We can put 3 'B' in one basket and two 'C' in the other basket This can be done if we start with the second letter: ['B', 'C', 'B', 'B', 'C']
+    //Both the above problems have same solution, and similar to each other
     public static int longestSubstringKDistinct(String str, int k) {
         //TC-O(N). The outer for loop runs for all elements and the inner while loop processes
         //each element only once, therefore the time complexity of the algorithm will be O(N+N) which is asymptotically equivalent to O(N).
@@ -1981,7 +1987,7 @@ public class ArrayProblems {
             char rightChar = str.charAt(windowEnd);
             frequencyMap.put(rightChar, frequencyMap.getOrDefault(rightChar, 0) + 1);
             // shrink the sliding window, until we are left with 'k' distinct characters in the frequency map
-            while (frequencyMap.size() > k){
+            while (frequencyMap.size() > k){ //for second problem change k to 2 (2 baskets)
                 char leftChar = str.charAt(windowStart);
                 frequencyMap.put(leftChar, frequencyMap.get(leftChar) - 1);
                 if (frequencyMap.get(leftChar) == 0)
@@ -1993,12 +1999,22 @@ public class ArrayProblems {
         return maxLength;
     }
 
-    //58.
+    //58. Longest No repeat substring - Given a string, find the length of the longest substring which has no repeating characters.
+    //Input: String="aabccbb" Output: 3, Explanation: The longest substring without any repeating characters is "abc".
+    //Input: String="abbbb" Output: 2, Explanation: The longest substring without any repeating characters is "ab".
+    //Input: String="dvdf" Output: 3, Explanation: Longest substrings without any repeating characters is "vdf"
     public static int longestNoRepeatSubstring(String s){
+        //TC-O(N), SC-O(K) - where KK is the number of distinct characters in the input string. This also means K<=NK<=N, because in the worst case, the whole string might not have any repeating character so the entire string will be added to the HashMap.
+        //Having said that, since we can expect a fixed set of characters in the input string (e.g., 26 for English letters), we can say that the algorithm runs in fixed space O(1)O(1); in this case, we can use a fixed-size array instead of the HashMap.
         int maxLength = 0; int windowStart = 0;
         Map<Character, Integer> frequencyMap = new HashMap<>();
+        //we iterate thru the string and check if we have seen the character already, if we have seen
+        //we update the windowStart by checking max of windowStart and current char + 1, we do this because, if we have seen a char already we have to start a new window, so we update windowStart
+        //else we add it to the hashmap
         for (int windowEnd = 0; windowEnd < s.length(); windowEnd++) {
             char rightChar = s.charAt(windowEnd);
+            // if the map already contains the 'rightChar', shrink the window from the beginning so that
+            // we have only one occurrence of 'rightChar'
             if (frequencyMap.containsKey(rightChar)){
                 windowStart = Math.max(windowStart, frequencyMap.get(rightChar) + 1);
             }
@@ -2008,14 +2024,18 @@ public class ArrayProblems {
         return maxLength;
     }
 
-    //Longest Substring with Same Letters after Replacement
+    //59. Longest Substring with Same Letters after Replacement
     //Given a string with lowercase letters only, if you are allowed to replace no more than ‘k’ letters with any letter, find the length of the longest substring having the same letters after replacement.
     //Input: String="aabccbb", k=2 //Output: 5 //Explanation: Replace the two 'c' with 'b' to have a longest repeating substring "bbbbb".
     //Input: String="abbcb", k=1 //Output: 4 //Explanation: Replace the 'c' with 'b' to have a longest repeating substring "bbbb".
     //Input: String="abccde", k=1 //Output: 3 //Explanation: Replace the 'b' or 'd' with 'c' to have the longest repeating substring "ccc".
     public static int characterReplacement (String str, int k){
-        //The time complexity of the above algorithm will be O(N) where ‘N’ is the number of letters in the input string.
-        //space complexity will be O(26), to store each letter’s frequency in the HashMap, which is asymptotically equal to O(1).
+        //TC-O(N) where ‘N’ is the number of letters in the input string.
+        //SC-O(26), to store each letter’s frequency in the HashMap, which is asymptotically equal to O(1).
+
+        //The idea is, We’ll iterate through the string to add one letter at a time in the window. We’ll also keep track of the count of the maximum repeating letter in any window (let’s call it maxRepeatLetterCount).
+        //So at any time, we know that we can have a window which has one letter repeating maxRepeatLetterCount times, this means we should try to replace the remaining letters. If we have more than
+        //‘k’ remaining letters, we should shrink the window as we are not allowed to replace more than ‘k’ letters.
         int windowStart = 0; int maxLength = 0; int maxRepeatLetterCount = 0;
         Map<Character, Integer> frequencyMap = new HashMap<>();
 
@@ -2038,12 +2058,15 @@ public class ArrayProblems {
         return maxLength;
     }
 
-    //Longest Subarray with Ones after Replacement
+    //60. Longest Subarray with Ones after Replacement
     //Given an array containing 0s and 1s, if you are allowed to replace no more than ‘k’ 0s with 1s, find the length of the longest contiguous subarray having all 1s.
     //Input: Array=[0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1], k=2 //Output: 6 //Explanation: Replace the '0' at index 5 and 8 to have the longest contiguous subarray of 1s having length 6.
     //Input: Array=[0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1], k=3 //Output: 9 //Explanation: Replace the '0' at index 6, 9, and 10 to have the longest contiguous subarray of 1s having length 9.
     public static int replacingOnes(int[] arr, int k){
         //Time Complexity - O(N), Space Complexity - O(1)
+        //Following a similar approach like previous problem, we’ll iterate through the array to add one number at a time in the window. We’ll also keep track of the maximum number of repeating 1s in the current
+        //window (let’s call it maxOnesCount). So at any time, we know that we can have a window which has 1s repeating maxOnesCount time, so we should try to replace the remaining 0s. If we have more than ‘k’ remaining 0s,
+        //we should shrink the window as we are not allowed to replace more than ‘k’ 0s.
         int windowStart = 0; int maxLength = 0; int maxOnesCount = 0;
 
         // try to extend the range [windowStart, windowEnd]
@@ -2064,7 +2087,7 @@ public class ArrayProblems {
         return maxLength;
     }
 
-    //Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
+    //61. Given an unsorted array of numbers and a target ‘key’, remove all instances of ‘key’ in-place and return the new length of the array.
     //Input: [3, 2, 3, 6, 3, 10, 9, 3], Key=3 Output: 4 Explanation: The first four elements after removing every 'Key' will be [2, 6, 10, 9].
     //Input: [2, 11, 2, 2, 1], Key=2 Output: 2 Explanation: The first two elements after removing every 'Key' will be [11, 1].
     public static int removeKeysInArray(int[] arr, int key){
