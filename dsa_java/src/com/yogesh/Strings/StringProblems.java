@@ -636,8 +636,7 @@ public class StringProblems {
     }
 
 
-    //19. Permutation in a String
-    //Given a string and a pattern, find out if the string contains any permutation of the pattern. Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations: abc acb bac bca cab cba
+    //19. Permutation in a String - Given a string and a pattern, find out if the string contains any permutation of the pattern. Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations: abc acb bac bca cab cba
     //Input: String="oidbcaf", Pattern="abc" //Output: true //Explanation: The string contains "bca" which is a permutation of the given pattern.
     //Input: String="odicf", Pattern="dc" //Output: false //Explanation: No permutation of the pattern is present in the given string as a substring.
     //Input: String="bcdxabcdy", Pattern="bcdyabcdx" //Output: true //Explanation: Both the string and the pattern are a permutation of each other.
@@ -653,22 +652,27 @@ public class StringProblems {
             charFrequencyMap.put(ch, charFrequencyMap.getOrDefault(ch, 0) + 1);
 
         // our goal is to match all the characters from the 'charFrequencyMap' with the current window try to extend the range [windowStart, windowEnd]
+        //Iterate through the string, adding one character at a time in the sliding window.
         for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
             char currChar = str.charAt(windowEnd);
+            //If the character being added matches a character in the HashMap, decrement its frequency in the map. If the character frequency becomes zero, we got a complete match.
             if (charFrequencyMap.containsKey(currChar)){
                 // decrement the frequency of the matched character
                 charFrequencyMap.put(currChar, charFrequencyMap.get(currChar) - 1);
                 if (charFrequencyMap.get(currChar) == 0) // character is completely matched
                     matched++;
             }
+            //If at any time, the number of characters matched is equal to the number of distinct characters in the pattern (i.e., total characters in the HashMap), we have gotten our required permutation.
             if (matched == charFrequencyMap.size())
                 return true;
 
+            //If the window size is greater than the length of the pattern, shrink the window to make it equal to the size of the pattern
             if (windowEnd >= pattern.length() - 1){ // shrink the window by one character
                 char leftChar = str.charAt(windowStart++);
                 if (charFrequencyMap.containsKey(leftChar)){
                     if (charFrequencyMap.get(leftChar) == 0)
-                        matched--;
+                        matched--; // before putting the character back to hashmap, decrement the matched count
+                    //At the same time, if the character going out was part of the pattern, put it back in the frequency HashMap.
                     // put the character back for matching
                     charFrequencyMap.put(leftChar, charFrequencyMap.get(leftChar) + 1);
                 }
@@ -677,8 +681,7 @@ public class StringProblems {
         return false;
     }
 
-    //20. String Anagrams
-    //Given a string and a pattern, find all anagrams of the pattern in the given string. //Anagram is actually a Permutation of a string, For example, “abc” has the following six anagrams: abc acb bac bca cab cba
+    //20. String Anagrams - Given a string and a pattern, find all anagrams of the pattern in the given string. //Anagram is actually a Permutation of a string, For example, “abc” has the following six anagrams: abc acb bac bca cab cba
     //Input: String="ppqp", Pattern="pq" //Output: [1, 2] //Explanation: The two anagrams of the pattern in the given string are "pq" and "qp".
     //Input: String="abbcabc", Pattern="abc" //Output: [2, 3, 4] //Explanation: The three anagrams of the pattern in the given string are "bca", "cab", and "abc".
     public static List<Integer> stringAnagrams(String str, String pattern){
@@ -689,10 +692,12 @@ public class StringProblems {
 
         List<Integer> resultIndices = new ArrayList<>();
         // our goal is to match all the characters from the map with the current window
+        //Iterate through the string, adding one character at a time in the sliding window.
         for (int windowEnd = 0; windowEnd < str.length(); windowEnd++){
             char currChar = str.charAt(windowEnd);
-            // decrement the frequency of the matched character
+            //If the character being added matches a character in the HashMap, decrement its frequency in the map. If the character frequency becomes zero, we got a complete match.
             if (frequencyMap.containsKey(currChar)){
+                // decrement the frequency of the matched character
                 frequencyMap.put(currChar, frequencyMap.get(currChar) - 1);
                 if (frequencyMap.get(currChar) == 0)
                     matched++;
@@ -701,13 +706,15 @@ public class StringProblems {
             if (matched == frequencyMap.size()) // if we found an anagram add index to result
                 resultIndices.add(windowStart);
 
+            //If the window size is greater than the length of the pattern, shrink the window to make it equal to the size of the pattern
             if (windowEnd >= pattern.length() - 1){ // shrink the window.
                 char leftChar = str.charAt(windowStart++);
                 if (frequencyMap.containsKey(leftChar)){
                     if (frequencyMap.get(leftChar) == 0)
                         matched--; // before putting the character back, decrement the matched count
 
-                    // put the character back
+                    //At the same time, if the character going out was part of the pattern, put it back in the frequency HashMap.
+                    // put the character back for matching
                     frequencyMap.put(leftChar, frequencyMap.get(leftChar) + 1);
                 }
             }
