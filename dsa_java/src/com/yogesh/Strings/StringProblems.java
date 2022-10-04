@@ -728,8 +728,8 @@ public class StringProblems {
     //Input: String="abdabca", Pattern="abc" //Output: "abc" //Explanation: The smallest substring having all characters of the pattern is "abc".
     //Input: String="adcad", Pattern="abc" //Output: "" //Explanation: No substring in the given string has all characters of the pattern.
     public static String minimumWindowSubstring(String str, String pattern){
-        //The time complexity of the above algorithm will be O(N + M) where ‘N’ and ‘M’ are the number of characters in the input string and the pattern respectively.
-        //The space complexity of the algorithm is O(M) since in the worst case, the whole pattern can have distinct characters which will go into the HashMap. In the worst case, we also need O(N) space for the resulting substring, which will happen when the input string is a permutation of the pattern.
+        //TC-O(N + M) where ‘N’ and ‘M’ are the number of characters in the input string and the pattern respectively.
+        //SC-O(M) since in the worst case, the whole pattern can have distinct characters which will go into the HashMap. In the worst case, we also need O(N) space for the resulting substring, which will happen when the input string is a permutation of the pattern.
         int windowStart = 0; int matched = 0; int minLength = str.length() + 1; int subStrStart = 0;
 
         Map<Character, Integer> frequencyMap = new HashMap<>();
