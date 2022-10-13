@@ -2127,7 +2127,7 @@ public class ArrayProblems {
        return squares;
     }
 
-    //Triplet Sum to Zero - Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
+    //63. Triplet Sum to Zero - Given an array of unsorted numbers, find all unique triplets in it that add up to zero.
     //Input: [-3, 0, 1, 2, -1, 1, -2] Output: [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1] Explanation: There are four unique triplets whose sum is equal to zero.
     //Input: [-5, 2, -1, -2, 3] Output: [[-5, 2, 3], [-2, -1, 3]] Explanation: There are two unique triplets whose sum is equal to zero.
     public static List<List<Integer>> tripletSumToZero(int[] arr){
@@ -2168,7 +2168,7 @@ public class ArrayProblems {
         }
     }
 
-    //Triplet Sum Close to Target
+    //64. Triplet Sum Close to Target
     //Given an array of unsorted numbers and a target number, find a triplet in the array whose sum is as close to the target number as possible, return the sum of the triplet. If there are more than one such triplet, return the sum of the triplet with the smallest sum.
     //Input: [-2, 0, 1, 2], target=2 Output: 1 Explanation: The triplet [-2, 1, 2] has the closest sum to the target.
     //Input: [-3, -1, 1, 2], target=1 Output: 0 Explanation: The triplet [-3, 1, 2] has the closest sum to the target.
