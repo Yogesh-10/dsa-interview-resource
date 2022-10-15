@@ -2203,7 +2203,7 @@ public class ArrayProblems {
         return closestSum;
     }
 
-    //Triplets with Smaller Sum - Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
+    //65. Triplets with Smaller Sum - Given an array arr of unsorted numbers and a target sum, count all triplets in it such that arr[i] + arr[j] + arr[k] < target where i, j, and k are three different indices. Write a function to return the count of such triplets.
     //Input: [-1, 0, 2, 3], target=3 Output: 2 Explanation: There are two triplets whose sum is less than the target: [-1, 0, 3], [-1, 0, 2]
     //Input: [-1, 4, 2, 1, 3], target=5 Output: 4 Explanation: There are four triplets whose sum is less than the target:[-1, 1, 4], [-1, 1, 3], [-1, 1, 2], [-1, 2, 3]
     //Input: [5, 1, 3, 4, 7], target=12 Output: 4 Explanation: There are four triplets whose sum is less than the target:(1, 3, 4), (1, 3, 5), (1, 3, 7) and (1, 4, 5)
@@ -2232,7 +2232,7 @@ public class ArrayProblems {
         return smallSumCount;
     }
 
-    //Subarrays with Product Less than a Target(k) - Given an array with positive numbers and a target number, find all of its contiguous subarrays whose product is less than the target number.
+    //66. Subarrays with Product Less than a Target(k) - Given an array with positive numbers and a target number, find all of its contiguous subarrays whose product is less than the target number.
     //Input: [2, 5, 3, 10], target=30 Output: 6 Explanation: There are six contiguous subarrays whose product is less than the target. [2], [5], [2, 5], [3], [5, 3], [10]
     //Input: [8, 2, 6, 5], target=50 Output: 7 Explanation: There are seven contiguous subarrays whose product is less than the target. [8], [2], [8, 2], [6], [2, 6], [5], [6, 5]
     //Input : arr[] = [1, 2, 3, 4] target = 10 Output : 7 The subarrays are {1}, {2}, {3}, {4} {1, 2}, {1, 2, 3} and {2, 3}
@@ -2282,7 +2282,46 @@ public class ArrayProblems {
         return count;
     }
 
-    //Minimum Window Sort - Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
+    //67. Quadruple Sum to Target - Given an array of unsorted numbers and a target number, find all unique quadruplets in it, whose sum is equal to the target number.
+    //Input: [4, 1, 2, -1, 1, -3], target=1 Output: [-3, -1, 1, 4], [-3, 1, 1, 2] Explanation: Both the quadruplets add up to the target.
+    //Input: [2, 0, -1, 1, -2, 2], target=2 Output: [-2, 0, 2, 2], [-1, 0, 1, 2] Explanation: Both the quadruplets add up to the target.
+    public static List<List<Integer>> searchQuadruplets(int[] arr, int target) {
+        //TC-O(N^3) - Sorting the array will take O(N*logN). Overall searchQuadruplets() will take O(N * logN + N^3), which is asymptotically equivalent to O(N^3)
+        //SC-O(n)
+        Arrays.sort(arr);
+        List<List<Integer>> quadruplets = new ArrayList<>();
+        for (int i = 0; i < arr.length - 3; i++) {
+            if (i > 0 && arr[i] == arr[i - 1]) // skip same element to avoid duplicate quadruplets
+                continue;
+            for (int j = i + 1; j < arr.length - 2; j++) {
+                if (j > i + 1 && arr[j] == arr[j - 1]) // skip same element to avoid duplicate quadruplets
+                    continue;
+                searchPairsForQuadruplets(arr, target, i, j, quadruplets);
+            }
+        }
+        return quadruplets;
+    }
+    private static void searchPairsForQuadruplets(int[] arr, int targetSum, int first, int second, List<List<Integer>> quadruplets) {
+        int left = second + 1;
+        int right = arr.length - 1;
+        while (left < right) {
+            int sum = arr[first] + arr[second] + arr[left] + arr[right];
+            if (sum == targetSum) { // found the quadruplet
+                quadruplets.add(Arrays.asList(arr[first], arr[second], arr[left], arr[right]));
+                left++;
+                right--;
+                while (left < right && arr[left] == arr[left - 1])
+                    left++; // skip same element to avoid duplicate quadruplets
+                while (left < right && arr[right] == arr[right + 1])
+                    right--; // skip same element to avoid duplicate quadruplets
+            } else if (sum < targetSum)
+                left++; // we need a pair with a bigger sum
+            else
+                right--; // we need a pair with a smaller sum
+        }
+    }
+
+    //68. Minimum Window Sort - Given an array, find the length of the smallest subarray in it which when sorted will sort the whole array.
     //Input: [1, 2, 5, 3, 7, 10, 9, 12] Output: 5 Explanation: We need to sort only the subarray [5, 3, 7, 10, 9] to make the whole array sorted
     //Input: [1, 3, 2, 0, -1, 7, 10] Output: 5 Explanation: We need to sort only the subarray [1, 3, 2, 0, -1] to make the whole array sorted
     //Input: [1, 2, 3] Output: 0 Explanation: The array is already sorted, Input: [3, 2, 1] Output: 3 Explanation: The whole array needs to be sorted.
