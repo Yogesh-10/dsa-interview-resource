@@ -2326,7 +2326,7 @@ public class ArrayProblems {
     //Input: [1, 3, 2, 0, -1, 7, 10] Output: 5 Explanation: We need to sort only the subarray [1, 3, 2, 0, -1] to make the whole array sorted
     //Input: [1, 2, 3] Output: 0 Explanation: The array is already sorted, Input: [3, 2, 1] Output: 3 Explanation: The whole array needs to be sorted.
     public static int minimumWindowSort(int[] arr){
-        //TC-O(n), SC-O(1)
+        //TC-O(m+n), SC-O(1)
         int low = 0;
         int high = arr.length - 1;
 
