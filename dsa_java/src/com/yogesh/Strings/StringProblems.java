@@ -816,13 +816,14 @@ public class StringProblems {
         return resultIndices;
     }
 
-    //Comparing Strings containing Backspaces - Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
+    //23. Comparing Strings containing Backspaces - Given two strings containing backspaces (identified by the character ‘#’), check if the two strings are equal.
     //Input: str1="xy#z", str2="xzz#" Output: true Explanation: After applying backspaces the strings become "xz" and "xz" respectively.
     //Input: str1="xy#z", str2="xyz#" Output: false Explanation: After applying backspaces the strings become "xz" and "xy" respectively.
     //Input: str1="xp#", str2="xyz##" Output: true Explanation: After applying backspaces the strings become "x" and "x" respectively. In "xyz##", the first '#' removes the character 'z' and the second '#' removes the character 'y'.
     //Input: str1="xywrrmp", str2="xywrrmu#p" Output: true Explanation: After applying backspaces the strings become "xywrrmp" and "xywrrmp" respectively.
     public static boolean compareStringsContainingBackspaces(String str1, String str2) {
-        //The time complexity of the above algorithm will be O(M+N) where ‘M’ and ‘N’ are the lengths of the two input strings respectively.
+        //TC-O(M+N) where ‘M’ and ‘N’ are the lengths of the two input strings respectively.
+        //SC-O(1)
         //use two pointer approach to compare the strings
         int index1 = str1.length() - 1, index2 = str2.length() - 1;
         while (index1 >= 0 || index2 >= 0) {
