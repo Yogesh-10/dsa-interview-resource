@@ -6,6 +6,7 @@ public class HashingProblems {
     //1. Find the first non-repeated character
     //Eg: I/P - programming is awesome, O/P - p
     public static char firstNonRepeatedChar(String str){
+        //TC-O(n), SC-O(n)
         HashMap<Character, Integer> map = new HashMap<>();
 
         char[] chars = str.toCharArray();
@@ -32,6 +33,7 @@ public class HashingProblems {
     //2. Find the first repeated character
     //Eg: I/P - programming is awesome, O/P - r
     public static char firstRepeatedChar(String str){
+        //TC-O(n), SC-O(n)
         Set<Character> set = new HashSet<>();
 
         for (char ch : str.toCharArray()) {
@@ -150,7 +152,7 @@ public class HashingProblems {
             set.add(item);
 
         int count = 0;
-        for (int i = 0; i < set.size(); i++){
+        for (int i = 0; i < arr2.length; i++){
             if (set.contains(arr2[i])) {
                 count++;
                 set.remove(arr2[i]);
@@ -167,15 +169,12 @@ public class HashingProblems {
         //SC-O(m+n)
 /*      int[] temp = new int[arr1.length + arr2.length];
         int count = 0;
-
         //O(n)
         for (int i = 0; i < arr1.length; i++)
             temp[i] = arr1[i];
-
         //O(n)
         for (int i = 0; i < arr2.length; i++)
             temp[arr1.length + i] = arr2[i];
-
         //O((m+n) x (m+n))
         for (int i = 0; i < temp.length; i++) {
             boolean flag = false;
