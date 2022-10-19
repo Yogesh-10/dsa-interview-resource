@@ -240,6 +240,8 @@ public class HashingProblems {
 
     //8. Find the subarray with sum equal to zero
     //I/P - [4, -3, 2, 1], O/P - true, Because -3 and 2 + 1 = 3, makes zero
+    //I/P - [1, 4, 13, -3, -10, 5], O/P - true //I/P - [-1, 4, -3, 5, 1], O/P - true
+    //I/P - [3, 1, -2, 5, 6], O/P - false
     public static boolean subarrayWithSumZero(int[] arr){
         //TC-O(n^2), SC-O(1)
 /*        for (int i = 0; i < arr.length; i++) {
@@ -276,7 +278,9 @@ public class HashingProblems {
 
     //9. Find the subarray with given sum
     //I/P - [5,8,6,13,3,-1], Sum=22,  O/P - true, Because 6 + 13 + 3, makes 22
-    //same as previous problem, with a small change. If we get (preSum - sum = value(that is already in set)), that means we have found the subarray with sum
+    //I/P - [15,2,8,10-5,-8,6], Sum=3,  O/P - true //I/P - [3,2,5,6], Sum=10,  O/P - true
+    //I/P - [3,1,5,6], Sum=10,  O/P - false
+    //same as previous problem, with a small change. If we get (prefixSum - sum = value(that is already in set)), that means we have found the subarray with sum
     public static boolean subarrayWithGivenSum(int[] arr, int sum){
         //TC-O(n^2), SC-O(1)
 /*        for (int i = 0; i < arr.length; i++) {
@@ -302,11 +306,9 @@ public class HashingProblems {
         return false;
     }
 
-
     //10. Find the longest subarray with given sum
     //I/P - [8, 3, 1, 5, -6, 6, 2, 2], sum=4, O/P = 4
-    //I/P - [2, 3, ,5], sum=5, O/P - 2
-    //I/P - [3, 2, 5 ,6], sum=4, O/P - 0
+    //I/P - [2, 3, ,5], sum=5, O/P - 2 //I/P - [3, 2, 5 ,6], sum=4, O/P - 0
     public static int longestSubarrayWithGivenSum(int[] arr, int sum){
         //TC-O(n^2), SC-O(1)
 /*      int maxLength = 0;
@@ -347,7 +349,7 @@ public class HashingProblems {
     }
 
     //11. find largest subarray with equal 0's and 1's
-    //I/P - [1,0,1,1,1,0,0] , O/P - 6 || I/P - [1,1,1,1] , O/P - 0 || I/P - [0, 0, 1, 1, 1, 1, 1, 0] , O/P - 4
+    //Input - [1,0,1,1,1,0,0] , O/P - 6  //Input - [1,1,1,1] , O/P - 0 //Input - [0, 0, 1, 1, 1, 1, 1, 0] , O/P - 4
     public static int largestSubarrayWithEqualZeroesAndOnes(int[] arr) {
         //TC-O(n^2), SC-O(1)
 /*        int sum = 0, maxLength = 0;
@@ -370,7 +372,7 @@ public class HashingProblems {
         //this problem is similar to find largest subarray with zero sum
         //so, we can solve it in same way by converting all zero's to -1 in the array.
         //Note: this solution modifies original array.
-/*        Map<Integer, Integer> map = new HashMap<>();
+/*      Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1); //insert (0, -1) pair into the set to handle the case when a subarray with zero-sum starts from index 0
 
         int prefixSum = 0; int maxLength = 0;
