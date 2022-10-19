@@ -82,3 +82,4 @@
 | Union of two unsorted arrays | Arrays | Easy | Hashing(HashSet) |  |
 | subarray with sum equal to zero | Arrays | Medium | Hashing(HashSet) and Preifx sum |  |
 | Subarray with given sum | Arrays | Medium | Hashing(HashSet) and Preifx sum |  |
+|Longest subarray with given sum |Arrays|Medium | Hashing(HashSet) and Preifx sum	|  |
