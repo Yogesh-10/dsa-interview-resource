@@ -42,7 +42,7 @@
 | Search in sorted rotated array | Arrays | Medium | Binary Search |  |
 | Find peak element in an array | Arrays | Medium | Binary Search(more like divide and conquer, because the array is unsorted) |  |
 | Two sum in sorted array | Arrays | Easy | Two pointer |  |
-| Repeating Elements in an array with O(1) Space | Arrays | Medium-Hard | Floyd's Cycle Detection | https://www.notion.so/DSA-PATTERN-EXPLANATION-6a2cfbd6b8764a0e8beaff62860c3900#115a418c8b124bd994cf1bb2975e650a |
+| Repeating Elements in an array with O(1) Space | Arrays | Medium-Hard | Floyd's Cycle Detection |  |
 | Allocate minimum number of pages | Arrays | Hard | Binary Search |  |
 | Intersection of two sorted arrays | Arrays | Easy | Two pointer |  |
 | Union of two sorted arrays | Arrays | Easy | Two pointer |  |
