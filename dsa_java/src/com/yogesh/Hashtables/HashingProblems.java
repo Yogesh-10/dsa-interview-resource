@@ -352,7 +352,7 @@ public class HashingProblems {
     //Input - [1,0,1,1,1,0,0] , O/P - 6  //Input - [1,1,1,1] , O/P - 0 //Input - [0, 0, 1, 1, 1, 1, 1, 0] , O/P - 4
     public static int largestSubarrayWithEqualZeroesAndOnes(int[] arr) {
         //TC-O(n^2), SC-O(1)
-/*        int sum = 0, maxLength = 0;
+/*      int sum = 0, maxLength = 0;
         for (int i = 0; i < arr.length; i++) {
             int countZeros = 0, countOnes = 0;
             for (int j = i; j < arr.length; j++) {
@@ -381,11 +381,10 @@ public class HashingProblems {
             prefixSum += (arr[i] == 0 ? -1 : 1);
 
             //if the sum is not in hashmap already then add the sum with curr index
-            if (!map.containsKey(prefixSum))
+            if (map.containsKey(prefixSum))
+                maxLength = Math.max(maxLength, i - map.get(prefixSum)); //update maxLen of subarray
+            else
                 map.put(prefixSum, i);
-
-            //update maxLen of subarray
-            maxLength = Math.max(maxLength, i - map.get(prefixSum));
         }
         return maxLength;
  */
@@ -400,10 +399,10 @@ public class HashingProblems {
             if (arr[i] == 0) sum++;
             else sum--;
 
-            if (!map.containsKey(sum))
+            if (map.containsKey(sum))
+                res = Math.max(res, i - map.get(sum));
+            else
                 map.put(sum, i);
-
-            res = Math.max(res, i - map.get(sum));
         }
         return res;
     }
@@ -414,7 +413,8 @@ public class HashingProblems {
     //I/P: arr1- [0, 1, 0, 0, 0, 0], arr2-[1, 0, 1, 0, 0, 1], O/P-4, Because we have same sum in both the subarray from, index 1 to 4
     //I/P: arr1- [0, 1, 0, 1, 1, 1, 1], arr2-[1, 1, 1, 1, 1, 0, 1], O/P-6, Because we have same sum in both the subarray from, index 1 to 6
     public static int longestSubarrayWithSameSumInTwoArrays(int[] arr1, int[] arr2){
-/*        int maxLength = 0;
+        //TC-O(n^2), SC-O(1)
+/*      int maxLength = 0;
         for (int start = 0; start < arr1.length; start++) {
             int sum1 = 0; int sum2 = 0;
             for (int end = start; end < arr1.length; end++) {
@@ -458,7 +458,8 @@ public class HashingProblems {
     //I/P - [8, 20, 7, 30] , O/P - 2, Because we have 2 consecutive elements 7,8
     //I/P - [20, 30, 40] , O/P - 1, Because we have no consecutive elements, so single element is considered as one consecutive subsequence
     public static int longestConsecutiveSubsequence(int[] arr){
-/*        Arrays.sort(arr);
+        //TC-O(n log n), SC-O(1)
+/*      Arrays.sort(arr);
         int maxLength = 1; int count = 1;
         for (int i = 1; i < arr.length; i++) {
             if (arr[i - 1] == arr[i] - 1)
@@ -470,7 +471,8 @@ public class HashingProblems {
         }
         return maxLength;
  */
-        //Efficient Solution - SC-O(n), TC-O(n). this may look like O(n^2) but it's not, because the for loops runs O(n), and while loops run only for two lookups on overage, for every element. for example if arr[i] - 1 is already present we ignore it. we do only two lookup one on if and another on while, we also do lookups and we also ignore some lookups if arr[i]-1 is already present in set.
+        //Efficient Solution - SC-O(n), TC-O(n). this may look like O(n^2) but it's not, because the for loops runs O(n), and while loops run only for two lookups on overage, for every element.
+        //for example if arr[i] - 1 is already present we ignore it. we do only two lookup one on if and another on while, we also do lookups and we also ignore some lookups if arr[i]-1 is already present in set.
         //so, on average total complexity is O(n) + O(n) for lookups(only 2 lookups on average inside set for every element), which is O(n) operation
         Set<Integer> set = new HashSet<>();
         int maxLength = 0;
