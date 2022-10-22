@@ -431,7 +431,7 @@ public class HashingProblems {
         //the trick is to subtract (arr1 - arr2), or (arr2 - arr1). now in this new array, we have to find subarray with zero sum, so we will get the output
         //it works, because - let's take a example arr1- {0, 1, 0, 0, 0, 0}; arr2 = {1, 0, 1, 0, 0, 1}. if we subtract it we get, [-1,1,-1,0,0,-1]. Now, if we check for
         //zero subarray sum, we can get output. now, while subtracting if we have both zeros, we get zeros and if we have both ones in array we get zero. now the extra 1's in arr1 will be 1 in temp
-        //and extras 1's in arr2 will be -1 in temp, so if there are equal 1's and -1's they will cancel each other, and we have zero's already in temp, if both are one's and zero's while subtracting.
+        //and extras 1's in arr2 will be -1 in temp, so if there are equal 1's and -1's they will cancel each other, and we have zero's already in temp-if both are one's and zero's while subtracting, both will make longest subarray with zero sum
         Map<Integer ,Integer> map = new HashMap<>(); //O(n) SC
         map.put(0, -1); //insert (0, -1) pair into the map to handle the case when a subarray with zero-sum starts from index 0
 
@@ -452,7 +452,7 @@ public class HashingProblems {
         return maxLength;
     }
 
-    //13. Find the longest consecutive subsequence
+    //13. Find the longest consecutive subsequence in increasing order
     //the elements should be in consecutive increasing order, eg: 1 2 3 4 5. //It can be in any order in array, and at any place
     //I/P - [1, 9, 3, 4, 2, 10, 13] , O/P - 4, Because we have 4 consecutive elements 1,2,3,4
     //I/P - [8, 20, 7, 30] , O/P - 2, Because we have 2 consecutive elements 7,8
@@ -503,7 +503,7 @@ public class HashingProblems {
     public static void countDistinctInEveryWindow(int[] arr, int k){
         //TC-O((n-k) * k * k), SC-O(1)
         //O(n - k)
-/*        for (int i = 0; i <= arr.length - k; i++) {
+/*      for (int i = 0; i <= arr.length - k; i++) {
             int count = 0;
             //O(k)
             for (int j = 0; j < k; j++){
