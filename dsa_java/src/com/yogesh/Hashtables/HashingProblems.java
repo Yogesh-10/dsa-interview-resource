@@ -553,7 +553,7 @@ public class HashingProblems {
     //I/P-[3,1,2,2,1,2,3,3], k=4, O/P- 2 3
     public static void printNbyKOccurrences(int[] arr, int k){
         //O(n ^ 2) Solution,  SC-O(1)
-/*        for (int i = 0; i < arr.length; i++) {
+/*      for (int i = 0; i < arr.length; i++) {
             boolean flag = false;
             //check if item is seen before
             for (int j = 0; j < i; j++) {
@@ -577,7 +577,7 @@ public class HashingProblems {
  */
         //TC-overall O(n log n) -> O(n log n) sorting + O(n) traversal, SC-O(1)
         //The idea is to sort the array and then count the occurrences.
-/*        Arrays.sort(arr); //O(n log n)
+/*      Arrays.sort(arr); //O(n log n)
         int i = 1, count = 1;
         while (i < arr.length){ //O(n), in both the while loops, we are incrementing i, i is bounded by n(arr.length), so overall complexity is O(n)
             //check if previous element is same, if yes increment count and i, till previous element is same
@@ -610,7 +610,7 @@ public class HashingProblems {
             //in each iteration if, arr[i] is already present increase the value by 1
             if (map.containsKey(arr[i]))
                 map.put(arr[i], map.get(arr[i]) + 1);
-            //if it a new item and map is not full, then add it to hashmap
+            //if it's a new item and map is not full, then add it to hashmap
             else if (map.size() < k - 1)
                 map.put(arr[i], 1);
             //else if map is full
