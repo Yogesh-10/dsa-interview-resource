@@ -575,6 +575,7 @@ public class HashingProblems {
                 System.out.print(arr[i] + " ");
         }
  */
+
         //TC-overall O(n log n) -> O(n log n) sorting + O(n) traversal, SC-O(1)
         //The idea is to sort the array and then count the occurrences.
 /*      Arrays.sort(arr); //O(n log n)
@@ -594,6 +595,7 @@ public class HashingProblems {
             i++;
         }
  */
+
         //TC-O(n), SC-O(n), this solution is efficient, but if array is very large and k is small, we have to store everything in hashmap and iterating through is not a good idea
         //Enter the frequencies of elements in hashmap, traverse through it and print the element with occurrence > n/k
 /*        Map<Integer, Integer> map = new HashMap<>();
@@ -604,8 +606,10 @@ public class HashingProblems {
             if (item.getValue() > arr.length / k)
                 System.out.print(item.getKey() + " ");
  */
-        //O(nk) Solution, SC-O(k)
+        //O(nk) Solution, SC-O(k) - Moore's voting algorithm
+        //This solution is slight modification of Moore's voting algorithm
         Map<Integer, Integer> map = new HashMap<>();
+        //Step 1 : find the candidates
         for (int i = 0; i < arr.length; i++) {
             //in each iteration if, arr[i] is already present increase the value by 1
             if (map.containsKey(arr[i]))
@@ -624,7 +628,7 @@ public class HashingProblems {
                 }
             }
         }
-
+        //Step 2: check if the candidate is actually greater than n/k
         //iterate thru hashmap
         for(var item : map.entrySet()){
             int count=0;
