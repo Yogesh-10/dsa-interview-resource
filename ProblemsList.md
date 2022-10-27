@@ -85,3 +85,5 @@
 |Longest subarray with given sum |Arrays|Medium | Hashing(HashSet) and Preifx sum	|  |
 |Longest subarray with equal zeros and ones | Arrays | Hard | Hashing(HashMap) |  |
 |Longest common span with same sum in two binary arrays | Arrays | Hard | Hashing(HashMap) and Preifx sum |  |
+| Find the longest consecutive subsequence in increasing order | Arrays | Medium | Hashing(HashSet) |
+| Count distinct elements in every window | Arrays | Medium | Hashing(Hashmap)/Sliding Window |
