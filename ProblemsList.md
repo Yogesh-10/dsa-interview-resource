@@ -87,3 +87,4 @@
 |Longest common span with same sum in two binary arrays | Arrays | Hard | Hashing(HashMap) and Preifx sum |  |
 | Find the longest consecutive subsequence in increasing order | Arrays | Medium | Hashing(HashSet) |
 | Count distinct elements in every window | Arrays | Medium | Hashing(Hashmap)/Sliding Window |
+| Print values more than n/k occurrences | Arrays | Medium | Hashing(Hashmap)/Moores Voting Algorithm |
