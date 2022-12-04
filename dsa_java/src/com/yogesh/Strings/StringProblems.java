@@ -121,7 +121,7 @@ public class StringProblems {
     }
 
     //6. Find the index of Leftmost Repeating Character in a string
-    //I/P-abbcc, O/P-1, //I/P-aba, O/P-1,
+    //I/P-abccbd, O/P-1, I/P-abbcc, O/P-1, //I/P-aba, O/P-1,
     public static int leftMostRepeatingCharacter(String s){
         //Naive Approach O(n^2)
 /*        for (int i = 0; i < s.length(); i++)
@@ -143,7 +143,7 @@ public class StringProblems {
         return -1;
  */
         //Efficient Solution-1 single traversal- O(n)
-/*        final int CHAR = 256;
+/*       final int CHAR = 256;
         int res = Integer.MAX_VALUE;
         int[] count = new int[CHAR];
         Arrays.fill(count, -1);
@@ -418,7 +418,7 @@ public class StringProblems {
         return lps;
     }
 
-    //12. Check is one string is rotation of other (rotation can be clockwise or anti clockwise)
+    //12. Check if one string is rotation of other (rotation can be clockwise or anti clockwise)
     //I/P- s1-abcd, s2-cdab, O/P-true, because  if we rotate abcd anti clockwise two times, we get bcda in first rotation and cdab in second rotation, so o/p is true
     //I/P- s1-abaaa, s2-baaaa, O/P-true
     //I/P- s1-abab, s2-abba, O/P-false
@@ -504,6 +504,22 @@ public class StringProblems {
     //I/P- abcadbd, O/P-4, because longest substring with distinct character is 4, bcad or cadb
     //I/P- aaa, O/P-1, because longest substring with distinct character is 1, a
     public static int longestSubstringDistinct(String str){
+        //TC-O(n^2), SC-O(1) if 256 is considered as constant
+/*        int res = 0;
+        for (int i = 0; i < str.length(); i++) {
+            boolean[] visited = new boolean[256];
+            for (int j = i; j < str.length(); j++) {
+                if (visited[str.charAt(j)])
+                    break;
+                else{
+                    res = Math.max(res, j - i + 1);
+                    visited[str.charAt(j)] = true;
+                }
+            }
+        }
+        return res;
+ */
+
         //TC-O(n), SC-O(CHAR), or O(1) if CHAR is considered constant
         final int CHAR=256;
         int[] prevVisitedArray = new int[CHAR]; //initialize a array
