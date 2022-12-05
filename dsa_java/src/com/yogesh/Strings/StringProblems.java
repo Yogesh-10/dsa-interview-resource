@@ -568,14 +568,14 @@ public class StringProblems {
                     i++;
                 else if (s1.length() < s2.length())
                     j++;
-                //If lengths of both strings is same
+                //If lengths of both strings is same length
                 else {
                     i++;
                     j++;
                 }
                 // Increment count of edits, because the char doesn't match
                 differenceCount++;
-            } else {
+            } else { // If current characters match
                 i++;
                 j++;
             }
