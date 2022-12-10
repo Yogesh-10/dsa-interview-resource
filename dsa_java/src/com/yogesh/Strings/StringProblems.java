@@ -619,7 +619,7 @@ public class StringProblems {
     }
 
     //17. Remove white spaces from a string
-    //I/P - "  a  nice day  ", O/P-"aniceday"
+     //I/P - "  a  nice day  ", O/P-"aniceday"
     public static String removeWhiteSpaces(String str){
         char[] chars = str.toCharArray();
         int start = 0;
