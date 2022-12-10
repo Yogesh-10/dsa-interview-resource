@@ -652,7 +652,7 @@ public class StringProblems {
     }
 
     //19. Permutation in a String - Given a string and a pattern, find out if the string contains any permutation of the pattern. Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations: abc acb bac bca cab cba
-    //There will be (n!) ='abc' 3!=3x2x1=6 permutations in a string
+    //There will be (n!)permutations ='abc' 3!=3x2x1=6 permutations in a string
     //Input: String="oidbcaf", Pattern="abc" //Output: true //Explanation: The string contains "bca" which is a permutation of the given pattern.
     //Input: String="odicf", Pattern="dc" //Output: false //Explanation: No permutation of the pattern is present in the given string as a substring.
     //Input: String="bcdxabcdy", Pattern="bcdyabcdx" //Output: true //Explanation: Both the string and the pattern are a permutation of each other.
