@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         String s1 = "xyz";
         String s2 = "xyaz";
-        var res = StringProblems.palindromicSubstrings("aaab");
+        var res = StringProblems.stringPermutation("oidbcaf", "abc");
         System.out.println(res);
 /*
         Test cases
