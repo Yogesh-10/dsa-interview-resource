@@ -146,6 +146,21 @@ public class LinkedList {
         return null;
     }
 
+    public void addAtGivenPosition(int position, int item){
+        Node node = new Node(item);
+        if (position == 1)
+            node.next = first;
+
+        Node curr = first;
+        for (int i = 1; i <= position - 2 && curr != null; i++)
+            curr = curr.next;
+
+        if (curr == null) return;
+
+        node.next = curr.next;
+        curr.next = node;
+    }
+
     public void removeByValue(int item){
         //if list is empty throw error
         if (first == null)
