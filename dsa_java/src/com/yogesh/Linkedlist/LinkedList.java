@@ -6,9 +6,9 @@ public class LinkedList {
     //create a node class, to store each node in a linked list
     //each node in a LL consists of value and address which is pointing to next node
     //so we create two fields value and next
-    private class Node {
-        private int value;
-        private Node next; //next is by default initialized to null
+    class Node {
+        int value;
+        Node next; //next is by default initialized to null
 
         //we set the value of newNode by creating a newNode object and passing
         //value through constructor
@@ -147,18 +147,28 @@ public class LinkedList {
     }
 
     public void addAtGivenPosition(int position, int item){
-        Node node = new Node(item);
-        if (position == 1)
+        //position is 1 based index not zero based index
+        Node node = new Node(item); //create a new node
+        //if position is 1, we simply change head(first) to new node's next
+        if (position == 1) {
             node.next = first;
-
+            return;
+        }
+        //otherwise, loop through and find the position, where node has to be inserted
         Node curr = first;
         for (int i = 1; i <= position - 2 && curr != null; i++)
             curr = curr.next;
 
+        //this condition is to handle, when current is null. i.e, when LinkedList total size is 5, and if we pass position as 8, we cannot link that node at 8th position when we have
+        //linked list of only size 5, so we simply return and don't make any change
         if (curr == null) return;
 
-        node.next = curr.next;
-        curr.next = node;
+        node.next = curr.next; //link next of current node to next of new node
+        curr.next = node; //link new node to next of current node
+    }
+
+    public Node getHeadNode(){
+        return first;
     }
 
     public void removeByValue(int item){
