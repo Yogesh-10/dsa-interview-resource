@@ -241,7 +241,7 @@ public class LinkedList {
     }
 
     public void reverse(){
-        //if list is empty we simply return, so below lines will not be executed
+        //if list is empty we simply return
         if (first == null) return;
 
         //[10 -> 20 -> 30]
