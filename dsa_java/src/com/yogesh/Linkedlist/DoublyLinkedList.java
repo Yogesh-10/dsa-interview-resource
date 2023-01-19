@@ -82,7 +82,7 @@ public class DoublyLinkedList {
         prev.next = null;
         tail = prev;
 
-        //if tail pointer is not maintained, we have to traverse the LL and find last node
+        //if tail pointer is not maintained, we have to traverse the LL and find lastNode
 /*      Node curr = head;
         while (curr.next != null){
             curr = curr.next;
