@@ -4,6 +4,7 @@ import com.yogesh.Linkedlist.LinkedList.Node;
 
 public class LinkedListProblems {
     //1. Search a value in linkedList
+    //I/P: 10 -> 20 -> 30, val = 20, O/P - 2
     public static int searchInLinkedList(Node head, int x){
         //TC-O(n), SC-O(1)
 //      Node curr = head;
@@ -32,6 +33,7 @@ public class LinkedListProblems {
     }
 
     //2. Reverse a Linked List
+    //I/P: 10 -> 20 -> 30 -> null, O/P - 30 -> 20 -> 10 -> null
     public static Node reverse(Node head){
         //TC-O(n), SC-O(1)
         Node curr = head;
@@ -44,6 +46,32 @@ public class LinkedListProblems {
             curr = next;
         }
         head = prev;
+        return head;
+    }
+
+    //3. Insert in a sorted linked list
+    //I/P: 10 -> 20 -> 30, val = 25, O/P - 10 -> 20 -> 25 -> 30
+    //I/P: 10 -> 20 -> 30, val = 5, O/P - 5 -> 10 -> 20 -> 25
+    //I/P: 10 -> 20 -> 30, val = 35, O/P - 10 -> 20 -> 30 -> 35
+    public static Node sortedInsert(Node head, int val){
+        //TC-O(1) if inserted at beginning, O(n) if inserted at last
+        Node newNode = new Node(val);
+        if (head == null) {
+            head = newNode;
+            return head;
+        }
+        if (head.value > val){
+            newNode.next = head;
+            head = newNode;
+            return head;
+        }
+        Node curr = head;
+        while (curr.next != null && curr.next.value < val){
+            curr = curr.next;
+        }
+        newNode.next = curr.next;
+        curr.next = newNode;
+
         return head;
     }
 }
