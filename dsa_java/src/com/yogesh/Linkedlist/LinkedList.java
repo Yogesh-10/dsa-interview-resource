@@ -6,7 +6,7 @@ public class LinkedList {
     //create a node class, to store each node in a linked list
     //each node in a LL consists of value and address which is pointing to next node
     //so we create two fields value and next
-    class Node {
+    static class Node {
         int value;
         Node next; //next is by default initialized to null
 
