@@ -74,4 +74,34 @@ public class LinkedListProblems {
 
         return head;
     }
+
+    //4. Find middle of a LinkedList
+    public static Node findMiddleOfLinkedList(Node head){
+/*
+        //TC-O(n) - two pass
+        if (head == null) return null;
+        Node curr = head;
+        int len = 0;
+        while (curr != null){
+            curr = curr.next;
+            len++;
+        }
+
+        curr = head;
+        for (int i = 0; i < len / 2; i++){
+            curr = curr.next;
+        }
+        return curr;
+ */
+        //TC-O(n) Efficient approach - slow and fast pointer
+        if (head == null) return null;
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
 }
